@@ -5,6 +5,8 @@ const usuarioRoutes = require('../routes/usuario.routes')
 const appSigoSet = express();
 const port = 3000;
 
+appSigoSet.use(express.json());
+
 appSigoSet.use(usuarioRoutes)
 
 appSigoSet.set("port", process.env.PORT || port);

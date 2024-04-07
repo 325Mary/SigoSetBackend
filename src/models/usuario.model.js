@@ -1,26 +1,31 @@
-// models/usuarioModel.js
 const mysql = require('mysql2');
 
-// Crea una pool de conexiones
-const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'Mc325',
-  password: 'Mc325',
-  database: 'dafv2',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
 
-// Define el modelo de usuario
+const pool = require('../config/database');
+
 const Usuario = {
-  findAll: function(callback) {
-    pool.query('SELECT * FROM usuario', callback);
+  findAll: function() {
+    return pool.execute('SELECT * FROM usuario'); // Utiliza pool.execute() para obtener una promesa
   },
-  create: function(usuarioData, callback) {
-    pool.query('INSERT INTO usuario SET ?', usuarioData, callback);
+  create: function(usuarioData) {
+    const sql = `INSERT INTO usuario (idperfil, idcentro_formacion, identificacion, nombre_usuario, apellido_usuario, telefono_usuario, email_usuario, password, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    return pool.execute(sql, [usuarioData.idperfil, usuarioData.idcentro_formacion, usuarioData.identificacion, usuarioData.nombre_usuario, usuarioData.apellido_usuario, usuarioData.telefono_usuario, usuarioData.email_usuario, usuarioData.password, usuarioData.estado]);
   }
-  // Agrega más métodos según sea necesario (actualizar, eliminar, etc.)
 };
 
-module.exports = Usuario;
+async function findOneByEmail(email_usuario) {
+  const [rows, fields] = await pool.execute('SELECT * FROM usuario WHERE email_usuario = ?', [email_usuario]);
+  return rows[0];
+}
+
+
+async function findByPk (idUsuario) {
+    const [rows, fields] = await pool.execute(`SELECT * FROM usuario WHERE idUsuario = ?` , [idUsuario]);
+    return rows[0];    throw error;
+  }
+
+
+
+module.exports = {Usuario,
+  findOneByEmail,
+  findByPk};
