@@ -24,8 +24,20 @@ async function findByPk (idUsuario) {
     return rows[0];    throw error;
   }
 
+async function deleteById(idUsuario) {
+    try {
+      const [result] = await pool.execute('DELETE FROM usuario WHERE idUsuario = ?', [idUsuario]);
+      if (result.affectedRows === 0) {
+        throw new Error('El usuario no existe');
+      }
+      return { message: 'Usuario eliminado exitosamente' };
+    } catch (error) {
+      throw error;
+    }
+  }
 
 
 module.exports = {Usuario,
   findOneByEmail,
-  findByPk};
+  findByPk,
+  deleteById};

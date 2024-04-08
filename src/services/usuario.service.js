@@ -1,6 +1,7 @@
 const {Usuario,
    findOneByEmail,
-   findByPk} = require('../models/usuario.model');
+   findByPk,
+   deleteById} = require('../models/usuario.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
@@ -120,10 +121,18 @@ async function editarUsuario(idUsuario, nuevoUsuarioData) {
   }
 }
 
-
+async function eliminarUsuario(idUsuario) {
+  try {
+    await deleteById(idUsuario);
+    return { message: 'Usuario eliminado exitosamente' };
+  } catch (error) {
+    throw error;
+  }
+}
 module.exports = {
     crearUsuario,
     obtenerUsuarios,
     loginUser,
-    editarUsuario
+    editarUsuario,
+    eliminarUsuario
 };
