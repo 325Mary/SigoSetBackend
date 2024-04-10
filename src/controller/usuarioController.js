@@ -17,7 +17,7 @@ const controller = {}
 
 controller.crearUsuarioC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(req, res, async () => {
+    validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado'])(req, res, async () => {
       const usuarioData = req.body;
       const usuario = await crearUsuario(usuarioData);
       res.status(201).json({ message: 'Usuario creado exitosamente', usuario });
