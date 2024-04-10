@@ -165,10 +165,24 @@ controller.estadoUsuarioC = async (req, res, next) => {
 };
 
 
-//iniciar sesion
-controller.cerrarSesionC = async (req, res) => {
-  await cerrarSesion(req, res);
+controller.cerrarSesionC = async (req, res, next) => {
+  try {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader) {
+      return res.status(401).json({ error: 'No se proporcionó un token de autenticación' });
+    }
+
+    const token = req.headers['authorization']; // Obtener el token del encabezado de la solicitud
+
+    // Llamar al servicio de cierre de sesión
+    await cerrarSesion(token);
+
+    res.status(200).json({ message: 'Sesión cerrada exitosamente' });
+  } catch (error) {
+    next(error);
+  }
 };
+
 
 
 module.exports = controller;

@@ -24,6 +24,6 @@ router.put('/cambiarPassword/:idUsuario', cambiarContraseñaC);
 router.post('/solicitarRestablecimiento', solicitarRestablecimiento);
 router.post('/restablecerPassword', restablecerContraseña);
 router.put('/estadoUser/:idUsuario', validarTokenMiddleware , checkPerfil([1]), estadoUsuarioC);
-router.post('/cerrarSesion',validarTokenMiddleware,  cerrarSesionC)
+router.post('/cerrarSesion', cerrarSesionC);
 
 module.exports = router;

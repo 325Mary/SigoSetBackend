@@ -310,29 +310,18 @@ async function estadoDeUsuario(idUsuario, nuevoUsuarioData, idperfil) {
   }
 }
 
-
-//cerrar sesion
 const cerrarSesion = async (token) => {
   try {
-    // Verificar si el token está en la lista negra en la base de datos
-    const tokenEnListaNegra = await listaNegraService.tokenEnListaNegra(token);
-    if (tokenEnListaNegra) {
-      console.log('Token ya revocado.');
-      throw new Error('Token already revoked.');
-    }
-
     // Agregar el token a la lista negra
     await listaNegraService.agregarToken(token);
-    console.log('Token agregado a la lista negra:', token);
-
-    // Otras operaciones de cierre de sesión según sea necesario
-
-    return { success: true, message: 'Logout successful.' };
+    return { message: 'Sesión cerrada exitosamente' };
   } catch (error) {
-    console.error(error);
-    throw new Error(`Error al cerrar sesión: ${error.message}`);
+    throw error;
   }
-}
+};
+
+
+
 module.exports = {
     crearUsuario,
     obtenerUsuarios,
