@@ -8,9 +8,9 @@ const { crearUsuario,
    enviarCorreoRestablecimiento,
    restablecerContraseña,
    estadoDeUsuario,
-   cerrarSesion} = require('../services/usuario.service');
+   cerrarSesion} = require('../services/usuarioService');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
-const {findOneByEmail} = require('../models/usuario.model')
+const {findOneByEmail} = require('../models/usuarioModel')
 const pool = require('../config/database');
 
 const controller = {}

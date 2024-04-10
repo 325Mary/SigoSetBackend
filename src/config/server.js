@@ -1,6 +1,6 @@
 // Importación de módulos y configuraciones necesarios para el servidor
 const express = require("express");
-const usuarioRoutes = require('../routes/usuario.routes')
+const usuarioRoutes = require('../routes/usuarioRoutes')
 // Configuración del servidor Express
 const appSigoSet = express();
 const port = 3000;

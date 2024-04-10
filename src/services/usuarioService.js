@@ -1,12 +1,12 @@
 const {Usuario,
    findOneByEmail,
    findByPk,
-   deleteById} = require('../models/usuario.model');
+   deleteById} = require('../models/usuarioModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
 const nodemailer = require('nodemailer');
-const {listaNegraService} = require('../services/listaNegra.service')
+const {listaNegraService} = require('./listaNegraService')
 
 
 require('dotenv').config();

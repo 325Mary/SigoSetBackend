@@ -11,7 +11,7 @@ const {crearUsuarioC,
       restablecerContraseña,
       estadoUsuarioC,
       cerrarSesionC
-     } = require('../controller/usuario.controller');
+     } = require('../controller/usuarioController');
 const checkPerfil = require('../middleware/verificadorDePerfil')
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
 

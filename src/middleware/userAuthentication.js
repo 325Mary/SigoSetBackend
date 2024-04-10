@@ -62,7 +62,7 @@
 
 
 const jwt = require('jsonwebtoken');
-const  {listaNegraService}  = require('../services/listaNegra.service')
+const  {listaNegraService}  = require('../services/listaNegraService')
 
 
 const validarTokenMiddleware = async (req, res, next) => {
