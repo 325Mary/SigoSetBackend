@@ -66,7 +66,7 @@ const getAllRegionals = async() => {
 
 const createRegional = async(regionalData) => {
     try {
-        const result = await Regional.create(regionalData);
+        const result = await Regional.createRegional(regionalData);
         return result;
     } catch (error) {
         throw error;
