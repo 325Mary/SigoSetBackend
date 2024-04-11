@@ -1,6 +1,6 @@
 const ResponseStructure = {
   status: 200,
-  message: "success",
+  message: "",
   data: {},
 };
 

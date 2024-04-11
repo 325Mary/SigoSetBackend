@@ -23,7 +23,7 @@ const listaNegraService = {
     try {
       const query = 'DELETE FROM blacklistedtoken';
       await pool.promise().query(query);
-      console.log('Tabla blacklistedtoken vaciada correctamente.');
+      // console.log('Tabla blacklistedtoken vaciada correctamente.');
     } catch (error) {
       console.error('Error al vaciar la tabla blacklistedtoken:', error.message);
       throw error;
@@ -32,12 +32,12 @@ const listaNegraService = {
 
   async tokenEnListaNegra(token) {
     try {
-      console.log('Token utilizado en la consulta:', token);
+      // console.log('Token utilizado en la consulta:', token);
 
       const query = 'SELECT COUNT(*) AS count FROM blacklistedtoken WHERE token = ?';
       const [rows, fields] = await pool.promise().query(query, [token.toString()]);
 
-      console.log('Resultado de la consulta:', rows);
+      // console.log('Resultado de la consulta:', rows);
 
       if (!rows || rows.length === 0 || !rows[0] || rows[0].count === undefined) {
         return false; // El token no está en la lista negra

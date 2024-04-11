@@ -64,7 +64,7 @@ async function loginUser(req, res) {
       res.json({ success: 'Inicio de sesión correcto', token: crearToken(user), userId: user.idUsuario });
     } else {
       // Si no coinciden, enviar error de credenciales inválidas
-      return res.status(401).json({ error: 'Credenciales inválidas {' });
+      return res.status(401).json({ error: 'Credenciales inválidas ' });
     }
 
   } catch (e) {
