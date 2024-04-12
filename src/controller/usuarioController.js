@@ -16,16 +16,25 @@ const { ResponseStructure } = require('../helpers/ResponseStructure'); // Asegú
 const controller = {}
 
 controller.crearUsuarioC = async (req, res, next) => {
- try {
-   validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado'])(req, res, async () => {
-     const usuarioData = req.body;
-     const usuario = await crearUsuario(usuarioData);
-     res.status(201).json({ ...ResponseStructure, message: 'Usuario creado exitosamente', data: usuario });
+  try {
+    validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado'])(req, res, async () => {
+      const usuarioData = req.body;
+
+      // Verificar si el correo electrónico ya existe en la base de datos
+      const existingUser = await findOneByEmail(usuarioData.email_usuario);
+      if (existingUser) {
+        return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El correo electrónico ya está registrado' });
+      }
+
+
+      const usuario = await crearUsuario(usuarioData);
+      res.status(201).json({ ...ResponseStructure, message: 'Usuario creado exitosamente', data: usuario });
     });
   } catch (error) {
     res.status(500).json({ ...ResponseStructure, status: 500, error: error.message });
   }
 };
+
 
 controller.obtenerUsuariosC = async (req, res, next) => {
  try {
