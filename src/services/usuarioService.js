@@ -55,7 +55,10 @@ async function loginUser(req, res) {
     if (!user) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
-
+ // Verificar el estado del usuario
+ if (user.estado !== "activo") {
+  return res.status(401).json({ error: 'No puede iniciar sesión, su usuario está inactivo' });
+}
     // Comparar contraseñas encriptadas
     const passwordMatch = await bcrypt.compare(password, user.password);
 

@@ -24,7 +24,7 @@ controller.crearUsuarioC = async (req, res, next) => {
       const existingUser = await findOneByEmail(usuarioData.email_usuario);
       if (existingUser) {
         return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El correo electrónico ya está registrado' });
-      }
+      }  
 
 
       const usuario = await crearUsuario(usuarioData);
@@ -47,6 +47,7 @@ controller.obtenerUsuariosC = async (req, res, next) => {
 
 controller.postLogin = async (req, res) => {
   try {
+    
     await loginUser(req, res);
   } catch (error) {
     res.status(500).json({ ...ResponseStructure, status: 500, error: error.message });
