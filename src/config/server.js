@@ -4,7 +4,8 @@ const morgan = require('morgan');
 const usuarioRoutes = require('../routes/usuarioRoutes')
 const centroFormacionRoutes = require('../routes/centroFormacion.routes')
 const zonaRoutes = require('../routes/zona.routes')
-// Configuración del servidor Express
+const regionalRoutes = require("../routes/regional.routes")
+    // Configuración del servidor Express
 const appSigoSet = express();
 const port = 3000;
 
@@ -13,7 +14,8 @@ appSigoSet.use(express.json());
 appSigoSet.use(usuarioRoutes);
 appSigoSet.use(centroFormacionRoutes)
 appSigoSet.use(zonaRoutes)
-appSigoSet.use(morgan("dev"));
+appSigoSet.use(morgan("dev"));appSigoSet.use(regionalRoutes)
+
 appSigoSet.set("port", process.env.PORT || port);
 
 module.exports = appSigoSet;
