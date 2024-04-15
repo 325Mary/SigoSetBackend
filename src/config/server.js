@@ -1,7 +1,7 @@
 // Importación de módulos y configuraciones necesarios para el servidor
 const express = require("express");
 const morgan = require('morgan');
-const usuarioRoutes = require('../routes/usuario.routes')
+const usuarioRoutes = require('../routes/usuarioRoutes')
 const centroFormacionRoutes = require('../routes/centroFormacion.routes')
 const zonaRoutes = require('../routes/zona.routes')
 // Configuración del servidor Express

@@ -35,6 +35,7 @@ async function deleteById(idUsuario) {
       throw error;
     }
   }
+  
 
 
 module.exports = {Usuario,
