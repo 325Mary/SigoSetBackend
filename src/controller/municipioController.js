@@ -1,13 +1,18 @@
 const { ResponseStructure } = require('../helpers/ResponseStructure');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 const { crearMunicipio, obtenerMunicipios, editarMunicipio, eliminarMunicipio } = require('../services/municipioService');
-
+const {findOneMunicipio} = require('../models/municipioModel')
 const controller = {}
 
 controller.crearMunicipioC = async (req, res, next) => {
   try {
     validarCamposRequeridos(['iddepartamento', 'municipio'])(req, res, async () => {
       const municipioData = req.body;
+
+      const municipioExistente= await findOneMunicipio(municipioData.municipio);
+      if(municipioExistente){
+      return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El municpio  ya está registrado' });
+      }
       const municipio = await crearMunicipio(municipioData);
       res.status(201).json({ ...ResponseStructure, message: 'Municipio creado exitosamente', data: municipio });
     });

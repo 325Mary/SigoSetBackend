@@ -12,6 +12,10 @@ const Municipio = {
     return pool.execute(sql, [ municipioData.iddepartamento, municipioData.municipio]);
   }
 };
+async function findOneMunicipio(municipio) {
+  const [rows, fields] = await pool.execute('SELECT * FROM municipio WHERE municipio = ?', [municipio]);
+  return rows[0];
+}
 
 
 async function findByMunicipio (idmunicipio) {
@@ -35,4 +39,5 @@ async function deleteByIdMunicipio(idmunicipio) {
 
 module.exports = {Municipio     ,
     findByMunicipio,
-  deleteByIdMunicipio};
+  deleteByIdMunicipio,
+  findOneMunicipio};
