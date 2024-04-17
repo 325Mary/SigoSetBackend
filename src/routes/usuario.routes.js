@@ -1,18 +1,40 @@
-// routes/usuarioRoutes.js
 const express = require('express');
 const router = express.Router();
-const {crearUsuarioC,
-     obtenerUsuariosC,
-     postLogin,
-     editarUsuarioC,
-     eliminarUsuarioC} = require('../controller/usuario.controller');
+const {
+    createUsuario,
+    findOneByEmail,
+    findByPk,
+    deleteById,
+    getAllUsuarios,
+    editarUsuario,
+    listarUsuarios,
+    loginUser,
+    protectedRoute
+} = require('../controller/usuario.controller'); // Assuming relative path to controller
 
+// Create new user
+router.post('/createUsuario', createUsuario);
 
-router.post('/crearUsuario', crearUsuarioC); 
-router.get('/listUsuarios', obtenerUsuariosC);
-router.post('/iniciarSesion', postLogin)
-router.put('/editUser/:idUsuario', editarUsuarioC);
-router.delete('/EliminarUser/:idUsuario', eliminarUsuarioC);
+// Find user by email
+router.get('/usuario/:email_usuario', findOneByEmail);
 
+// Find user by ID
+router.get('/usuario/:idUsuario', findByPk);
+
+// Delete user by ID
+router.delete('/usuario/:idUsuario', deleteById);
+
+// Update user
+router.put('/usuario/:idUsuario', editarUsuario);
+
+// Get all users
+router.get('/listarUsuarios', listarUsuarios);
+router.get('/getAllUsuarios', getAllUsuarios);
+
+// Login user
+router.post('/usuario/login', loginUser);
+
+// Protected route example (assuming you have a 'protegerRuta' middleware that verifies the token)
+router.get('/usuario/protegido', protectedRoute);
 
 module.exports = router;
