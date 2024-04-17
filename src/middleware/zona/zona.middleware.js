@@ -2,7 +2,7 @@
 
 const validateZonaFormMiddleware = async (req, res, next) => {
     const { Nombre_zona } = req.body;
-    console.log('middle')
+    
 
     // Verifica que se proporcione el campo Nombre_zona
     if (!Nombre_zona) {
