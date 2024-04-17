@@ -1,70 +1,69 @@
 const { ResponseStructure } = require('../helpers/ResponseStructure');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
-const { crearMunicipio, obtenerMunicipios, editarMunicipio, eliminarMunicipio } = require('../services/municipioService');
-const {findOneMunicipio} = require('../models/municipioModel')
+const { crearContratoEmpresa,
+  obtenerContratoEmpresas,
+  editarContratoEmpresa,
+  eliminarContratoEmpresa} = require('../services/contratoEmpresaService');
 const controller = {}
 
-controller.crearMunicipioC = async (req, res, next) => {
+controller.crearContratoEmpresaC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['iddepartamento', 'municipio'])(req, res, async () => {
-      const municipioData = req.body;
+    validarCamposRequeridos(['idempresa_vigilancia', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
+      const contratoEmpresaData = req.body;
 
-      const municipioExistente= await findOneMunicipio(municipioData.municipio);
-      if(municipioExistente){
-      return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El municpio  ya está registrado' });
-      }
-      const municipio = await crearMunicipio(municipioData);
-      res.status(201).json({ ...ResponseStructure, message: 'Municipio creado exitosamente', data: municipio });
+    
+      const contratoEmpresa = await crearContratoEmpresa(contratoEmpresaData);
+      res.status(201).json({ ...ResponseStructure, message: 'contrato Empresa creado exitosamente', data: contratoEmpresa });
     });
   } catch (error) {
     next(error);
   }
 };
 
-controller.obtenerMunicipiosC = async (req, res, next) => {
+controller.obtenerContratoEmpresasC = async (req, res, next) => {
   try {
-    const listMunicipios = await obtenerMunicipios();
-    res.status(200).json({ ...ResponseStructure, data: listMunicipios });
+    const listContratoEmpresas = await obtenerContratoEmpresas();
+    res.status(200).json({ ...ResponseStructure, data: listContratoEmpresas });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los municipios' });
+    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los contratos de empresas' });
   }
 };
 
-controller.editarMunicipioC = async (req, res, next) => {
+controller.editarContratoEmpresaC = async (req, res, next) => {
   try {
-    const idMunicipio = req.params.idmunicipio;
-    const nuevoMunicipioData = req.body;
+    const idContrato_empresav = req.params.idContrato_empresav;
+    const nuevoContratoEmpresaData = req.body;
 
     // Verificar si el cuerpo de la solicitud está vacío
-    if (Object.keys(nuevoMunicipioData).length === 0) {
+    if (Object.keys(nuevoContratoEmpresaData).length === 0) {
       return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['iddepartamento', 'municipio'];
+    const camposValidos = ['idempresa_vigilancia', 'fecha_inicio', 'fecha_fin'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
-    const camposRecibidos = Object.keys(nuevoMunicipioData);
+    const camposRecibidos = Object.keys(nuevoContratoEmpresaData);
     const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
 
     if (camposInvalidos.length > 0) {
       return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
     }
 
-    const municipioActualizado = await editarMunicipio(idMunicipio, nuevoMunicipioData);
-    res.status(200).json({ ...ResponseStructure, message: 'Municipio actualizado exitosamente', data: municipioActualizado });
+    const contratoEmpresaActualizado = await editarContratoEmpresa(idContrato_empresav, nuevoContratoEmpresaData);
+    res.status(200).json({ ...ResponseStructure, message: 'contrato empresa actualizado exitosamente', data: contratoEmpresaActualizado });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún municipio con el ID proporcionado' });
+    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún contrato empresa con el ID proporcionado' });
   }
 };
 
-controller.eliminarMunicipioC = async (req, res, next) => {
+controller.eliminarContratoEmpresaC = async (req, res, next) => {
   try {
-    const idMunicipio = req.params.idmunicipio;
-    await eliminarMunicipio(idMunicipio);
-    res.status(200).json({ ...ResponseStructure, message: 'Municipio eliminado exitosamente' });
+    const idContrato_empresav = req.params.idContrato_empresav;
+    await eliminarContratoEmpresa(idContrato_empresav);
+    res.status(200).json({ ...ResponseStructure, message: 'contrato empresa eliminado exitosamente' });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún municipio con el ID ${req.params.idmunicipio} proporcionado` });
+    res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún contrato empresa con el ID ${req.params.idContrato_empresav} proporcionado` });
   }
 };
 

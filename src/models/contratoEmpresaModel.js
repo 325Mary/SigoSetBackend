@@ -8,7 +8,7 @@ const contratoEmpresa = {
     return pool.execute('SELECT * FROM contrato_empresav'); // Utiliza pool.execute() para obtener una promesa
   },
   create: function(contratoEmpresavData) {
-    const sql = `INSERT INTO contrato_empresav ( idempresa_vigilancia, fecha_inicio, fecha_fin) VALUES ( ?, ?. ?)`;
+    const sql = `INSERT INTO contrato_empresav ( idempresa_vigilancia, fecha_inicio, fecha_fin) VALUES ( ?, ?, ?)`;
     return pool.execute(sql, [ contratoEmpresavData.idempresa_vigilancia, contratoEmpresavData.fecha_inicio, contratoEmpresavData.fecha_fin]);
   }
 };

@@ -1,6 +1,6 @@
 const {contratoEmpresa     ,
     findByContratoEmpres,
-    deleteByIdContratoEmpres,} = require('../models/municipioModel');
+    deleteByIdContratoEmpres,} = require('../models/contratoEmpresaModel');
  const pool = require('../config/database');
  
  
