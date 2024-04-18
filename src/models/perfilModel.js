@@ -1,48 +1,46 @@
+const mysql = require('mysql2');
+
+
 const pool = require('../config/database');
 
 const Perfil = {
-    findAll: async function() {
-        try {
-            const [rows, fields] = await pool.execute('SELECT * FROM perfil');
-            return rows;
-        } catch (error) {
-            throw error;
-        }
+    findAll: function() {
+        return pool.execute('SELECT * FROM perfil'); // Utiliza pool.execute() para obtener una promesa
     },
-    findById: async function(id) {
-        try {
-            const [rows, fields] = await pool.execute('SELECT * FROM perfil WHERE idperfil = ?', [id]);
-            return rows[0];
-        } catch (error) {
-            throw error;
-        }
-    },
-    create: async function(perfilData) {
-        try {
-            const sql = `INSERT INTO perfil (perfil) VALUES (?)`;
-            const result = await pool.execute(sql, [perfilData.perfil]);
-            return result.insertId;
-        } catch (error) {
-            throw error;
-        }
-    },
-    update: async function(id, perfilData) {
-        try {
-            const sql = `UPDATE perfil SET perfil = ? WHERE idperfil = ?`;
-            const result = await pool.execute(sql, [perfilData.perfil, id]);
-            return result.affectedRows;
-        } catch (error) {
-            throw error;
-        }
-    },
-    deleteById: async function(id) {
-        try {
-            const result = await pool.execute('DELETE FROM perfil WHERE idperfil = ?', [id]);
-            return result.affectedRows;
-        } catch (error) {
-            throw error;
-        }
+    create: function(perfilData) {
+        const sql = `INSERT INTO perfil ( perfil) VALUES ( ?)`;
+        return pool.execute(sql, [perfilData.perfil]);
     }
 };
+async function findOnePerfil(perfil) {
+    const [rows, fields] = await pool.execute('SELECT * FROM perfil WHERE perfil = ?', [perfil]);
+    return rows[0];
+}
 
-module.exports = Perfil;
+
+async function findByPerfil(idperfil) {
+    const [rows, fields] = await pool.execute(`SELECT * FROM perfil WHERE idperfil = ?`, [idperfil]);
+    return rows[0];
+    throw error;
+}
+
+async function deleteByIdPerfil(idperfil) {
+    try {
+        const [result] = await pool.execute('DELETE FROM perfil WHERE idperfil = ?', [idperfil]);
+        if (result.affectedRows === 0) {
+            throw new Error('El perfil no existe');
+        }
+        return { message: 'perfil eliminado exitosamente' };
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+module.exports = {
+    Perfil,
+    findByPerfil,
+    findOnePerfil,
+    deleteByIdPerfil,
+};

@@ -1,46 +1,85 @@
-const Perfil = require('../models/perfilModel');
+const {
+    Perfil,
+    findByPerfil,
+    findOnePerfil,
+    deleteByIdPerfil,
+} = require('../models/perfilModel');
+const pool = require('../config/database');
 
-const PerfilService = {
-    findAll: async function() {
-        try {
-            const perfiles = await Perfil.findAll();
-            return perfiles;
-        } catch (error) {
-            throw error;
+async function crearPerfil(perfilData) {
+    try {
+        if (!perfilData || !perfilData.perfil) {
+            throw new Error('Faltan datos del perfil');
         }
-    },
-    findById: async function(id) {
-        try {
-            const perfil = await Perfil.findById(id);
-            return perfil;
-        } catch (error) {
-            throw error;
-        }
-    },
-    create: async function(perfilData) {
-        try {
-            const newPerfilId = await Perfil.create(perfilData);
-            return newPerfilId;
-        } catch (error) {
-            throw error;
-        }
-    },
-    update: async function(id, perfilData) {
-        try {
-            const rowsAffected = await Perfil.update(id, perfilData);
-            return rowsAffected;
-        } catch (error) {
-            throw error;
-        }
-    },
-    deleteById: async function(id) {
-        try {
-            const rowsAffected = await Perfil.deleteById(id);
-            return rowsAffected;
-        } catch (error) {
-            throw error;
-        }
+
+
+        const nuevoPerfil = await Perfil.create(perfilData);
+        return nuevoPerfil;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const obtenerPerfiles = async() => {
+    try {
+        const perfiles = await Perfil.findAll();
+        return perfiles;
+    } catch (error) {
+        throw error;
     }
 };
 
-module.exports = PerfilService;
+
+
+
+
+async function editarPerfil(idperfil, nuevoPerfilData) {
+    try {
+        const PerfilExistente = await findByPerfil(idperfil);
+        if (!PerfilExistente) {
+            throw new Error('El perfil no existe');
+        }
+
+        const perfilActualizado = {...PerfilExistente, ...nuevoPerfilData };
+
+        // Realizar la actualización en la base de datos
+        const [result] = await pool.execute(
+            'UPDATE perfil SET  perfil = ? WHERE idperfil = ?', [
+                perfilActualizado.perfil,
+                idperfil
+            ]
+        );
+
+        // Verificar si la actualización fue exitosa
+        if (result.affectedRows === 0) {
+            throw new Error('No se pudo actualizar el perfil');
+        }
+
+        return perfilActualizado;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function eliminarPerfil(idperfil) {
+    try {
+        await deleteByIdPerfil(idperfil);
+        return { message: 'perfil eliminado exitosamente' };
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+
+
+
+
+
+module.exports = {
+    crearPerfil,
+    obtenerPerfiles,
+    editarPerfil,
+    eliminarPerfil
+};
