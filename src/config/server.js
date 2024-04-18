@@ -12,6 +12,7 @@ const sedeFormacionRoutes = require("../routes/sedeFormacion.routes ")
     // Configuración del servidor Express
 =======
 const usuarioRoutes = require('../routes/usuario.routes')
+const detalleContratoRoutes= require('../routes/detalleContratoRoutes')
 const empresaRoutes= require('../routes/empresaRoutes')
 const perfilRoutes = require('../routes/perilRoutes')
 
@@ -33,6 +34,8 @@ appSigoSet.use(morgan("dev"));appSigoSet.use(regionalRoutes)
 appSigoSet.use(perfilRoutes);
 >>>>>>> origin/35-crear-crud-de-perfiles
 appSigoSet.use(empresaRoutes)
+appSigoSet.use(detalleContratoRoutes)
+
 
 appSigoSet.set("port", process.env.PORT || port);
 
