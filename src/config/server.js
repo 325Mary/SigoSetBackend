@@ -1,44 +1,17 @@
 // Importación de módulos y configuraciones necesarios para el servidor
-const express = require("express"); <<
-<< << < HEAD
+const express = require("express");
 const morgan = require('morgan');
-const usuarioRoutes = require('../routes/usuarioRoutes')
-const municipioRoutes = require('../routes/municipioRoutes')
-const centroFormacionRoutes = require('../routes/centroFormacion.routes')
-const zonaRoutes = require('../routes/zona.routes')
 const regionalRoutes = require("../routes/regional.routes")
-const sedeFormacionRoutes = require("../routes/sedeFormacion.routes ")
+const moduloRoutes = require("../routes/moduloRoutes")
+const moduloxperfilRoutes = require("../routes/moduloxperfilRoutes")
+const puestosvigilanciaRoutes = require("../routes/puestosVigilanciaRoutes")
 
-// Configuración del servidor Express
-===
-=== =
-const usuarioRoutes = require('../routes/usuario.routes')
-const detalleContratoRoutes = require('../routes/detalleContratoRoutes')
-const empresaRoutes = require('../routes/empresaRoutes')
-const perfilRoutes = require('../routes/perilRoutes')
 
-// Configuración del servidor Express
->>>
->>> > origin / 35 - crear - crud - de - perfiles
 const appSigoSet = express();
 const port = 3000;
 
-appSigoSet.use(express.json());
-appSigoSet.use(morgan("dev"));
+appSigoSet.use(regionalRoutes)
 
-appSigoSet.use(usuarioRoutes); <<
-<< << < HEAD
-appSigoSet.use(centroFormacionRoutes)
-appSigoSet.use(zonaRoutes)
-appSigoSet.use(municipioRoutes)
-appSigoSet.use(sedeFormacionRoutes)
-appSigoSet.use(morgan("dev"));
-appSigoSet.use(regionalRoutes) ===
-    === =
-    appSigoSet.use(perfilRoutes); >>>
->>> > origin / 35 - crear - crud - de - perfiles
-appSigoSet.use(empresaRoutes)
-appSigoSet.use(detalleContratoRoutes)
 
 
 appSigoSet.set("port", process.env.PORT || port);
