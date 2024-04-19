@@ -11,6 +11,9 @@ const appSigoSet = express();
 const port = 3000;
 
 appSigoSet.use(regionalRoutes)
+appSigoSet.use(moduloRoutes)
+appSigoSet.use(moduloxperfilRoutes)
+appSigoSet.use(puestosvigilanciaRoutes)
 
 
 
