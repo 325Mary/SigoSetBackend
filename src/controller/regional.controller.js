@@ -69,8 +69,6 @@
 //     }
 
 // module.exports = RegionalController;
-
-
 const {
     getAllRegionals,
     createRegional,

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const zonaController = require('../controller/zona.controller')
+const zonaController = require('../controller/zonaController')
 const {validateZonaFormMiddleware} = require('../middleware/zona/zona.middleware')
 
 router.get('/zonas',zonaController.getZonas )

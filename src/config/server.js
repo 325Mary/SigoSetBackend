@@ -5,6 +5,7 @@ const detalleContratoRoutes= require('../routes/detalleContratoRoutes')
 const empresaRoutes= require('../routes/empresaRoutes')
 const perfilRoutes = require('../routes/perilRoutes')
 const zonasRoutes =require('../routes/zona.routes')
+const regionalesRoutes = require('../routes/regional.routes')
 
 // Configuración del servidor Express
 const appSigoSet = express();
@@ -12,6 +13,7 @@ const port = 3000;
 
 appSigoSet.use(express.json());
 
+appSigoSet.use(regionalesRoutes);
 appSigoSet.use(usuarioRoutes);
 appSigoSet.use(perfilRoutes);
 appSigoSet.use(empresaRoutes)
