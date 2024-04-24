@@ -1,6 +1,7 @@
 // Importación de módulos y configuraciones necesarios para el servidor
 const express = require("express");
 const morgan = require('morgan');
+const cors = require("cors");
 const usuarioRoutes = require('../routes/usuarioRoutes')
 const municipioRoutes = require('../routes/municipioRoutes')
 // const centroFormacionRoutes = require('../routes/centroFormacion.routes')
@@ -16,7 +17,7 @@ const certificacionCentrofRoutes= require ('../routes/certificacionCentroFRoutes
 
 const appSigoSet = express();
 const port = 3000;
-
+appSigoSet.use(cors());
 appSigoSet.use(express.json());
 
 appSigoSet.use(usuarioRoutes);
@@ -31,5 +32,6 @@ appSigoSet.use(certificacionCentrofRoutes)
 
 
 appSigoSet.set("port", process.env.PORT || port);
+
 
 module.exports = appSigoSet;

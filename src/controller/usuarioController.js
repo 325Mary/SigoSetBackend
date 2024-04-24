@@ -159,15 +159,15 @@ if (result.affectedRows === 0) {
 
 controller.restablecerContraseña = async (req, res) => {
  try {
-   const { email_usuario, codigo, nuevaContraseña } = req.body;
+   const { email_usuario, codigo, nuevaContrasena } = req.body;
 
    console.log(`Solicitud de restablecimiento de contraseña para ${email_usuario} con código ${codigo}`);
 
    // Llamar a la función restablecerContraseña
-   const resultado = await restablecerContraseña(email_usuario, codigo, nuevaContraseña);
+   const resultado = await restablecerContraseña(email_usuario, codigo, nuevaContrasena);
    res.json({ ...ResponseStructure, message: 'Accion Exitosa',  data: resultado });
    // Enviar respuesta al cliente
-   res.json(resultado);
+  //  res.json(resultado);
   } catch (error) {
     console.error('Error al restablecer la contraseña:', error);
     res.status(500).json({ ...ResponseStructure, status: 500, error: 'Error interno del servidor' });
