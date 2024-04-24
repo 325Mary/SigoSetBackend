@@ -4,4 +4,5 @@ const ResponseStructure = {
     data: {},
   };
   
+
 module.exports = { ResponseStructure };
