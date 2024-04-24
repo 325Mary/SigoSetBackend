@@ -53,7 +53,7 @@
 //     deleteRegionalById
 // };
 
-const Regional = require('../models/regional.model');
+const Regional = require('../models/regionalModel');
 
 const getAllRegionals = async() => {
     try {

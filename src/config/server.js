@@ -4,8 +4,8 @@ const usuarioRoutes = require('../routes/usuarioRoutes')
 const detalleContratoRoutes= require('../routes/detalleContratoRoutes')
 const empresaRoutes= require('../routes/empresaRoutes')
 const perfilRoutes = require('../routes/perilRoutes')
-const zonasRoutes =require('../routes/zona.routes')
-const regionalesRoutes = require('../routes/regional.routes')
+const zonasRoutes =require('../routes/ZonaRoutes')
+const regionalesRoutes = require('../routes/RegionalRoutes')
 
 // Configuración del servidor Express
 const appSigoSet = express();
