@@ -29,6 +29,7 @@ appSigoSet.use(morgan("dev"));appSigoSet.use(regionalRoutes)
 appSigoSet.use(empresaRoutes)
 appSigoSet.use(detalleContratoRoutes)
 appSigoSet.use(certificacionCentrofRoutes)
+appSigoSet.use(perfilRoutes)
 
 
 appSigoSet.set("port", process.env.PORT || port);

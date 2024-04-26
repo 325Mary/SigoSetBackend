@@ -320,6 +320,22 @@ const cerrarSesion = async (token) => {
   }
 };
 
+//listar usuario por id
+const getUserById = async (idUsuario) => {
+  try {
+    const user = await findByPk(idUsuario);
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+    
+    // Seleccionar solo los campos deseados del usuario
+    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario } = user;
+    
+    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario };
+  } catch (error) {
+    throw new Error('Error al obtener el usuario por ID: ' + error.message);
+  }
+};
 
 
 module.exports = {
@@ -333,5 +349,6 @@ module.exports = {
    enviarCorreoRestablecimiento,
    restablecerContraseña,
    estadoDeUsuario,
-   cerrarSesion
+   cerrarSesion,
+   getUserById
 };

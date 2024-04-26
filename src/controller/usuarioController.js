@@ -8,7 +8,8 @@ const { crearUsuario,
   enviarCorreoRestablecimiento,
   restablecerContraseña,
   estadoDeUsuario,
-  cerrarSesion} = require('../services/usuarioService');
+  cerrarSesion,
+  getUserById} = require('../services/usuarioService');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 const {findOneByEmail} = require('../models/usuarioModel')
 const pool = require('../config/database');
@@ -213,6 +214,18 @@ controller.cerrarSesionC = async (req, res, next) => {
    res.status(200).json({ ...ResponseStructure, message: 'Sesión cerrada exitosamente' });
   } catch (error) {
     next(error);
+  }
+};
+
+//usuario por id
+controller.getUserId= async (req, res) => {
+  try {
+    const idUsuario = req.params.idUsuario; // Obtener el ID del usuario de los parámetros de la solicitud
+    const user = await getUserById(idUsuario); // Llamar al servicio para obtener el usuario por ID
+    res.json({ user }); // Enviar el usuario como respuesta
+  } catch (error) {
+    console.error('Error al obtener el usuario por ID:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
