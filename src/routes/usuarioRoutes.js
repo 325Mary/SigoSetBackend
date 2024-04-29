@@ -10,7 +10,8 @@ const {crearUsuarioC,
      solicitarRestablecimiento,
       restablecerContraseña,
       estadoUsuarioC,
-      cerrarSesionC
+      cerrarSesionC,
+      getUserId
      } = require('../controller/usuarioController');
 const checkPerfil = require('../middleware/verificadorDePerfil')
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
@@ -25,5 +26,6 @@ router.post('/solicitarRestablecimiento', solicitarRestablecimiento);
 router.post('/restablecerPassword', restablecerContraseña);
 router.put('/estadoUser/:idUsuario', validarTokenMiddleware , checkPerfil([1]), estadoUsuarioC);
 router.post('/cerrarSesion', cerrarSesionC);
+router.get('/getId/:idUsuario', getUserId)
 
 module.exports = router;

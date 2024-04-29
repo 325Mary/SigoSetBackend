@@ -235,7 +235,7 @@ const enviarCorreoRestablecimiento = async (email_usuario, codigo) => {
 
 
 
-const restablecerContraseña = async (email_usuario, codigo, nuevaContraseña) => {
+const restablecerContraseña = async (email_usuario, codigo, nuevaContrasena) => {
   try {
     console.log(`Intento de restablecimiento de contraseña para ${email_usuario} con código ${codigo}`);
 
@@ -256,7 +256,7 @@ const restablecerContraseña = async (email_usuario, codigo, nuevaContraseña) =
     console.log(`Usuario encontrado para ${email_usuario}:`, usuario);
 
     // Hashear la nueva contraseña
-    const hashedPassword = await bcrypt.hash(nuevaContraseña, 12);
+    const hashedPassword = await bcrypt.hash(nuevaContrasena, 12);
 
     // Ejecutar una consulta SQL para actualizar la contraseña en la base de datos
     const [result] = await pool.execute(
@@ -323,6 +323,22 @@ const cerrarSesion = async (token) => {
   }
 };
 
+//listar usuario por id
+const getUserById = async (idUsuario) => {
+  try {
+    const user = await findByPk(idUsuario);
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+    
+    // Seleccionar solo los campos deseados del usuario
+    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario } = user;
+    
+    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario };
+  } catch (error) {
+    throw new Error('Error al obtener el usuario por ID: ' + error.message);
+  }
+};
 
 
 module.exports = {
@@ -336,5 +352,6 @@ module.exports = {
    enviarCorreoRestablecimiento,
    restablecerContraseña,
    estadoDeUsuario,
-   cerrarSesion
+   cerrarSesion,
+   getUserById
 };
