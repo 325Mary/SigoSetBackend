@@ -45,23 +45,14 @@ controller.editarPerfilC = async (req, res, next) => {
       return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
     }
 
-    // Definir los campos válidos esperados
-    const camposValidos = [ 'perfil'];
-
-    // Verificar si todos los campos recibidos están en la lista de campos válidos
-    const camposRecibidos = Object.keys(nuevoPerfilData);
-    const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
-
-    if (camposInvalidos.length > 0) {
-      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
-    }
-
+    // Verificar si todos los campos recibidos están en el cuerpo de la solicitud
     const perfilActualizado = await editarPerfil(idperfil, nuevoPerfilData);
     res.status(200).json({ ...ResponseStructure, message: 'perfil actualizado exitosamente', data: perfilActualizado });
   } catch (error) {
     res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún perfil con el ID proporcionado' });
   }
 };
+
 
 controller.eliminarPerfilC = async (req, res, next) => {
   try {

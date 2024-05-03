@@ -11,7 +11,8 @@ const {crearUsuarioC,
       restablecerContraseña,
       estadoUsuarioC,
       cerrarSesionC,
-      getUserId
+      getUserId,
+      enviarDatosUsuarioPorCorreoController
      } = require('../controller/usuarioController');
 const checkPerfil = require('../middleware/verificadorDePerfil')
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
@@ -24,8 +25,9 @@ router.delete('/EliminarUser/:idUsuario', eliminarUsuarioC);
 router.put('/cambiarPassword/:idUsuario', cambiarContraseñaC);
 router.post('/solicitarRestablecimiento', solicitarRestablecimiento);
 router.post('/restablecerPassword', restablecerContraseña);
-router.put('/estadoUser/:idUsuario', validarTokenMiddleware , checkPerfil([1]), estadoUsuarioC);
+router.put('/estadoUser/:idUsuario' , estadoUsuarioC);
 router.post('/cerrarSesion', cerrarSesionC);
-router.get('/getId/:idUsuario', getUserId)
+router.get('/getId/:idUsuario', getUserId);
+router.post('/enviarCorreo/:idUsuario', enviarDatosUsuarioPorCorreoController);
 
 module.exports = router;
