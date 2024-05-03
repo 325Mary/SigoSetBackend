@@ -9,7 +9,8 @@ const { crearUsuario,
   restablecerContraseña,
   estadoDeUsuario,
   cerrarSesion,
-  getUserById} = require('../services/usuarioService');
+  getUserById,
+  enviarDatosUsuarioPorCorreo } = require('../services/usuarioService');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 const {findOneByEmail} = require('../models/usuarioModel')
 const pool = require('../config/database');
@@ -18,7 +19,7 @@ const controller = {}
 
 controller.crearUsuarioC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado'])(req, res, async () => {
+    validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'estado'])(req, res, async () => {
       const usuarioData = req.body;
 
       // Verificar si el correo electrónico ya existe en la base de datos
@@ -183,15 +184,15 @@ controller.estadoUsuarioC = async (req, res, next) => {
    const nuevoUsuarioData = req.body; // Obtener los nuevos datos del usuario de la solicitud
 
    // Obtener el idperfil del usuario del objeto req.user (o donde lo hayas almacenado)
-   const idperfil = req.user.idperfil;
+  //  const idperfil = req.user.idperfil;
 
    // Validar si el campo está vacío
-   if (!idperfil || !nuevoUsuarioData || Object.keys(nuevoUsuarioData).length === 0) {
+   if ( !nuevoUsuarioData || Object.keys(nuevoUsuarioData).length === 0) {
     return res.status(400).json({ ...ResponseStructure, status: 400, error: 'Los datos del usuario están incompletos' });
   }
 
    // Llamar a la función del servicio para editar el usuario
-   const usuarioActualizado = await estadoDeUsuario(idUsuario, nuevoUsuarioData, idperfil);
+   const usuarioActualizado = await estadoDeUsuario(idUsuario, nuevoUsuarioData);
 
    res.status(200).json({ ...ResponseStructure, message: 'Usuario actualizado exitosamente', data: usuarioActualizado });
   } catch (error) {
@@ -230,6 +231,16 @@ controller.getUserId= async (req, res) => {
   }
 };
 
+controller.enviarDatosUsuarioPorCorreoController = async (req, res) => {
+  try {
+    const idUsuario = req.params.idUsuario;
+    await enviarDatosUsuarioPorCorreo(idUsuario);
+    res.status(200).json({ message: 'Datos de usuario enviados por correo exitosamente' });
+  } catch (error) {
+    console.error('Error al enviar datos de usuario por correo:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
 
 
 module.exports = controller;

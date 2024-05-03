@@ -14,15 +14,22 @@ require('dotenv').config();
 
 async function crearUsuario(usuarioData) {
   try {
-      if (!usuarioData || !usuarioData.idperfil || !usuarioData.idcentro_formacion || !usuarioData.identificacion || !usuarioData.nombre_usuario || !usuarioData.apellido_usuario || !usuarioData.telefono_usuario || !usuarioData.email_usuario || !usuarioData.password || !usuarioData.estado) {
+      if (!usuarioData || !usuarioData.idperfil || !usuarioData.idcentro_formacion || !usuarioData.identificacion || !usuarioData.nombre_usuario || !usuarioData.apellido_usuario || !usuarioData.telefono_usuario || !usuarioData.email_usuario || !usuarioData.estado) {
           throw new Error('Faltan datos del usuario');
       }
 
-      // Aplicar hash a la contraseña antes de guardarla
-      const hashedPassword = await bcrypt.hash(usuarioData.password, 10);
 
+      // Utilizar la identificación como contraseña por defecto
+      const defaultPassword = usuarioData.identificacion;
+      if (!defaultPassword) {
+          throw new Error('Identificación no proporcionada');
+      }
+
+      // Hashear la contraseña por defecto antes de guardarla en la base de datos
+      const hashedPassword = await bcrypt.hash(defaultPassword, 12);
       // Reemplazar la contraseña sin encriptar con la contraseña encriptada
       usuarioData.password = hashedPassword;
+      usuarioData.firstLogin = 1;
 
       const nuevoUsuario = await Usuario.create(usuarioData);
       return nuevoUsuario;
@@ -30,7 +37,6 @@ async function crearUsuario(usuarioData) {
       throw error;
   }
 }
-
 const obtenerUsuarios = async () => {
   try {
     const usuarios = await Usuario.findAll();
@@ -56,9 +62,13 @@ async function loginUser(req, res) {
       return res.status(401).json({ error: 'Credenciales inválidas' });
     }
  // Verificar el estado del usuario
- if (user.estado !== "activo") {
+ if (user.estado !== "Y") {
   return res.status(401).json({ error: 'No puede iniciar sesión, su usuario está inactivo' });
 }
+if (user.firstLogin) {
+  return res.status(200).json({ message: 'Por favor, cambie su contraseña.', firstLogin: 1, token: crearToken(user), userId: user.idUsuario });
+}
+
     // Comparar contraseñas encriptadas
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -78,8 +88,8 @@ async function loginUser(req, res) {
 
 // Crear token
 function crearToken(user) {
-  const { idUsuario, email_usuario,  nombre_usuario, identificacion, idperfil } = user;
-  const payload = { userId: idUsuario, email_usuario , nombre_usuario, identificacion, idperfil};
+  const { idUsuario, email_usuario,  nombre_usuario, identificacion, idperfil, idcentro_formacion } = user;
+  const payload = { userId: idUsuario, email_usuario , nombre_usuario, identificacion, idperfil, idcentro_formacion};
   console.log("Atributos del payload:", payload); // Imprimir el payload
   const secret = process.env.JWT_SECRET;
   const options = { expiresIn: '1h' };
@@ -142,9 +152,9 @@ const cambiarContraseña = async (idUsuario, newPassword) => {
     // Hashear la nueva contraseña
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     
-    // Ejecutar una consulta SQL para actualizar la contraseña en la base de datos
+    // Ejecutar una consulta SQL para actualizar la contraseña y el campo firstLogin en la base de datos
     const [result] = await pool.execute(
-      'UPDATE usuario SET password = ? WHERE idUsuario = ?',
+      'UPDATE usuario SET password = ?, firstLogin = 0 WHERE idUsuario = ?',
       [hashedPassword, idUsuario]
     );
 
@@ -158,6 +168,7 @@ const cambiarContraseña = async (idUsuario, newPassword) => {
     throw error;
   }
 };
+
 
 // Generar un código de restablecimiento único y seguro
 const generarCodigoRestablecimiento = () => {
@@ -281,7 +292,7 @@ const restablecerContraseña = async (email_usuario, codigo, nuevaContrasena) =>
 };
 
 
-async function estadoDeUsuario(idUsuario, nuevoUsuarioData, idperfil) {
+async function estadoDeUsuario(idUsuario, nuevoUsuarioData) {
   try {
     // Verificar si el usuario existe
     const usuarioExistente = await findByPk(idUsuario);
@@ -294,10 +305,9 @@ async function estadoDeUsuario(idUsuario, nuevoUsuarioData, idperfil) {
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE usuario SET estado = ?, idperfil = ? WHERE idUsuario = ?',
+      'UPDATE usuario SET estado = ? WHERE idUsuario = ?',
       [
         usuarioActualizado.estado,
-        idperfil, // Utiliza el idperfil proporcionado
         idUsuario
       ]
     );
@@ -332,14 +342,111 @@ const getUserById = async (idUsuario) => {
     }
     
     // Seleccionar solo los campos deseados del usuario
-    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario } = user;
+    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado } = user;
     
-    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario };
+    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado };
   } catch (error) {
     throw new Error('Error al obtener el usuario por ID: ' + error.message);
   }
 };
 
+
+// Función del servicio para enviar datos específicos de un usuario por correo electrónico
+const enviarDatosUsuarioPorCorreo = async (idUsuario) => {
+  try {
+    // Obtener los datos del usuario por su ID
+    const user = await findByPk(idUsuario);
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    // Preparar el contenido del correo electrónico
+    const correoOptions = {
+      from: 'sigoset66@gmail.com',
+      to: user.email_usuario,
+      subject: 'Datos de Usuario para Ingreso en SigoSet',
+      html: `
+      <html>
+      <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+          }
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ccc; /* Añadir un borde sólido de 2px */
+        }
+        
+        h1 {
+            color: #333;
+            margin-top: 0; /* Eliminar el margen superior del título */
+        }
+        
+        .user-name {
+            font-weight: bold;
+        }
+        
+        .user-info {
+            margin-top: 20px;
+        }
+        
+        .user-info li {
+            list-style: none;
+            margin-bottom: 10px;
+            font-size: 16px; /* Ajustar el tamaño de la fuente */
+        }
+        
+        .user-info li span {
+            font-weight: bold;
+        }
+        
+        /* Otras reglas de estilo que desees añadir */
+        
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Datos de Usuario para Ingreso en SigoSet</h1>
+          <p>Estimado/a <span class="user-name">${user.nombre_usuario}</span>,</p>
+          <p>A continuación se presentan sus credenciales:</p>
+          <ul class="user-info">
+            <li><span>Email:</span> ${user.email_usuario}</li>
+            <li><span>Contraseña:</span> ${user.identificacion}</li>
+            <!-- Agrega más campos según sea necesario -->
+          </ul>
+        </div>
+      </body>
+      </html>
+      
+      `
+    };
+    
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      service: 'gmail',
+      auth: {
+        user: 'sigoset66@gmail.com',
+        pass: 'w f v s q s c d m l g l m n t a'
+      }
+    });
+
+    // Enviar el correo electrónico
+    const info = await transporter.sendMail(correoOptions);
+    console.log('Correo electrónico enviado:', info.response);
+  } catch (error) {
+    throw error;
+  }
+};
 
 module.exports = {
     crearUsuario,
@@ -353,5 +460,6 @@ module.exports = {
    restablecerContraseña,
    estadoDeUsuario,
    cerrarSesion,
-   getUserById
+   getUserById,
+   enviarDatosUsuarioPorCorreo
 };
