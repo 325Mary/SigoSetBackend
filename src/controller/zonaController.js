@@ -1,11 +1,12 @@
 const pool = require('../config/database');
-
+const { ResponseStructure } = require('../helpers/ResponseStructure');
 exports.getZonas = async (req, res) => {
     try {
         const [zonas] =  await pool.query(
             "SELECT * FROM zona"
         );
-        res.status(200).json(zonas)
+        res.status(200).json({ ...ResponseStructure, message: 'Zonas listados correctamente', data: zonas });
+    
 
     } catch  (error){
         return res.status(500).json({message: "Error interno del servidor. Inténtalo de nuevo más tarde."})
@@ -22,14 +23,15 @@ exports.getZona = async (req, res) => {
         if (zona.length === 0){
             return res.status(404).json({message: "Zona no encontrada."})
         }
-        return res.status(200).json({result:zona[0]})
+        
+        res.status(200).json({ ...ResponseStructure, message: 'Zonas correctamente', data: zona[0] });
 
     } catch  (error){
         return  res.status(500).json({message: "Error interno del servidor. Inténtalo de nuevo más tarde."})
     }
-
+            
 }
-
+                    
 exports.crearZona = async (req, res) => {
     console.log('crear zona', req.zona)
     try {
