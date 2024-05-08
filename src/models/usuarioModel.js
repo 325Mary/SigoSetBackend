@@ -5,7 +5,15 @@ const pool = require('../config/database');
 
 const Usuario = {
   findAll: function() {
-    return pool.execute('SELECT * FROM usuario'); // Utiliza pool.execute() para obtener una promesa
+    const sql = `
+      SELECT usuario.*, 
+             centro_formacion.centro_formacion AS nombre_centro,              centro_formacion.telefono_centrof AS telefono_centro, 
+             perfil.perfil AS nombre_perfil
+      FROM usuario
+      INNER JOIN centro_formacion ON usuario.idcentro_formacion = centro_formacion.idcentro_formacion
+      INNER JOIN perfil ON usuario.idperfil = perfil.idperfil
+    `;
+    return pool.execute(sql);
   },
   create: function(usuarioData) {
     const sql = `INSERT INTO usuario (idperfil, idcentro_formacion, identificacion, nombre_usuario, apellido_usuario, telefono_usuario, email_usuario, password, estado, firstLogin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
