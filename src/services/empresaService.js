@@ -9,11 +9,11 @@ const {Empresa     ,
  
  async function crearEmpresa(empresaData) {
    try {
-       if (!empresaData  || !empresaData.nombre_empresav 
+       if (!empresaData  || !empresaData.nombre_empresa
        || !empresaData.nit_empresa
-        || !empresaData.direccion_empresav 
-        || !empresaData.telefono_empresav 
-        || !empresaData.email_empresav
+        || !empresaData.direccion_empresa 
+        || !empresaData.telefono_empresa 
+        || !empresaData.email_empresa
         || !empresaData. representante_legal 
         || !empresaData.telefono_representantel
         || !empresaData.email_representantel 
@@ -44,9 +44,9 @@ const {Empresa     ,
 
 
  
- async function editarEmpresa(idempresa_vigilancia, nuevaEmpresaData) {
+ async function editarEmpresa(idempresa, nuevaEmpresaData) {
    try {
-     const empresaExistente = await findByEmpresa(idempresa_vigilancia);
+     const empresaExistente = await findByEmpresa(idempresa);
      if (!empresaExistente) {
        throw new Error('la empresa no existe');
      }
@@ -55,20 +55,20 @@ const {Empresa     ,
  
      // Realizar la actualización en la base de datos
      const [result] = await pool.execute(
-        'UPDATE empresa SET nombre_empresav=?, nit_empresa=?, direccion_empresav=?, telefono_empresav=?, email_empresav=?, representante_legal=?, telefono_representantel=?, email_representantel=?, persona_contacto=?, telefono_personac=?, email_personac=? WHERE idempresa_vigilancia=?',
+        'UPDATE empresa SET nombre_empresa=?, nit_empresa=?, direccion_empresa=?, telefono_empresa=?, email_empresa=?, representante_legal=?, telefono_representantel=?, email_representantel=?, persona_contacto=?, telefono_personac=?, email_personac=? WHERE idempresa=?',
         [
-          empresaActualizada.nombre_empresav,
+          empresaActualizada.nombre_empresa,
           empresaActualizada.nit_empresa,
-          empresaActualizada.direccion_empresav,
-          empresaActualizada.telefono_empresav,
-          empresaActualizada.email_empresav,
+          empresaActualizada.direccion_empresa,
+          empresaActualizada.telefono_empresa,
+          empresaActualizada.email_empresa,
           empresaActualizada.representante_legal,
           empresaActualizada.telefono_representantel,
           empresaActualizada.email_representantel,
           empresaActualizada.persona_contacto,
           empresaActualizada.telefono_personac,
           empresaActualizada.email_personac,
-          idempresa_vigilancia
+          idempresa
         ]
       );
       
@@ -84,9 +84,9 @@ const {Empresa     ,
    }
  }
  
- async function eliminarEmpresa(idempresa_vigilancia) {
+ async function eliminarEmpresa(idempresa) {
    try {
-     await deleteByEmpresa(idempresa_vigilancia);
+     await deleteByEmpresa(idempresa);
      return { message: 'empresa eliminada exitosamente' };
    } catch (error) {
      throw error;

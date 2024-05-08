@@ -9,7 +9,7 @@ const controller = {}
 
 controller.crearEmpresaC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['nombre_empresav', 'nit_empresa', 'direccion_empresav', 'telefono_empresav', 'email_empresav', 'representante_legal', 'telefono_representantel', 'email_representantel', 'persona_contacto', 'telefono_personac', 'email_personac'])(req, res, async () => {
+    validarCamposRequeridos(['nombre_empresa', 'nit_empresa', 'direccion_empresa', 'telefono_empresa', 'email_empresa', 'representante_legal', 'telefono_representantel', 'email_representantel', 'persona_contacto', 'telefono_personac', 'email_personac'])(req, res, async () => {
         const empresaData = req.body;
 
       const empresaExistente= await findNit(empresaData.nit_empresa);
@@ -35,7 +35,7 @@ controller.obtenerEmpresaC = async (req, res, next) => {
 
 controller.editarEmpresaC = async (req, res, next) => {
   try {
-    const idempresa_vigilancia = req.params.idempresa_vigilancia;
+    const idempresa = req.params.idempresa;
     const nuevaEmpresaData = req.body;
 
     // Verificar si el cuerpo de la solicitud está vacío
@@ -44,7 +44,7 @@ controller.editarEmpresaC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['nombre_empresav', 'nit_empresa', 'direccion_empresav', 'telefono_empresav', 'email_empresav', 'representante_legal', 'telefono_representantel', 'email_representantel', 'persona_contacto', 'telefono_personac', 'email_personac'];
+    const camposValidos = ['nombre_empresa', 'nit_empresa', 'direccion_empresa', 'telefono_empresa', 'email_empresa', 'representante_legal', 'telefono_representantel', 'email_representantel', 'persona_contacto', 'telefono_personac', 'email_personac'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevaEmpresaData);
@@ -54,7 +54,7 @@ controller.editarEmpresaC = async (req, res, next) => {
       return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
     }
 
-    const empresaActualizada = await editarEmpresa(idempresa_vigilancia, nuevaEmpresaData);
+    const empresaActualizada = await editarEmpresa(idempresa, nuevaEmpresaData);
     res.status(200).json({ ...ResponseStructure, message: 'Empresa actualizado exitosamente', data: empresaActualizada });
   } catch (error) {
     res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningúna empresa con el ID proporcionado' });
@@ -63,11 +63,11 @@ controller.editarEmpresaC = async (req, res, next) => {
 
 controller.eliminarEmpresaC = async (req, res, next) => {
   try {
-    const idempresa_vigilancia = req.params.idempresa_vigilancia;
-    await eliminarEmpresa(idempresa_vigilancia);
+    const idempresa = req.params.idempresa;
+    await eliminarEmpresa(idempresa);
     res.status(200).json({ ...ResponseStructure, message: 'Emresa eliminado exitosamente' });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ninguna empresa con el ID ${req.params.idempresa_vigilancia} proporcionado` });
+    res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ninguna empresa con el ID ${req.params.idempresa} proporcionado` });
   }
 };
 
