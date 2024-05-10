@@ -8,7 +8,9 @@ const { crearUsuario,
   enviarCorreoRestablecimiento,
   restablecerContraseña,
   estadoDeUsuario,
-  cerrarSesion} = require('../services/usuarioService');
+  cerrarSesion,
+  getUserById,
+  enviarDatosUsuarioPorCorreo } = require('../services/usuarioService');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 const {findOneByEmail} = require('../models/usuarioModel')
 const pool = require('../config/database');
@@ -17,14 +19,14 @@ const controller = {}
 
 controller.crearUsuarioC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado'])(req, res, async () => {
+    validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'estado'])(req, res, async () => {
       const usuarioData = req.body;
 
       // Verificar si el correo electrónico ya existe en la base de datos
       const existingUser = await findOneByEmail(usuarioData.email_usuario);
       if (existingUser) {
         return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El correo electrónico ya está registrado' });
-      }
+      }  
 
 
       const usuario = await crearUsuario(usuarioData);
@@ -47,6 +49,7 @@ controller.obtenerUsuariosC = async (req, res, next) => {
 
 controller.postLogin = async (req, res) => {
   try {
+    
     await loginUser(req, res);
   } catch (error) {
     res.status(500).json({ ...ResponseStructure, status: 500, error: error.message });
@@ -159,15 +162,15 @@ if (result.affectedRows === 0) {
 
 controller.restablecerContraseña = async (req, res) => {
  try {
-   const { email_usuario, codigo, nuevaContraseña } = req.body;
+   const { email_usuario, codigo, nuevaContrasena } = req.body;
 
    console.log(`Solicitud de restablecimiento de contraseña para ${email_usuario} con código ${codigo}`);
 
    // Llamar a la función restablecerContraseña
-   const resultado = await restablecerContraseña(email_usuario, codigo, nuevaContraseña);
+   const resultado = await restablecerContraseña(email_usuario, codigo, nuevaContrasena);
    res.json({ ...ResponseStructure, message: 'Accion Exitosa',  data: resultado });
    // Enviar respuesta al cliente
-   res.json(resultado);
+  //  res.json(resultado);
   } catch (error) {
     console.error('Error al restablecer la contraseña:', error);
     res.status(500).json({ ...ResponseStructure, status: 500, error: 'Error interno del servidor' });
@@ -181,15 +184,15 @@ controller.estadoUsuarioC = async (req, res, next) => {
    const nuevoUsuarioData = req.body; // Obtener los nuevos datos del usuario de la solicitud
 
    // Obtener el idperfil del usuario del objeto req.user (o donde lo hayas almacenado)
-   const idperfil = req.user.idperfil;
+  //  const idperfil = req.user.idperfil;
 
    // Validar si el campo está vacío
-   if (!idperfil || !nuevoUsuarioData || Object.keys(nuevoUsuarioData).length === 0) {
+   if ( !nuevoUsuarioData || Object.keys(nuevoUsuarioData).length === 0) {
     return res.status(400).json({ ...ResponseStructure, status: 400, error: 'Los datos del usuario están incompletos' });
   }
 
    // Llamar a la función del servicio para editar el usuario
-   const usuarioActualizado = await estadoDeUsuario(idUsuario, nuevoUsuarioData, idperfil);
+   const usuarioActualizado = await estadoDeUsuario(idUsuario, nuevoUsuarioData);
 
    res.status(200).json({ ...ResponseStructure, message: 'Usuario actualizado exitosamente', data: usuarioActualizado });
   } catch (error) {
@@ -216,6 +219,28 @@ controller.cerrarSesionC = async (req, res, next) => {
   }
 };
 
+//usuario por id
+controller.getUserId= async (req, res) => {
+  try {
+    const idUsuario = req.params.idUsuario; // Obtener el ID del usuario de los parámetros de la solicitud
+    const user = await getUserById(idUsuario); // Llamar al servicio para obtener el usuario por ID
+    res.json({ user }); // Enviar el usuario como respuesta
+  } catch (error) {
+    console.error('Error al obtener el usuario por ID:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
+
+controller.enviarDatosUsuarioPorCorreoController = async (req, res) => {
+  try {
+    const idUsuario = req.params.idUsuario;
+    await enviarDatosUsuarioPorCorreo(idUsuario);
+    res.status(200).json({ message: 'Datos de usuario enviados por correo exitosamente' });
+  } catch (error) {
+    console.error('Error al enviar datos de usuario por correo:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+};
 
 
 module.exports = controller;

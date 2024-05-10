@@ -42,7 +42,7 @@ const {contratoEmpresa     ,
  
      // Realizar la actualización en la base de datos
      const [result] = await pool.execute(
-       'UPDATE contrato_empresav SET  idempresa_vigilancia = ?, fecha_inicio = ? , fecha_fin= ? WHERE idContrato_empresav = ?',
+       'UPDATE contrato_empresa SET  idempresa_vigilancia = ?, fecha_inicio = ? , fecha_fin= ? WHERE idContrato_empresav = ?',
        [
         ContratoEmpresaActualizado.idempresa_vigilancia,
         ContratoEmpresaActualizado.fecha_inicio,
