@@ -18,7 +18,7 @@ const certificacionCentrofRoutes= require ('../routes/certificacionCentroFRoutes
 const zonaRoutes =require('../routes/ZonaRoutes')
 const regionalesRoutes = require('../routes/RegionalRoutes')
 const centroFormacionRoutes = require('../routes/CentroFormacionRoutes')
-
+const contratoRoutes = require('../routes/contratoEmpresaRoutes')
 const appSigoSet = express();
 const port = 3000;
 appSigoSet.use(cors());
@@ -37,7 +37,7 @@ appSigoSet.use(morgan("dev"));appSigoSet.use(regionalRoutes)
 appSigoSet.use(empresaRoutes)
 appSigoSet.use(detalleContratoRoutes)
 appSigoSet.use(perfilRoutes)
-
+appSigoSet.use(contratoRoutes)
 
 appSigoSet.set("port", process.env.PORT || port);
 
