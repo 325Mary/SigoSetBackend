@@ -14,10 +14,15 @@ const express = require('express');
 const router = express.Router();
 const puestoVigilanciaController = require('../controller/puestosVigilanciaController');
 
-router.get('/optenertodospuestosvig', puestoVigilanciaController.obtenerPuestosC);
-router.get('/obtenerpuestovigporid', puestoVigilanciaController.obtenerPuestoPorIdC);
-router.post('/crearpuestovig', puestoVigilanciaController.crearPuestoC);
-router.put('/editarpuestovig', puestoVigilanciaController.editarPuestoC);
-router.delete('/eliminarpuestovig', puestoVigilanciaController.eliminarPuestoC);
+// router.get('/optenertodospuestosvig', puestoVigilanciaController.obtenerPuestosC);
+// router.get('/obtenerpuestovigporid', puestoVigilanciaController.obtenerPuestoPorIdC);
+// router.post('/crearpuestovig', puestoVigilanciaController.crearPuestoC);
+// router.put('/editarpuestovig', puestoVigilanciaController.editarPuestoC);
+// router.delete('/eliminarpuestovig', puestoVigilanciaController.eliminarPuestoC);
+
+router.get('/puestos', puestoVigilanciaController.obtenerPuestos);
+router.post('/crearPuesto', puestoVigilanciaController.crearPuesto);
+router.put('/editarPuesto', puestoVigilanciaController.editarPuesto);
+router.delete('/eliminarPuesto', puestoVigilanciaController.eliminarPuesto);
 
 module.exports = router;
