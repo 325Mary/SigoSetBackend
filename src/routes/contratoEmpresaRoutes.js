@@ -10,8 +10,8 @@ const {
 
 router.post('/crearContratoEmpresa', crearContratoEmpresaC); 
 router.get('/listContratosEmpresas', obtenerContratoEmpresasC);
-router.put('/editContratoEmpresa/:idContrato_empresav', editarContratoEmpresaC);
-router.delete('/EliminarContratoEmpresa/:idContrato_empresav', eliminarContratoEmpresaC);
+router.put('/editContratoEmpresa/:idContrato_empresa', editarContratoEmpresaC);
+router.delete('/EliminarContratoEmpresa/:idContrato_empresa', eliminarContratoEmpresaC);
 
 
 module.exports = router;

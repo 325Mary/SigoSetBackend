@@ -10,8 +10,8 @@ const {
 
 router.post('/crearEmpresa', crearEmpresaC); 
 router.get('/listEmpresa', obtenerEmpresaC);
-router.put('/editEmpresa/:idempresa_vigilancia', editarEmpresaC);
-router.delete('/EliminarEmpresa/:idempresa_vigilancia', eliminarEmpresaC);
+router.put('/editEmpresa/:idempresa', editarEmpresaC);
+router.delete('/EliminarEmpresa/:idempresa', eliminarEmpresaC);
 
 
 module.exports = router;
