@@ -6,7 +6,7 @@ const {contratoEmpresa     ,
  
  async function crearContratoEmpresa(contratoEmpresavData) {
    try {
-       if (!contratoEmpresavData  || !contratoEmpresavData.idempresa_vigilancia || !contratoEmpresavData.fecha_inicio  || !contratoEmpresavData.fecha_fin) {
+       if (!contratoEmpresavData  || !contratoEmpresavData.idempresa || !contratoEmpresavData.fecha_inicio  || !contratoEmpresavData.fecha_fin) {
            throw new Error('Faltan datos del contrato de empresa');
        }
  
@@ -31,9 +31,9 @@ const {contratoEmpresa     ,
 
 
  
- async function editarContratoEmpresa(idContrato_empresav, nuevoContratoEmpresaData) {
+ async function editarContratoEmpresa(idContrato_empresa, nuevoContratoEmpresaData) {
    try {
-     const contratoEmpresaExistente = await findByContratoEmpres(idContrato_empresav);
+     const contratoEmpresaExistente = await findByContratoEmpres(idContrato_empresa);
      if (!contratoEmpresaExistente) {
        throw new Error('El contratro de empresa no existe');
      }
@@ -42,12 +42,12 @@ const {contratoEmpresa     ,
  
      // Realizar la actualización en la base de datos
      const [result] = await pool.execute(
-       'UPDATE contrato_empresa SET  idempresa_vigilancia = ?, fecha_inicio = ? , fecha_fin= ? WHERE idContrato_empresav = ?',
+       'UPDATE contrato_empresa SET  idempresa = ?, fecha_inicio = ? , fecha_fin= ? WHERE idContrato_empresa = ?',
        [
-        ContratoEmpresaActualizado.idempresa_vigilancia,
+        ContratoEmpresaActualizado.idempresa,
         ContratoEmpresaActualizado.fecha_inicio,
         ContratoEmpresaActualizado.fecha_fin,
-        idContrato_empresav
+        idContrato_empresa
        ]
      );
  
@@ -62,9 +62,9 @@ const {contratoEmpresa     ,
    }
  }
  
- async function eliminarContratoEmpresa(idContrato_empresav) {
+ async function eliminarContratoEmpresa(idContrato_empresa) {
    try {
-     await deleteByIdContratoEmpres(idContrato_empresav);
+     await deleteByIdContratoEmpres(idContrato_empresa);
      return { message: 'contrato de empresa eliminado exitosamente' };
    } catch (error) {
      throw error;

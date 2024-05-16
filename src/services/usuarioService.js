@@ -92,11 +92,10 @@ function crearToken(user) {
   const payload = { userId: idUsuario, email_usuario , nombre_usuario, identificacion, idperfil, idcentro_formacion};
   console.log("Atributos del payload:", payload); // Imprimir el payload
   const secret = process.env.JWT_SECRET;
-  const options = { expiresIn: '1h' };
+  const options = { expiresIn: '30m' };
   const token = jwt.sign(payload, secret, options);
   return token;
 }
-
 
 async function editarUsuario(idUsuario, nuevoUsuarioData) {
   try {

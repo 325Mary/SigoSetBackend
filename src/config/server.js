@@ -21,6 +21,9 @@ const centroFormacionRoutes = require('../routes/CentroFormacionRoutes')
 const contratoRoutes = require('../routes/contratoEmpresaRoutes')
 const obligacionesContratoRoutes = require("../routes/obligacionesContratoRoutes")
 const puestosRoutes = require ('../routes/puestosVigilanciaRoutes')
+const departamentoRoutes= require ('../routes/departamentoRoutes')
+const PuestosVyERoutes = require('../routes/puestosXcentroV&ERoutes')
+const vigilanciaElectronicaRoutes = require ('../routes/vigilanciaElectronicaRoutes')
 const appSigoSet = express();
 const port = 3000;
 appSigoSet.use(cors());
@@ -43,7 +46,9 @@ appSigoSet.use(perfilRoutes)
 appSigoSet.use(contratoRoutes)
 appSigoSet.use(puestosRoutes)
 appSigoSet.use(obligacionesContratoRoutes)
-
+appSigoSet.use(departamentoRoutes)
+appSigoSet.use(PuestosVyERoutes)
+appSigoSet.use(vigilanciaElectronicaRoutes)
 appSigoSet.set("port", process.env.PORT || port);
 
 
