@@ -1,3 +1,4 @@
+
 const PuestoVigilanciaService = require('../services/puestosVigilanciaService');
 const obtenerPuestosC = async(req, res, next) => {
     try {
