@@ -1,7 +1,8 @@
 const {Puestos, findByPuestosV,
   deleteByPuestosV,
   findByPuestosE,
-  deleteByPuestosE}= require ('../models/puestosXcentroV&E')
+  deleteByPuestosE,
+  createPuestosVExCentro}= require ('../models/puestosXcentroV&E')
 
 const obtenerPuestosVigilancia = async () => {
     try {
@@ -34,7 +35,7 @@ const obtenerPuestosEXcentro= async(idcentro_formacion) => {
 
 async function crearPuestosVxCentro(puestosvigilanciaXcentroData) {
   try {
-      if (!puestosvigilanciaXcentroData  || !puestosvigilanciaXcentroData.idcentro_formacion || !puestosvigilanciaXcentroData.idempresa  || puestosvigilanciaXcentroData.idpuesto_vigilancia || puestosvigilanciaXcentroData.cantidad_puestov) {
+      if (!puestosvigilanciaXcentroData  || !puestosvigilanciaXcentroData.idcentro_formacion || !puestosvigilanciaXcentroData.idempresa  || !puestosvigilanciaXcentroData.idpuesto_vigilancia || !puestosvigilanciaXcentroData.cantidad_puestov) {
           throw new Error('Faltan datos del  puesto de vigilancia por centro');
       }
 
@@ -48,12 +49,12 @@ async function crearPuestosVxCentro(puestosvigilanciaXcentroData) {
 
 async function crearPuestosVExCentro(puntosvelectronicaData) {
   try {
-      if (!puntosvelectronicaData  || !puntosvelectronicaData.idcentro_formacion || !puntosvelectronicaData.idempresa  || puntosvelectronicaData.idvigilancia_electronica || puntosvelectronicaData.cantidad_puestov) {
+      if (!puntosvelectronicaData  || !puntosvelectronicaData.idcentro_formacion || !puntosvelectronicaData.idempresa  || !puntosvelectronicaData.idvigilancia_electronica || !puntosvelectronicaData.cantidad) {
           throw new Error('Faltan datos del  puesto de vigilancia por centro');
       }
 
 
-      const nuevoPuestosVEXcentro = await Puestos.createPuestosVxCentro(puntosvelectronicaData);
+      const nuevoPuestosVEXcentro = await createPuestosVExCentro(puntosvelectronicaData);
       return nuevoPuestosVEXcentro;
   } catch (error) {
       throw error;
