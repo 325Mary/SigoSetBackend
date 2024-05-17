@@ -3,8 +3,8 @@ const pool = require('../config/database');
 
 const Puestos = {
   createPuestosVxCentro: function(  puestosvigilanciaXcentroData) {
-    const sql = `INSERT INTO puestosvxcentrof ( idcentro_formacion,  idpuesto_vigilancia, cantidad_puestov) VALUES (  ?, ?, ?)`;
-    return pool.execute(sql, [ puestosvigilanciaXcentroData.idcentro_formacion, puestosvigilanciaXcentroData.idpuesto_vigilancia , puestosvigilanciaXcentroData.cantidad_puestov]);
+    const sql = `INSERT INTO puestosvxcentrof ( idcentro_formacion, idempresa, idpuesto_vigilancia, cantidad_puestov) VALUES ( ?, ?, ?, ?)`;
+    return pool.execute(sql, [ puestosvigilanciaXcentroData.idcentro_formacion,puestosvigilanciaXcentroData.idempresa, puestosvigilanciaXcentroData.idpuesto_vigilancia , puestosvigilanciaXcentroData.cantidad_puestov]);
   },
  
 
@@ -47,8 +47,8 @@ findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
 }
   
  async function createPuestosVExCentro (puntosvelectronicaData) {
-    const sql = `INSERT INTO puntosvelectronica (idcentro_formacion, idvigilancia_electronica, cantidad) VALUES (?, ?, ?)`;
-    return pool.execute(sql, [puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idvigilancia_electronica, puntosvelectronicaData.cantidad]);
+    const sql = `INSERT INTO puntosvelectronica (idcentro_formacion, idempresa, idvigilancia_electronica, cantidad) VALUES (?, ?, ?, ?)`;
+    return pool.execute(sql, [puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idempresa, puntosvelectronicaData.idvigilancia_electronica, puntosvelectronicaData.cantidad]);
 }
 async function findByPuestosV (idpuestosvxcentrof) {
   const [rows, fields] = await pool.execute(`SELECT * FROM puestosvxcentrof WHERE idpuestosvxcentrof = ?` , [idpuestosvxcentrof]);
