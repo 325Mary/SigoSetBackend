@@ -44,7 +44,7 @@ controller.obtenerPuestosEXcentroC = async(req, res, next) => {
 
 controller.crearPuestoVXcentroC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idcentro_formacion', 'idempresa', 'idpuesto_vigilancia', 'cantidad_puestov'])(req, res, async () => {
+    validarCamposRequeridos(['idcentro_formacion',  'idpuesto_vigilancia', 'cantidad_puestov'])(req, res, async () => {
       const puestosvigilanciaXcentroData = req.body;
 
       
@@ -58,7 +58,7 @@ controller.crearPuestoVXcentroC = async (req, res, next) => {
 
 controller.crearPuestoVEXcentroC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idcentro_formacion', 'idempresa', 'idvigilancia_electronica', 'cantidad_puestov'])(req, res, async () => {
+    validarCamposRequeridos(['idcentro_formacion', 'idvigilancia_electronica', 'cantidad'])(req, res, async () => {
       const puntosvelectronicaData = req.body;
 
       

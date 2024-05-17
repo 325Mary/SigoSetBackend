@@ -2,14 +2,12 @@ const mysql = require('mysql2');
 const pool = require('../config/database');
 
 const Puestos = {
-  createPuestosVxCentro: function( idcentro_formacion, puestosvigilanciaXcentroData) {
-    const sql = `INSERT INTO puestosvxcentrof ( idcentro_formacion, idempresa, idpuesto_vigilancia, cantidad_puestov) VALUES ( ?, ?, ?, ?)`;
-    return pool.execute(sql, [ puestosvigilanciaXcentroData.idcentro_formacion, puestosvigilanciaXcentroData.idempresa, puestosvigilanciaXcentroData.idpuesto_vigilancia , puestosvigilanciaXcentroData.cantidad_puestov]);
+  createPuestosVxCentro: function(  puestosvigilanciaXcentroData) {
+    const sql = `INSERT INTO puestosvxcentrof ( idcentro_formacion,  idpuesto_vigilancia, cantidad_puestov) VALUES (  ?, ?, ?)`;
+    return pool.execute(sql, [ puestosvigilanciaXcentroData.idcentro_formacion, puestosvigilanciaXcentroData.idpuesto_vigilancia , puestosvigilanciaXcentroData.cantidad_puestov]);
   },
-  createPuestosVExCentro: function(idcentro_formacion, puntosvelectronicaData) {
-    const sql = `INSERT INTO puntosvelectronica ( idcentro_formacion, idempresa, idvigilancia_electronica, cantidad_puestov) VALUES ( ?, ?, ?, ?)`;
-    return pool.execute(sql, [ puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idempresa, puntosvelectronicaData.idvigilancia_electronica , puntosvelectronicaData.cantidad_puestov]);
-  },
+ 
+
   findAll: function() {
     return pool.execute('SELECT * FROM puestos_vigilancia');
   },
@@ -48,6 +46,10 @@ findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
   },
 }
   
+ async function createPuestosVExCentro (puntosvelectronicaData) {
+    const sql = `INSERT INTO puntosvelectronica (idcentro_formacion, idvigilancia_electronica, cantidad) VALUES (?, ?, ?)`;
+    return pool.execute(sql, [puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idvigilancia_electronica, puntosvelectronicaData.cantidad]);
+}
 async function findByPuestosV (idpuestosvxcentrof) {
   const [rows, fields] = await pool.execute(`SELECT * FROM puestosvxcentrof WHERE idpuestosvxcentrof = ?` , [idpuestosvxcentrof]);
   return rows[0];    throw error;
@@ -85,8 +87,10 @@ async function deleteByPuestosE(idpuntosvelectronica) {
 
 
 module.exports = { Puestos,
+  
   findByPuestosV,
   deleteByPuestosV,
   findByPuestosE,
-  deleteByPuestosE
+  deleteByPuestosE,
+  createPuestosVExCentro
  };
