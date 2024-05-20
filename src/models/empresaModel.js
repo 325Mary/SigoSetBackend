@@ -9,11 +9,11 @@ const Empresa = {
   },
   create: function(empresaData) {
     const sql = `INSERT INTO empresa (  
-        nombre_empresav ,
+        nombre_empresa ,
         nit_empresa, 
-        direccion_empresav ,
-        telefono_empresav ,
-        email_empresav,
+        direccion_empresa ,
+        telefono_empresa ,
+        email_empresa,
         representante_legal ,
         telefono_representantel,
         email_representantel ,
@@ -21,11 +21,11 @@ const Empresa = {
         telefono_personac ,
         email_personac) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     return pool.execute(sql, [ 
-        empresaData.nombre_empresav ,
+        empresaData.nombre_empresa ,
         empresaData.nit_empresa, 
-        empresaData.direccion_empresav ,
-        empresaData.telefono_empresav ,
-        empresaData.email_empresav,
+        empresaData.direccion_empresa ,
+        empresaData.telefono_empresa ,
+        empresaData.email_empresa,
         empresaData. representante_legal ,
         empresaData.telefono_representantel,
         empresaData.email_representantel ,
@@ -42,14 +42,14 @@ async function findNit(nit_empresa) {
 }
 
 
-async function findByEmpresa (idempresa_vigilancia) {
-    const [rows, fields] = await pool.execute(`SELECT * FROM empresa WHERE idempresa_vigilancia = ?` , [idempresa_vigilancia]);
+async function findByEmpresa (idempresa) {
+    const [rows, fields] = await pool.execute(`SELECT * FROM empresa WHERE idempresa = ?` , [idempresa]);
     return rows[0];    throw error;
   }
 
-async function deleteByEmpresa(idempresa_vigilancia) {
+async function deleteByEmpresa(idempresa) {
     try {
-      const [result] = await pool.execute('DELETE FROM empresa WHERE idempresa_vigilancia = ?', [idempresa_vigilancia]);
+      const [result] = await pool.execute('DELETE FROM empresa WHERE idempresa = ?', [idempresa]);
       if (result.affectedRows === 0) {
         throw new Error('la empresa no existe');
       }

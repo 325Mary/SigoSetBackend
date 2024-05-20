@@ -9,7 +9,7 @@ const {Empresa     ,
  
  async function crearEmpresa(empresaData) {
    try {
-       if (!empresaData  || !empresaData.nombre_empresav
+       if (!empresaData  || !empresaData.nombre_empresa
        || !empresaData.nit_empresa
         || !empresaData.direccion_empresa
         || !empresaData.telefono_empresa 
@@ -55,7 +55,7 @@ const {Empresa     ,
  
      // Realizar la actualización en la base de datos
      const [result] = await pool.execute(
-        'UPDATE empresa SET nombre_empresa=?, nit_empresa=?, direccion_empresa=?, telefono_empresa=?, email_empresa=?, representante_legal=?, telefono_representantel=?, email_representantel=?, persona_contacto=?, telefono_personac=?, email_personac=? WHERE idempresa_vigilancia=?',
+        'UPDATE empresa SET nombre_empresa=?, nit_empresa=?, direccion_empresa=?, telefono_empresa=?, email_empresa=?, representante_legal=?, telefono_representantel=?, email_representantel=?, persona_contacto=?, telefono_personac=?, email_personac=? WHERE idempresa=?',
         [
           empresaActualizada.nombre_empresa,
           empresaActualizada.nit_empresa,

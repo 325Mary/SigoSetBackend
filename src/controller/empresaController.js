@@ -35,7 +35,7 @@ controller.obtenerEmpresaC = async (req, res, next) => {
 
 controller.editarEmpresaC = async (req, res, next) => {
   try {
-    const idempresa_vigilancia = req.params.idempresa;
+    const idempresa = req.params.idempresa;
     const nuevaEmpresaData = req.body;
 
     // Verificar si el cuerpo de la solicitud está vacío
