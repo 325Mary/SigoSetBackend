@@ -81,3 +81,17 @@ exports.eliminarSedeFormacion= async (req, res) =>  {
         return  res.status(500).json({message: "Error. Inténtalo de nuevo más tarde."})
     }
 }
+
+exports.getSedesPorCentroFormacion = async (req, res) => {
+    try {
+        const { idcentro_formacion } = req.params;
+        const [sedesFormacion] = await pool.query(
+            "SELECT * FROM sede_formacion WHERE idcentro_formacion = ?",
+            [idcentro_formacion]
+        );
+        res.status(200).json(sedesFormacion);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Error. Inténtalo de nuevo más tarde." });
+    }
+}

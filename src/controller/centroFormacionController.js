@@ -17,21 +17,30 @@ exports.getCentrosFormacion = async (req, res) => {
 exports.getCentroFormacion = async (req, res) => {
     console.log(req.params.idCentroFormacion)
     try {
-        const [CentroDeformacion] =  await pool.query(
-            "SELECT * FROM Centro_formacion WHERE idcentro_formacion = ?", [
-                req.params.idCentroFormacion
-        ]);
+        const [CentroDeformacion] = await pool.query(
+            `SELECT Centro_formacion.*, Regional.regional AS regional 
+             FROM Centro_formacion 
+             JOIN Regional ON Centro_formacion.idRegional = Regional.idRegional 
+             WHERE Centro_formacion.idcentro_formacion = ?`, 
+            [req.params.idCentroFormacion]
+        );
+        
         console.log(CentroDeformacion[0])
-        if (CentroDeformacion.length === 0){
+        if (CentroDeformacion.length === 0) {
             return res.status(404).json({message: "Centro de formación no encontrado."})
         }
-    
-        res.status(200).json({ ...ResponseStructure,status:"success", message: 'Centro de formacion  correctamente', data: CentroDeformacion[0] });
-    } catch  (error){
-        return  res.status(500).json({message: "Error interno del servidor. Inténtalo de nuevo más tarde."})
-    }
 
+        res.status(200).json({ 
+            ...ResponseStructure, 
+            status: "success", 
+            message: 'Centro de formación encontrado correctamente', 
+            data: CentroDeformacion[0] 
+        });
+    } catch (error) {
+        return res.status(500).json({message: "Error interno del servidor. Inténtalo de nuevo más tarde."})
+    }
 }
+
 
 exports.crearCentroFormacion = async (req, res) => {
     

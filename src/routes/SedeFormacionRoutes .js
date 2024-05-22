@@ -7,4 +7,6 @@ router.get('/sedeFormacion/:idSedeFormacion',sedeFormacionController.getSedeForm
 router.post('/sedeFormacion',validateSedeFormacionMiddleware,sedeFormacionController.crearSedeFormacion )
 router.put('/sedeFormacion/:idSedeFormacion',sedeFormacionController.editarSedeFormacion )
 router.delete('/sedeFormacion/:idSedeFormacion',sedeFormacionController.eliminarSedeFormacion )
+router.get('/sedeXcentroFormacion/:idcentro_formacion',sedeFormacionController.getSedesPorCentroFormacion )
+
 module.exports = router;

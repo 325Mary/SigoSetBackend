@@ -43,21 +43,10 @@ controller.editarVigilanciaElectronicaC = async (req, res, next) => {
       return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
     }
 
-    // Definir los campos válidos esperados
-    const camposValidos = ['descripcion', 'tarifa', 'ays', 'iva', 'total'];
-
-    // Verificar si todos los campos recibidos están en la lista de campos válidos
-    const camposRecibidos = Object.keys(VigilanciaElectronicaData);
-    const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
-
-    if (camposInvalidos.length > 0) {
-      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
-    }
-
     const VigilanciaElectronicaActualizado = await editarVigilanciaElectronica(idvigilancia_electronica, VigilanciaElectronicaData);
-    res.status(200).json({ ...ResponseStructure, message: ' actualizado exitosamente', data: VigilanciaElectronicaActualizado });
+    res.status(200).json({ ...ResponseStructure, message: 'actualizado exitosamente', data: VigilanciaElectronicaActualizado });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningúno con el ID proporcionado' });
+    next(error);
   }
 };
 
