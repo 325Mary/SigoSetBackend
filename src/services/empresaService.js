@@ -3,10 +3,7 @@ const {Empresa     ,
     deleteByEmpresa,
   findNit} = require('../models/empresaModel');
  const pool = require('../config/database');
- 
- 
- 
- 
+
  async function crearEmpresa(empresaData) {
    try {
        if (!empresaData  || !empresaData.nombre_empresa
@@ -40,10 +37,7 @@ const {Empresa     ,
    }
  };
  
- 
 
-
- 
  async function editarEmpresa(idempresa, nuevaEmpresaData) {
    try {
      const empresaExistente = await findByEmpresa(idempresa);

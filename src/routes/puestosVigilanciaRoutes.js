@@ -1,12 +1,13 @@
 
 const express = require('express');
 const router = express.Router();
-const puestoVigilanciaController = require('../controller/puestosVigilanciaController');
+const {
+    crearPuestoC,editarPuestoC,eliminarPuestoC,listarPuestosC
+} = require('../controller/puestosVigilanciaController');
 
-router.get('/puestos', puestoVigilanciaController.obtenerPuestosC);
-router.get('/puestoporid', puestoVigilanciaController.obtenerPuestoPorIdC);
-router.post('/crearPuesto', puestoVigilanciaController.crearPuestoC);
-router.put('/editarPuesto', puestoVigilanciaController.editarPuestoC);
-router.delete('/eliminarPuesto', puestoVigilanciaController.eliminarPuestoC);
+router.get('/puestos',listarPuestosC );
+router.post('/crearPuesto', crearPuestoC);
+router.put('/editarPuesto', editarPuestoC);
+router.delete('/eliminarPuesto',eliminarPuestoC );
 
 module.exports = router;

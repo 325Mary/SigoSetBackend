@@ -1,80 +1,93 @@
-const pool = require('../config/database');
+const {
+  Puestos,
+  findPuesto,
+  deleteByPuesto,
+} = require("../models/puestosVigilanciaModel");
+const pool = require("../config/database");
+const { Empresa } = require("../models/empresaModel");
 
-const PuestoVigilancia = {
-    findAll: async function() {
-        try {
-            const result = await pool.query('SELECT * FROM puestos_vigilancia');
-            return result.rows;
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al obtener puestos de vigilancia');
-        }
-    },
-
-    findById: async function(id) {
-        try {
-            const result = await pool.query('SELECT * FROM puestos_vigilancia WHERE idpuesto_vigilancia = $1', [id]);
-            if (result.rows.length === 0) {
-                throw new Error('Puesto de vigilancia no encontrado');
-            }
-            return result.rows[0];
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al obtener puesto de vigilancia');
-        }
-    },
-
-    create: async function(puestoData) {
-        if (!puestoData || !puestoData.descripcion_puesto || !puestoData.tarifa_puesto) {
-            throw new Error('Faltan datos obligatorios para crear el puesto.');
-        }
-
-        const tarifa = parseFloat(puestoData.tarifa_puesto);
-        const ays = tarifa * 0.08;
-        const iva = (tarifa + ays) * 0.19;
-        const total = tarifa + ays + iva;
-
-        try {
-            const sql = `INSERT INTO puestos_vigilancia (descripcion_puesto, tarifa_puesto, ays, iva, total) VALUES ($1, $2, $3, $4, $5)`;
-            const values = [puestoData.descripcion_puesto, tarifa, ays, iva, total];
-            await pool.query(sql, values);
-            return { message: 'Puesto de vigilancia creado con éxito' };
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al crear puesto de vigilancia');
-        }
-    },
-
-    update: async function(id, puestoData) {
-        if (!puestoData || !puestoData.descripcion_puesto || !puestoData.tarifa_puesto) {
-            throw new Error('Faltan datos obligatorios para actualizar el puesto.');
-        }
-
-        const tarifa = parseFloat(puestoData.tarifa_puesto);
-        const ays = tarifa * 0.08;
-        const iva = (tarifa + ays) * 0.19;
-        const total = tarifa + ays + iva;
-
-        try {
-            const sql = `UPDATE puestos_vigilancia SET descripcion_puesto = $1, tarifa_puesto = $2, ays = $3, iva = $4, total = $5 WHERE idpuesto_vigilancia = $6`;
-            const values = [puestoData.descripcion_puesto, tarifa, ays, iva, total, id];
-            await pool.query(sql, values);
-            return { message: 'Puesto de vigilancia actualizado con éxito' };
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al actualizar puesto de vigilancia');
-        }
-    },
-
-    deleteById: async function(id) {
-        try {
-            await pool.query('DELETE FROM puestos_vigilancia WHERE idpuesto_vigilancia = $1', [id]);
-            return { message: 'Puesto de vigilancia eliminado con éxito' };
-        } catch (error) {
-            console.error(error);
-            throw new Error('Error al eliminar puesto de vigilancia');
-        }
+async function crearPuesto(puestoData) {
+  try {
+    if (
+      !puestoData ||
+      !puestoData.descripcion_puesto ||
+      !puestoData.tarifa_puesto ||
+      !puestoData.ays ||
+      !puestoData.iva ||
+      !puestoData.total
+    ) {
+      throw new Error("Faltan campos del Puesto");
     }
+    const nuevoPuesto = await Puestos.create(puestoData);
+    return nuevoPuesto;
+  } catch (error) {
+    throw error;
+  }
+}
+
+const obtenerPuestos = async () => {
+  try {
+    const puestos = await Puestos.findAll();
+    return puestos
+  } catch (error) {
+   throw error
+  }
 };
 
-module.exports = PuestoVigilancia;
+// const obtenerPuestoPorId = async (req, res, next) => {
+//   const id = parseInt(req.params.id);
+//   if (isNaN(id)) {
+//     return res.status(400).json({ message: "ID inválido" });
+//   }
+
+//   try {
+//     const puesto = await PuestoVigilanciaService.obtenerPuestoPorId(id);
+//     if (!puesto) {
+//       return res.status(404).json({ message: "Puesto no encontrado" });
+//     }
+//     res
+//       .status(200)
+//       .json({ message: "Puesto obtenido correctamente", data: puesto });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+
+async function editarPuesto (idpuesto_vigilancia,nuevoPuestoData) {
+  try {
+    const puestoExistente = await findPuesto(idpuesto_vigilancia);
+    if(!puestoExistente){
+        throw new Error('Puesto no existe');
+    }
+    const puestoEditado={...puestoExistente,...nuevoPuestoData}
+    const[result]=await pool.execute(
+        'UPDATE puestos_vigilancia SET descripcion_puesto=?,tarifa_puesto=?',
+        [
+            puestoEditado.descripcion_puesto,
+            puestoEditado.tarifa_puesto,
+            idpuesto_vigilancia
+        ]
+    )
+    if(result.affectedRows === 0){
+        throw new Error('No se pudo actualizar el puesto');
+    }
+    return puestoEditado;
+  } catch (error) {
+    throw error;  }
+};
+
+async function eliminarPuesto(idpuesto_vigilancia){
+ try {
+    await deleteByPuesto(idpuesto_vigilancia);
+    return { message: 'Puesto eliminado'}
+ } catch (error) {
+    throw error
+ }
+};
+
+module.exports = {
+  obtenerPuestos,
+  crearPuesto,
+  editarPuesto,
+  eliminarPuesto,
+};

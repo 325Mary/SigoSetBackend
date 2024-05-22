@@ -1,6 +1,5 @@
 const mysql = require('mysql2');
 
-
 const pool = require('../config/database');
 
 const Empresa = {
@@ -61,7 +60,7 @@ async function deleteByEmpresa(idempresa) {
   
 
 
-module.exports = {Empresa     ,
+module.exports = {Empresa,
     findByEmpresa,
     deleteByEmpresa,
   findNit};

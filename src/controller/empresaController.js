@@ -4,6 +4,7 @@ const { crearEmpresa,
     obtenerEmpresas,
     editarEmpresa,
     eliminarEmpresa } = require('../services/empresaService');
+
 const {findNit} = require('../models/empresaModel')
 const controller = {}
 
@@ -65,7 +66,7 @@ controller.eliminarEmpresaC = async (req, res, next) => {
   try {
     const idempresa = req.params.idempresa;
     await eliminarEmpresa(idempresa);
-    res.status(200).json({ ...ResponseStructure, message: 'Emresa eliminado exitosamente' });
+    res.status(200).json({ ...ResponseStructure, message: 'Empresa eliminado exitosamente' });
   } catch (error) {
     res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ninguna empresa con el ID ${req.params.idempresa} proporcionado` });
   }
