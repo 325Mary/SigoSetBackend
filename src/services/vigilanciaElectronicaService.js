@@ -2,7 +2,7 @@ const { vigilanciaElectronica,
     findOneVigilanciaElectronica,
     findByVigilanciaElectronica,
     deleteByIdVigilanciaElectronica}= require ('../models/vigilanciaElectronicaModel')
-
+    const pool = require('../config/database'); 
     
  
     const { Decimal } = require('decimal.js');
@@ -57,6 +57,15 @@ const { vigilanciaElectronica,
         throw new Error('El item no existe');
       }
   
+      // Validar que solo se reciban los campos descripcion y tarifa
+      const camposValidos = ['descripcion', 'tarifa'];
+      const camposRecibidos = Object.keys(nuevoVigilanciaElectronicaData);
+      const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
+  
+      if (camposInvalidos.length > 0) {
+        throw new Error('El cuerpo de la solicitud contiene campos no válidos');
+      }
+  
       // Actualizar la entrada con los nuevos datos
       const VigilanciaElectronicaActualizada = { ...VigilanciaElectronicaExistente, ...nuevoVigilanciaElectronicaData };
   
@@ -98,7 +107,6 @@ const { vigilanciaElectronica,
       throw error;
     }
   }
-  
   
   async function eliminarVigilanciaElectronica(idvigilancia_electronica) {
     try {

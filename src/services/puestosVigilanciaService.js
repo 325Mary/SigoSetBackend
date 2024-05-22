@@ -5,6 +5,7 @@ const {
 } = require("../models/puestosVigilanciaModel");
 const pool = require("../config/database");
 const { Empresa } = require("../models/empresaModel");
+const { default: Decimal } = require("decimal.js");
 
 async function crearPuesto(puestoData) {
   try {
@@ -14,10 +15,18 @@ async function crearPuesto(puestoData) {
       !puestoData.tarifa_puesto ||
       !puestoData.ays ||
       !puestoData.iva ||
-      !puestoData.total
-    ) {
+      !puestoData.total) {
       throw new Error("Faltan campos del Puesto");
     }
+
+  const ays= new Decimal(puestoData.tarifa_puesto).times(0.80);
+  const iva =new Decimal (puestoData.tarifa_puesto).plus(ays).times(0.019);
+  const total = new Decimal(puestoData.tarifa_puesto).plus(ays).plus(iva)
+
+  puestoData.ays = parseFloat(ays.toFixed(2));
+  puestoData.iva = parseFloat(iva.toFixed(2));
+  puestoData.total = parseFloat(total.toFixed(2))
+  
     const nuevoPuesto = await Puestos.create(puestoData);
     return nuevoPuesto;
   } catch (error) {
