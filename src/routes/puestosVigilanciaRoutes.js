@@ -8,6 +8,6 @@ const {
 router.get('/puestos',listarPuestosC );
 router.post('/crearPuesto', crearPuestoC);
 router.put('/editarPuesto', editarPuestoC);
-router.delete('/eliminarPuesto',eliminarPuestoC );
+router.delete('/eliminarPuesto/:id',eliminarPuestoC );
 
 module.exports = router;
