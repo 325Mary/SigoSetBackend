@@ -2,8 +2,6 @@
 
 const validateZonaFormMiddleware = async (req, res, next) => {
     const { Nombre_zona } = req.body;
-    
-
     // Verifica que se proporcione el campo Nombre_zona
     if (!Nombre_zona) {
         return res.status(400).json({ message: "Debe proporcionar el campo Nombre_zona." });
