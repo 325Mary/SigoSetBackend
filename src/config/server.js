@@ -10,6 +10,7 @@ const municipioRoutes = require('../routes/municipioRoutes')
 const regionalRoutes = require("../routes/RegionalRoutes")
 const sedeFormacionRoutes = require("../routes/sedeFormacionRoutes ")
 
+const obligacionesContratistaRoutes=  require('../routes/obligacionContratistaRoutes')
 // Configuración del servidor Express
 const detalleContratoRoutes = require('../routes/detalleContratoRoutes')
 const empresaRoutes = require('../routes/empresaRoutes')
@@ -39,6 +40,8 @@ appSigoSet.use(certificacionCentrofRoutes)
 appSigoSet.use(perfilRoutes)
     // appSigoSet.use(centroFormacionRoutes)
 appSigoSet.use(zonaRoutes)
+appSigoSet.use(obligacionesContratistaRoutes)
+appSigoSet.use(morgan("dev"));appSigoSet.use(regionalRoutes)
 appSigoSet.use(municipioRoutes)
 appSigoSet.use(sedeFormacionRoutes)
 appSigoSet.use(morgan("dev"));
