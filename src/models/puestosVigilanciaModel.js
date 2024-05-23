@@ -9,7 +9,7 @@ const Puestos = {
             tarifa_puesto,
             ays,
             iva,
-            total) VALUES (?,?,?,?)`;
+            total) VALUES (?,?,?,?,?)`;
 
     try {
       const [result] = await pool.execute(sql, [
@@ -22,8 +22,8 @@ const Puestos = {
       if (result.affectedRows === 1) {
         const nuevoPuesto = {
             id: result.insertId,
-            descripcion: Puestosdata.descripcion_puesto,
-            tarifa: Puestosdata.tarifa_puesto,
+            descripcion_puesto: Puestosdata.descripcion_puesto,
+            tarifa_puesto: Puestosdata.tarifa_puesto,
             ays: Puestosdata.ays,
             iva: Puestosdata.iva,
             total: Puestosdata.total

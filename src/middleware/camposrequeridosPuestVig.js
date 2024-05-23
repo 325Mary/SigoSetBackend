@@ -1,31 +1,16 @@
-// function validarCamposRequeridos(req, res, camposRequeridos) {
-//     const faltanCampos = [];
-//     camposRequeridos.forEach(campo => {
-//         if (!req.body[campo]) {
-//             faltanCampos.push(campo);
-//         }
-//     });
-
-//     if (faltanCampos.length > 0) {
-//         return res.status(400).json({ message: `Faltan campos obligatorios: ${faltanCampos.join(', ')}` });
-//     }
-//     next();
-//     next(new Error('Missing required fields'));
-// }
-
-// module.exports = validarCamposRequeridos;
-function validarCamposRequeridos(req, res, camposRequeridos) {
-    const faltanCampos = [];
-    camposRequeridos.forEach(campo => {
-        if (!req.body[campo]) {
-            faltanCampos.push(campo);
-        }
-    });
-
-    if (faltanCampos.length > 0) {
-        return res.status(400).json({ message: `Faltan campos obligatorios: ${faltanCampos.join(', ')}` });
+function validarCamposPuesto(req, res, next) {
+    const camposRequeridos = ["descripcion_puesto", "tarifa_puesto"];
+    const camposFaltantes = camposRequeridos.filter(campo => !(campo in req.body));
+    
+    if (camposFaltantes.length > 0) {
+      return res.status(400).json({
+        error: "La solicitud es incorrecta. Faltan los siguientes campos:",
+        errores: camposFaltantes,
+      });
     }
-    // No need to call next here, as you're already sending a response with res.status
-}
-
-module.exports = validarCamposRequeridos;
+    
+    next();
+  }
+  
+  module.exports = validarCamposPuesto;
+  

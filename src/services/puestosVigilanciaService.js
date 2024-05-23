@@ -12,10 +12,8 @@ async function crearPuesto(puestoData) {
     if (
       !puestoData ||
       !puestoData.descripcion_puesto ||
-      !puestoData.tarifa_puesto ||
-      !puestoData.ays ||
-      !puestoData.iva ||
-      !puestoData.total) {
+      !puestoData.tarifa_puesto 
+    ){
       throw new Error("Faltan campos del Puesto");
     }
 

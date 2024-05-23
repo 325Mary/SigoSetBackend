@@ -9,21 +9,20 @@ const {
 
 
 
-const validarCamposRequeridos = require("../middleware/camposrequeridosUser.js");
+const validarCamposRequeridos = require("../middleware/camposrequeridosPuestVig.js");
 const controller = {};
 
 controller.crearPuestoC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(["descripcion_puesto,tarifa_puesto"])(req,res,async () => {
-        const puestoData = req.body;
-        const puesto = await crearPuesto(puestoData);
-        res.status(201).json({
-          ...ResponseStructure,
-          message: "Puesto Creado",
-          data: puesto,
-        });
-      }
-    );
+    validarCamposRequeridos(req, res, async () => {
+      const puestoData = req.body;
+      const puesto = await crearPuesto(puestoData);
+      res.status(201).json({
+        ...ResponseStructure,
+        message: "Puesto Creado",
+        data: puesto,
+      });
+    });
   } catch (error) {
     next(error);
   }
