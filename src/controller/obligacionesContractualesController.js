@@ -1,57 +1,57 @@
+const obligacionContractualService = require('../services/obligacionContractualService');
 
-const servicioObligacionesContractuales = require('../services/obligacionContractualService');
-
-const obtenerObligacionesContractuales = (req, res) => {
-    servicioObligacionesContractuales.obtenerObligacionesContractuales((error, results) => {
-        if (error) {
-            return res.status(500).send(error);
-        }
-        res.status(200).json(results);
-    });
+const obtenerObligacionesContractuales = async(req, res) => {
+    try {
+        const data = await obligacionContractualService.obtenerObligacionesContractuales();
+        res.json(data);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
-const obtenerObligacionContractualPorId = (req, res) => {
-    const id = req.params.id;
-    servicioObligacionesContractuales.obtenerObligacionContractualPorId(id, (error, results) => {
-        if (error) {
-            return res.status(500).send(error);
+const obtenerObligacionContractualPorId = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const data = await obligacionContractualService.obtenerObligacionContractualPorId(id);
+        if (data) {
+            res.json(data);
+        } else {
+            res.status(404).json({ message: 'Obligación Contractual no encontrada' });
         }
-        if (results.length === 0) {
-            return res.status(404).send('Obligación contractual no encontrada');
-        }
-        res.status(200).json(results[0]);
-    });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
-const crearObligacionContractual = (req, res) => {
-    const nuevaObligacion = req.body;
-    servicioObligacionesContractuales.crearObligacionContractual(nuevaObligacion, (error, results) => {
-        if (error) {
-            return res.status(500).send(error);
-        }
-        res.status(201).send(`Obligación contractual creada con ID: ${results.insertId}`);
-    });
+const crearObligacionContractual = async(req, res) => {
+    try {
+        const data = req.body;
+        const result = await obligacionContractualService.crearObligacionContractual(data);
+        res.status(201).json({ message: 'Obligación Contractual creada', id: result.insertId });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
-const actualizarObligacionContractualPorId = (req, res) => {
-    const id = req.params.id;
-    const datosActualizados = req.body;
-    servicioObligacionesContractuales.actualizarObligacionContractualPorId(id, datosActualizados, (error, results) => {
-        if (error) {
-            return res.status(500).send(error);
-        }
-        res.status(200).send(`Obligación contractual actualizada con ID: ${id}`);
-    });
+const actualizarObligacionContractualPorId = async(req, res) => {
+    try {
+        const id = req.params.id;
+        const data = req.body;
+        await obligacionContractualService.actualizarObligacionContractualPorId(id, data);
+        res.json({ message: 'Obligación Contractual actualizada' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
-const eliminarObligacionContractualPorId = (req, res) => {
-    const id = req.params.id;
-    servicioObligacionesContractuales.eliminarObligacionContractualPorId(id, (error, results) => {
-        if (error) {
-            return res.status(500).send(error);
-        }
-        res.status(200).send(`Obligación contractual eliminada con ID: ${id}`);
-    });
+const eliminarObligacionContractualPorId = async(req, res) => {
+    try {
+        const id = req.params.id;
+        await obligacionContractualService.eliminarObligacionContractualPorId(id);
+        res.json({ message: 'Obligación Contractual eliminada' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 };
 
 module.exports = {
