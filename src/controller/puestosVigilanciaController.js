@@ -6,7 +6,7 @@ const {
   obtenerPuestos,
 } = require("../services/puestosVigilanciaService");
 
-
+const {findOnePuesto} = require("../models/puestosVigilanciaModel.js")
 
 
 const validarCamposRequeridos = require("../middleware/camposrequeridosPuestVig.js");
@@ -14,13 +14,17 @@ const controller = {};
 
 controller.crearPuestoC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(req, res, async () => {
+    validarCamposRequeridos(['descripcion_puesto','tarifa_puesto'])(req, res, async () => {
       const puestoData = req.body;
+      const puestoExistente = await findOnePuesto(puestoData.descripcion_puesto);
+
+      if(puestoExistente){
+        return res.status(400).json({ ...ResponseStructure, status: 400, message: '  ya está registrado' });
+      }
+
       const puesto = await crearPuesto(puestoData);
       res.status(201).json({
-        ...ResponseStructure,
-        message: "Puesto Creado",
-        data: puesto,
+        ...ResponseStructure,message: "Puesto Creado", data: puesto,
       });
     });
   } catch (error) {

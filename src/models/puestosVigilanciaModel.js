@@ -41,7 +41,7 @@ async function findPuesto(idpuesto_vigilancia) {
     return rows[0]
   }
 
-async function findOnePuesto(idpuesto_vigilancia) {
+async function findOnePuesto(descripcion_puesto) {
     const [rows, fields] = await pool.execute(
       "SELECT * FROM puestos_vigilancia WHERE descripcion_puesto = ?",
       [descripcion_puesto]);

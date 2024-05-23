@@ -1,16 +1,15 @@
-function validarCamposPuesto(req, res, next) {
-    const camposRequeridos = ["descripcion_puesto", "tarifa_puesto"];
-    const camposFaltantes = camposRequeridos.filter(campo => !(campo in req.body));
-    
+function validarCamposRequeridos(camposRequeridos) {
+  return function(req, res, next) {
+    const camposFaltantes = camposRequeridos.filter(campo => !req.body[campo]);
+
     if (camposFaltantes.length > 0) {
-      return res.status(400).json({
-        error: "La solicitud es incorrecta. Faltan los siguientes campos:",
-        errores: camposFaltantes,
-      });
+      const errores = camposFaltantes.map(campo => `${campo} es requerido`);
+      return res.status(400).json({ error: 'La solicitud es incorrecta. Falta el parámetro ', errores });
     }
-    
+
+    // Si todos los campos requeridos están presentes, pasar al siguiente middleware o controlador
     next();
   }
-  
-  module.exports = validarCamposPuesto;
-  
+}
+
+module.exports = validarCamposRequeridos;
