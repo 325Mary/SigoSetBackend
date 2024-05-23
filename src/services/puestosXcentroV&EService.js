@@ -3,6 +3,8 @@ const {Puestos, findByPuestosV,
   findByPuestosE,
   deleteByPuestosE,
   createPuestosVExCentro}= require ('../models/puestosXcentroV&E')
+  const pool = require('../config/database');
+
 
 const obtenerPuestosVigilancia = async () => {
     try {
@@ -63,18 +65,18 @@ async function crearPuestosVExCentro(puntosvelectronicaData) {
 
 async function editarPuestoVXcentro(idpuestosvxcentrof, nuevoPuestoXcentroData) {
   try {
-    const PuestoVXcentroExistente = await findByMunicipio(idpuestosvxcentrof);
+    const PuestoVXcentroExistente = await findByPuestosV(idpuestosvxcentrof);
     if (!PuestoVXcentroExistente) {
-      throw new Error('el puesto por centro  no existe');
+      throw new Error('El puesto por centro no existe');
     }
 
     const PuestoVXcentroActualizado = { ...PuestoVXcentroExistente, ...nuevoPuestoXcentroData };
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE puestosvxcentrof SET  idcentro_formacionn= ?, idempresa = ?, idpuesto_vigilancia = ?, cantidad_puestov= ? WHERE idpuestosvxcentrof = ?',
+      'UPDATE puestosvxcentrof SET idcentro_formacion = ?, idempresa = ?, idpuesto_vigilancia = ?, cantidad_puestov = ? WHERE idpuestosvxcentrof = ?',
       [
-        PuestoVXcentroActualizado.idcentro_formacionn,
+        PuestoVXcentroActualizado.idcentro_formacion,
         PuestoVXcentroActualizado.idempresa,
         PuestoVXcentroActualizado.idpuesto_vigilancia,
         PuestoVXcentroActualizado.cantidad_puestov,
@@ -84,7 +86,7 @@ async function editarPuestoVXcentro(idpuestosvxcentrof, nuevoPuestoXcentroData) 
 
     // Verificar si la actualización fue exitosa
     if (result.affectedRows === 0) {
-      throw new Error('No se pudo actualizar el puesto por centro ');
+      throw new Error('No se pudo actualizar el puesto por centro');
     }
 
     return PuestoVXcentroActualizado;
@@ -92,6 +94,7 @@ async function editarPuestoVXcentro(idpuestosvxcentrof, nuevoPuestoXcentroData) 
     throw error;
   }
 }
+
 
 async function editarPuestoVEXcentro(idpuntosvelectronica, nuevoPuestoVEXcentroData) {
   try {
@@ -104,12 +107,12 @@ async function editarPuestoVEXcentro(idpuntosvelectronica, nuevoPuestoVEXcentroD
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE puestosvxcentrof SET  idcentro_formacionn   = ?, idempresa = ?, idvigilancia_electronica = ?, cantidad_puestov= ? WHERE idpuntosvelectronica = ?',
+      'UPDATE puntosvelectronica SET  idcentro_formacion = ?, idempresa = ?, idvigilancia_electronica = ?, cantidad= ? WHERE idpuntosvelectronica = ?',
       [
-        PuestoVEXcentroActualizado.idcentro_formacionn,
+        PuestoVEXcentroActualizado.idcentro_formacion,
         PuestoVEXcentroActualizado.idempresa,
         PuestoVEXcentroActualizado.idvigilancia_electronica,
-        PuestoVXcenPuestoVEXcentroActualizadotroActualizado.cantidad_puestov,
+        PuestoVEXcentroActualizado.cantidad,
         idpuntosvelectronica
       ]
     );

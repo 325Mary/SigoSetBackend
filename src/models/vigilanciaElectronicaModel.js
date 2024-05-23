@@ -8,18 +8,21 @@ const vigilanciaElectronica = {
     return pool.execute('SELECT * FROM vigilancia_electronica'); // Utiliza pool.execute() para obtener una promesa
   },
   create: async function(vigilanciaElectronicaData) {
-    const sql = `INSERT INTO vigilancia_electronica (descripcion, tarifa, ays, iva, total) VALUES (?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO vigilancia_electronica (descripcion, tarifa, ays, total) VALUES (?, ?, ?, ?)`;
     try {
-        const [result] = await pool.execute(sql, [vigilanciaElectronicaData.descripcion, vigilanciaElectronicaData.tarifa, vigilanciaElectronicaData.ays, vigilanciaElectronicaData.iva, vigilanciaElectronicaData.total]);
+        const [result] = await pool.execute(sql, [
+            vigilanciaElectronicaData.descripcion, 
+            vigilanciaElectronicaData.tarifa, 
+            vigilanciaElectronicaData.ays, 
+            vigilanciaElectronicaData.total
+        ]);
         
-        // Verifica si la inserción fue exitosa y devuelve los datos de la vigilancia electrónica creada
         if (result.affectedRows === 1) {
             const nuevaVigilanciaElectronica = {
                 id: result.insertId,
                 descripcion: vigilanciaElectronicaData.descripcion,
                 tarifa: vigilanciaElectronicaData.tarifa,
                 ays: vigilanciaElectronicaData.ays,
-                iva: vigilanciaElectronicaData.iva,
                 total: vigilanciaElectronicaData.total
             };
             return nuevaVigilanciaElectronica;
@@ -29,7 +32,8 @@ const vigilanciaElectronica = {
     } catch (error) {
         throw error;
     }
-}
+  }
+
 
 };
 async function findOneVigilanciaElectronica(descripcion) {

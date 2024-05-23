@@ -95,7 +95,8 @@ controller.editarPuestoVxCentroC = async (req, res, next) => {
     const puestoVxCebtroActualizado = await editarPuestoVXcentro(idpuestosvxcentrof, nuevoPuestoXcentroData);
     res.status(200).json({ ...ResponseStructure, message: ' actualizado exitosamente', data: puestoVxCebtroActualizado });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningúno con el ID proporcionado' });
+    res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningúno con el ID ${req.params.idpuestosvxcentrof} proporcionado` });
+
   }
 };
 
@@ -110,7 +111,7 @@ controller.editarPuestoVExCentroC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['idcentro_formacion', 'idempresa', 'idvigilancia_electronica', 'cantidad_puestov'];
+    const camposValidos = ['idcentro_formacion', 'idempresa', 'idvigilancia_electronica', 'cantidad'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoPuestoVEXcentroData);

@@ -341,9 +341,9 @@ const getUserById = async (idUsuario) => {
     }
     
     // Seleccionar solo los campos deseados del usuario
-    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado } = user;
+    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado,perfil } = user;
     
-    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado };
+    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado, perfil };
   } catch (error) {
     throw new Error('Error al obtener el usuario por ID: ' + error.message);
   }
