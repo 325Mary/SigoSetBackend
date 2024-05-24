@@ -12,14 +12,11 @@ async function crearPuesto(puestoData) {
     if (
       !puestoData ||
       !puestoData.descripcion_puesto ||
-      !puestoData.tarifa_puesto ||
-      !puestoData.ays ||
-      !puestoData.iva ||
-      !puestoData.total) {
+      !puestoData.tarifa_puesto) {
       throw new Error("Faltan campos del Puesto");
     }
 
-  const ays= new Decimal(puestoData.tarifa_puesto).times(0.80);
+  const ays= new Decimal(puestoData.tarifa_puesto).times(0.08);
   const iva =new Decimal (puestoData.tarifa_puesto).plus(ays).times(0.019);
   const total = new Decimal(puestoData.tarifa_puesto).plus(ays).plus(iva)
 

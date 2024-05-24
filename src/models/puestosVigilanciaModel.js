@@ -9,7 +9,7 @@ const Puestos = {
             tarifa_puesto,
             ays,
             iva,
-            total) VALUES (?,?,?,?)`;
+            total) VALUES (?,?,?,?,?)`;
 
     try {
       const [result] = await pool.execute(sql, [

@@ -6,21 +6,21 @@ const Regional = {
     },
 
     createRegional: function(regionalData) {
-        const sql = 'INSERT INTO Regional (regional, direccion) VALUES (?, ?)';
+        const sql = 'INSERT INTO regional (regional, direccion) VALUES (?, ?)';
         return pool.execute(sql, [regionalData.regional, regionalData.direccion]);
     },
 
     findById: function(id) {
-        return pool.execute('SELECT * FROM Regional WHERE idRegional = ?', [id]);
+        return pool.execute('SELECT * FROM regional WHERE idRegional = ?', [id]);
     },
 
     update: function(id, regionalData) {
-        const sql = 'UPDATE Regional SET regional = ?, direccion = ? WHERE idRegional = ?';
+        const sql = 'UPDATE regional SET regional = ?, direccion = ? WHERE idRegional = ?';
         return pool.execute(sql, [regionalData.regional, regionalData.direccion, id]);
     },
 
     deleteById: function(id) {
-        return pool.execute('DELETE FROM Regional WHERE idRegional = ?', [id]);
+        return pool.execute('DELETE FROM regional WHERE idRegional = ?', [id]);
     }
 };
 

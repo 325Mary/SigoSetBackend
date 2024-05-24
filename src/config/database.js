@@ -13,6 +13,16 @@ const pool = mysql.createPool({
 
 
 
+// const pool = mysql.createPool({
+//   host: '192.168.1.4',
+//   user: 'andres',
+//   password: 'andres123',
+//   database: 'dafv2',
+//   waitForConnections: true,
+//   connectionLimit: 10,
+//   queueLimit: 0
+// });
+
 
 pool.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
   if (err) {
