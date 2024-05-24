@@ -27,10 +27,28 @@ async function findOneByEmail(email_usuario) {
 }
 
 
-async function findByPk (idUsuario) {
-    const [rows, fields] = await pool.execute(`SELECT * FROM usuario WHERE idUsuario = ?` , [idUsuario]);
-    return rows[0];    throw error;
+async function findByPk(idUsuario) {
+  try {
+    const query = `
+      SELECT 
+        usuario.*,
+        perfil.perfil
+      FROM 
+        usuario
+      JOIN 
+        perfil ON usuario.idperfil = perfil.idPerfil
+      WHERE 
+        usuario.idUsuario = ?
+    `;
+
+    const [rows, fields] = await pool.execute(query, [idUsuario]);
+    
+    return rows[0];
+  } catch (error) {
+    throw error;
   }
+}
+
 
 async function deleteById(idUsuario) {
     try {

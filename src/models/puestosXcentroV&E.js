@@ -50,9 +50,13 @@ findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
     const sql = `INSERT INTO puntosvelectronica (idcentro_formacion, idempresa, idvigilancia_electronica, cantidad) VALUES (?, ?, ?, ?)`;
     return pool.execute(sql, [puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idempresa, puntosvelectronicaData.idvigilancia_electronica, puntosvelectronicaData.cantidad]);
 }
-async function findByPuestosV (idpuestosvxcentrof) {
-  const [rows, fields] = await pool.execute(`SELECT * FROM puestosvxcentrof WHERE idpuestosvxcentrof = ?` , [idpuestosvxcentrof]);
-  return rows[0];    throw error;
+async function findByPuestosV(idpuestosvxcentrof) {
+  try {
+    const [rows, fields] = await pool.execute(`SELECT * FROM puestosvxcentrof WHERE idpuestosvxcentrof = ?`, [idpuestosvxcentrof]);
+    return rows.length > 0 ? rows[0] : null; // Devuelve la fila encontrada o null si no se encuentra ninguna fila
+  } catch (error) {
+    throw error; // Propaga el error hacia arriba
+  }
 }
 
 async function deleteByPuestosV(idpuestosvxcentrof) {

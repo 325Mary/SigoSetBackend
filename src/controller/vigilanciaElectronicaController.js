@@ -9,20 +9,21 @@ const controller = {}
 
 controller.crearVigilanciaElectronicaC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['descripcion', 'tarifa'])(req, res, async () => {
-      const VigilanciaElectronicaData = req.body;
+      validarCamposRequeridos(['descripcion', 'tarifa', 'ays'])(req, res, async () => {
+          const VigilanciaElectronicaData = req.body;
 
-      const VigilanciaElectronicaExistente= await findOneVigilanciaElectronica(VigilanciaElectronicaData.descripcion);
-      if(VigilanciaElectronicaExistente){
-      return res.status(400).json({ ...ResponseStructure, status: 400, message: '  ya está registrado' });
-      }
-      const VigilanciaElectronica = await crearVigilanciaElectronica(VigilanciaElectronicaData);
-      res.status(201).json({ ...ResponseStructure, message: ' creado exitosamente', data: VigilanciaElectronica });
-    });
+          const VigilanciaElectronicaExistente = await findOneVigilanciaElectronica(VigilanciaElectronicaData.descripcion);
+          if (VigilanciaElectronicaExistente) {
+              return res.status(400).json({ ...ResponseStructure, status: 400, message: 'ya está registrado' });
+          }
+          const VigilanciaElectronica = await crearVigilanciaElectronica(VigilanciaElectronicaData);
+          res.status(201).json({ ...ResponseStructure, message: 'creado exitosamente', data: VigilanciaElectronica });
+      });
   } catch (error) {
-    next(error);
+      next(error);
   }
 };
+
 
 controller.obtenerVigilanciaElectronicaC = async (req, res, next) => {
   try {
@@ -35,18 +36,18 @@ controller.obtenerVigilanciaElectronicaC = async (req, res, next) => {
 
 controller.editarVigilanciaElectronicaC = async (req, res, next) => {
   try {
-    const idvigilancia_electronica = req.params.idvigilancia_electronica;
-    const VigilanciaElectronicaData = req.body;
+      const idvigilancia_electronica = req.params.idvigilancia_electronica;
+      const VigilanciaElectronicaData = req.body;
 
-    // Verificar si el cuerpo de la solicitud está vacío
-    if (Object.keys(VigilanciaElectronicaData).length === 0) {
-      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
-    }
+      // Verificar si el cuerpo de la solicitud está vacío
+      if (Object.keys(VigilanciaElectronicaData).length === 0) {
+          return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
+      }
 
-    const VigilanciaElectronicaActualizado = await editarVigilanciaElectronica(idvigilancia_electronica, VigilanciaElectronicaData);
-    res.status(200).json({ ...ResponseStructure, message: 'actualizado exitosamente', data: VigilanciaElectronicaActualizado });
+      const VigilanciaElectronicaActualizado = await editarVigilanciaElectronica(idvigilancia_electronica, VigilanciaElectronicaData);
+      res.status(200).json({ ...ResponseStructure, message: 'actualizado exitosamente', data: VigilanciaElectronicaActualizado });
   } catch (error) {
-    next(error);
+      next(error);
   }
 };
 
