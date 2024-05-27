@@ -41,48 +41,23 @@ controller.listarPuestosC = async (req, res, next) => {
   }
 };
 
-controller.editarPuestoC = async (req, res, next) => {
-  try {
-    const idpuesto_vigilancia = req.params.idpuesto_vigilancia;
-    const nuevoPuesto = req.body;
-    if (Object.keys(nuevoPuesto).length === 0) {
-      return res.status(400).json({
-        ...ResponseStructure,
-        status: 400,
-        error: "El cuerpo de la solicitud está vacío",
-      });
+  controller.editarPuestoC = async (req, res, next) => {
+    try {
+        const idpuesto_vigilancia = req.params.idpuesto_vigilancia;
+        const nuevoPuestoData = req.body;
+  
+        // Verificar si el cuerpo de la solicitud está vacío
+        if (Object.keys(nuevoPuestoData).length === 0) {
+            return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
+        }
+  
+        const VigilanciaHActualizada = await editarPuesto(idpuesto_vigilancia, nuevoPuestoData);
+        res.status(200).json({ ...ResponseStructure, message: 'actualizado exitosamente', data: VigilanciaHActualizada });
+    } catch (error) {
+        next(error);
     }
-    const camposValidos = ["descripcion_puesto", "tarifa_puesto"];
-    const camposRecibidos = Object.keys(nuevoPuesto);
-    const camposInvalidos = camposRecibidos.filter(
-      (field) => !camposValidos.includes(field)
-    );
-    if (camposInvalidos.length > 0) {
-      return res.status(400).json({
-        ...ResponseStructure,
-        status: 400,
-        error: "El cuerpo de la solicitud contiene campos no válidos",
-        invalidFields: camposInvalidos,
-      });
-    }
-    const puestoEditado = await editarPuesto(idpuesto_vigilancia, nuevoPuesto);
-    res
-      .status(200)
-      .json({
-        ...ResponseStructure,
-        message: "Puesto actualizado",
-        data: puestoEditado,
-      });
-  } catch (error) {
-    res
-      .status(404)
-      .json({
-        ...ResponseStructure,
-        status: 404,
-        error: "No se Actualizo ningun puesto",
-      });
-  }
-};
+  };
+
 
 controller.eliminarPuestoC = async (req, res, next) => {
   try {

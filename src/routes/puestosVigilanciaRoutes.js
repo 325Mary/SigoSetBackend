@@ -7,7 +7,7 @@ const {
 
 router.get('/puestos',listarPuestosC );
 router.post('/crearPuesto', crearPuestoC);
-router.put('/editarPuesto', editarPuestoC);
+router.put('/editarPuesto/:idpuesto_vigilancia', editarPuestoC);
 router.delete('/eliminarPuesto/:idpuesto_vigilancia',eliminarPuestoC );
 
 module.exports = router;
