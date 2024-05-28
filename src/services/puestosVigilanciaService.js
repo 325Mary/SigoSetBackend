@@ -5,6 +5,7 @@ const {
 } = require("../models/puestosVigilanciaModel");
 const pool = require("../config/database");
 const { Empresa } = require("../models/empresaModel");
+
 const { default: Decimal } = require("decimal.js");
 
 async function crearPuesto(puestoData) {
@@ -40,48 +41,87 @@ const obtenerPuestos = async () => {
   }
 };
 
-// const obtenerPuestoPorId = async (req, res, next) => {
-//   const id = parseInt(req.params.id);
-//   if (isNaN(id)) {
-//     return res.status(400).json({ message: "ID inválido" });
-//   }
+const obtenerPuestoPorId = async (req, res, next) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    return res.status(400).json({ message: "ID inválido" });
+  }
 
-//   try {
-//     const puesto = await PuestoVigilanciaService.obtenerPuestoPorId(id);
-//     if (!puesto) {
-//       return res.status(404).json({ message: "Puesto no encontrado" });
-//     }
-//     res
-//       .status(200)
-//       .json({ message: "Puesto obtenido correctamente", data: puesto });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  try {
+    const puesto = await PuestoVigilanciaService.obtenerPuestoPorId(id);
+    if (!puesto) {
+      return res.status(404).json({ message: "Puesto no encontrado" });
+    }
+    res
+      .status(200)
+      .json({ message: "Puesto obtenido correctamente", data: puesto });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
 
 async function editarPuesto(idpuesto_vigilancia, nuevoPuestoData) {
   try {
-    const puestoExistente = await findPuesto(idpuesto_vigilancia);
-    if (!puestoExistente) {
-      throw new Error("Puesto no existe");
-    }
-    const puestoEditado = { ...puestoExistente, ...nuevoPuestoData };
-    const [result] = await pool.execute(
-      "UPDATE puestos_vigilancia SET descripcion_puesto=?,tarifa_puesto=?",
-      [
-        puestoEditado.descripcion_puesto,
-        puestoEditado.tarifa_puesto,
-        idpuesto_vigilancia,
-      ]
-    );
-    if (result.affectedRows === 0) {
-      throw new Error("No se pudo actualizar el puesto");
-    }
-    return puestoEditado;
-  } catch (error) {
-    throw error;
-  }
-}
+      const VigilanciaHExistente = await findPuesto(idpuesto_vigilancia);
+      if (!VigilanciaHExistente) {
+          throw new Error('El item no existe');
+      }
+
+      // Validar que solo se reciban los campos descripcion, tarifa y ays
+      const camposValidos = ['descripcion_puesto', 'tarifa_puesto'];
+      const camposRecibidos = Object.keys(nuevoPuestoData);
+      const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
+
+      if (camposInvalidos.length > 0) {
+          throw new Error('El cuerpo de la solicitud contiene campos no válidos');
+      }
+
+       // Actualizar la entrada con los nuevos datos
+       const VigilanciaHActualizada = { ...VigilanciaHExistente, ...nuevoPuestoData };
+  
+       // Si la tarifa ha sido modificada, recalcular ays, iva y total
+       if (nuevoPuestoData.tarifa_puesto !== undefined && nuevoPuestoData.tarifa_puesto !== VigilanciaHExistente.tarifa_puesto) {
+         const nuevaTarifa = nuevoPuestoData.tarifa_puesto;
+   
+         // Calcular ays, iva y total basados en la nueva tarifa
+         const ays = new Decimal(nuevaTarifa).times(0.08);
+         const iva = new Decimal(nuevaTarifa).plus(ays).times(0.019);
+         const total = new Decimal(nuevaTarifa).plus(ays).plus(iva);
+   
+         // Actualizar los valores en el objeto actualizado
+         VigilanciaHActualizada.ays = parseFloat(ays.toFixed(2));
+         VigilanciaHActualizada.iva = parseFloat(iva.toFixed(2));
+         VigilanciaHActualizada.total = parseFloat(total.toFixed(2));
+       }
+   
+       // Realizar la actualización en la base de datos
+       const [result] = await pool.execute(
+         'UPDATE puestos_vigilancia SET descripcion_puesto= ?, tarifa_puesto= ?, ays= ?, iva= ?, total= ? WHERE idpuesto_vigilancia = ?',
+         [
+          VigilanciaHActualizada.descripcion_puesto,
+          VigilanciaHActualizada.tarifa_puesto,
+          VigilanciaHActualizada.ays,
+           VigilanciaHActualizada.iva,
+           VigilanciaHActualizada.total,
+           idpuesto_vigilancia
+         ]
+       );
+   
+       // Verificar si la actualización fue exitosa
+       if (result.affectedRows === 0) {
+         throw new Error('No se pudo actualizar');
+       }
+   
+       return VigilanciaHActualizada;
+     } catch (error) {
+       throw error;
+     }
+   }
+ 
 
 async function eliminarPuesto(idpuesto_vigilancia) {
   try {
@@ -97,4 +137,5 @@ module.exports = {
   crearPuesto,
   editarPuesto,
   eliminarPuesto,
+  obtenerPuestoPorId
 };

@@ -40,7 +40,8 @@ appSigoSet.use(certificacionCentrofRoutes)
 appSigoSet.use(perfilRoutes)
     // appSigoSet.use(centroFormacionRoutes)
 appSigoSet.use(zonaRoutes)
-appSigoSet.use(morgan("dev"));appSigoSet.use(regionalRoutes)
+appSigoSet.use(morgan("dev"));
+appSigoSet.use(regionalRoutes)
 appSigoSet.use(municipioRoutes)
 appSigoSet.use(sedeFormacionRoutes)
 appSigoSet.use(morgan("dev"));

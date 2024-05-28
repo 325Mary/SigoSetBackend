@@ -12,7 +12,7 @@ controller.crearDepartamentoC = async (req, res, next) => {
     validarCamposRequeridos(['departamento'])(req, res, async () => {
       const departamentoData = req.body;
 
-      const departamentoExistente= await findOneMDepartamento(departamentoData.departamento);
+      const departamentoExistente= await findOneDepartamento(departamentoData.departamento);
       if(departamentoExistente){
       return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El Departamento  ya está registrado' });
       }

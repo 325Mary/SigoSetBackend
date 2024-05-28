@@ -18,14 +18,14 @@ async function findOneDepartamento(departamento) {
 }
 
 
-async function findByDepartamento (idepartamento) {
-    const [rows, fields] = await pool.execute(`SELECT * FROM departamento WHERE idepartamento = ?` , [idepartamento]);
+async function findByIdDepartamento (iddepartamento) {
+    const [rows, fields] = await pool.execute(`SELECT * FROM departamento WHERE iddepartamento = ?` , [iddepartamento]);
     return rows[0];    throw error;
   }
 
-async function deleteByIdDepartamento(idepartamento) {
+async function deleteByIdDepartamento(iddepartamento) {
     try {
-      const [result] = await pool.execute('DELETE FROM departamento WHERE idepartamento = ?', [idepartamento]);
+      const [result] = await pool.execute('DELETE FROM departamento WHERE iddepartamento = ?', [iddepartamento]);
       if (result.affectedRows === 0) {
         throw new Error('El departamento no existe');
       }
@@ -39,5 +39,5 @@ async function deleteByIdDepartamento(idepartamento) {
 
 module.exports = {Departamento     ,
     findOneDepartamento,
-    findByDepartamento,
+    findByIdDepartamento,
     deleteByIdDepartamento};
