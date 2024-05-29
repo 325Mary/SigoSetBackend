@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const ModuloController = require('../controller/moduloController');
+const { crearModuloC, obtenerModulosC,editarModuloC, eliminarModuloC } = require('../controller/moduloController');
 
-router.get('/vertodomodulos', ModuloController.findAll);
-router.get('/verporidmodulo', ModuloController.findById);
-router.post('/crearmodulo', ModuloController.create);
-router.put('/editarpormodulo', ModuloController.update);
-router.delete('/eliminarmodulo', ModuloController.deleteById);
+router.get('/obtenerModulos', obtenerModulosC);
+router.post('/crearModulo', crearModuloC);
+router.put('/editarPorModulo/:idmodulo', editarModuloC);
+router.delete('/eliminarModulo/:idmodulo', eliminarModuloC);
 
 module.exports = router;

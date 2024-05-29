@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const ModuloXPerfilController = require('../controller/moduloxperfilController');
+const {
+    crearModuloXperfilC,
+    obtenerModuloxperfilC,
+    editarModuloXperfilC,
+    obtenerModuloxperfilListC
+} = require('../controller/moduloxperfilController');
 
-router.get('/vertodosmodulosxperfil', ModuloXPerfilController.findAll);
-router.get('/vermoduloxidperfil', ModuloXPerfilController.findById);
-router.post('/crearmoduloxperfil', ModuloXPerfilController.create);
-router.put('/actualizarmoduloxperfil', ModuloXPerfilController.update);
-router.delete('/eliminarmoduloxperfil', ModuloXPerfilController.deleteById);
-
+router.get('/obtenerModulosXperfil', obtenerModuloxperfilC);
+router.post('/crearModuloXperfil', crearModuloXperfilC);
+router.put('/editarModuloXperfil/:idmodulo/:idperfil', editarModuloXperfilC);
+router.get('/obtenerModulosPorPerfil/:idperfil', obtenerModuloxperfilListC);
 module.exports = router;

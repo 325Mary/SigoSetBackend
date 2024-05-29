@@ -1,46 +1,69 @@
 const ModuloXPerfil = require('../models/moduloxperfilModel');
+const pool = require('../config/database');
 
-const ModuloXPerfilService = {
-    findAll: async function() {
-        try {
-            const modulosxperfiles = await ModuloXPerfil.findAll();
-            return modulosxperfiles;
-        } catch (error) {
-            throw error;
-        }
-    },
-    findById: async function(idModulo, idPerfil) {
-        try {
-            const moduloxperfil = await ModuloXPerfil.findById(idModulo, idPerfil);
-            return moduloxperfil;
-        } catch (error) {
-            throw error;
-        }
-    },
-    create: async function(moduloxperfilData) {
-        try {
-            const newModuloXPerfilId = await ModuloXPerfil.create(moduloxperfilData);
-            return newModuloXPerfilId;
-        } catch (error) {
-            throw error;
-        }
-    },
-    update: async function(idModulo, idPerfil, moduloxperfilData) {
-        try {
-            const rowsAffected = await ModuloXPerfil.update(idModulo, idPerfil, moduloxperfilData);
-            return rowsAffected;
-        } catch (error) {
-            throw error;
-        }
-    },
-    deleteById: async function(idModulo, idPerfil) {
-        try {
-            const rowsAffected = await ModuloXPerfil.deleteById(idModulo, idPerfil);
-            return rowsAffected;
-        } catch (error) {
-            throw error;
-        }
+
+
+async function crearModuloXperfil(moduloxperfilData) {
+    try {
+      if (!moduloxperfilData || !moduloxperfilData.idmodulo || !moduloxperfilData.idperfil || moduloxperfilData.permiso == null) {
+        throw new Error('Faltan datos del módulo');
+      }
+  
+      const nuevoModuloXperfil = await ModuloXPerfil.create(moduloxperfilData);
+      return nuevoModuloXperfil;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+   
+
+      
+ const obtenerModulosXperfil = async () => {
+    try {
+      const modulosXperfil = await ModuloXPerfil.findAll();
+      return modulosXperfil;
+    } catch (error) {
+      throw error;
+    }
+  };
+  
+  
+ 
+ 
+  
+ 
+  
+  const editarModuloXperfil = async (idmodulo, idperfil, moduloxperfilData) => {
+    try {
+        const updatedModuloXperfil = await ModuloXPerfil.update(idmodulo, idperfil, moduloxperfilData);
+        return updatedModuloXperfil;
+    } catch (error) {
+        throw error;
     }
 };
-
-module.exports = ModuloXPerfilService;
+  
+const obtenerModulosPorPerfilList = async (idperfil) => {
+  try {
+    const sql = `
+      SELECT m.*, p.*, mxp.*
+      FROM moduloxperfil mxp
+      JOIN modulo m ON mxp.idmodulo = m.idmodulo
+      JOIN perfil p ON mxp.idperfil = p.idperfil
+      WHERE mxp.idperfil = ?
+    `;
+    const [rows, fields] = await pool.execute(sql, [idperfil]);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
+  
+  module.exports = {
+ crearModuloXperfil,
+ obtenerModulosXperfil,
+ editarModuloXperfil,
+ obtenerModulosPorPerfilList
+  };
+  
+ 

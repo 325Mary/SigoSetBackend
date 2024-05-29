@@ -3,7 +3,13 @@ const pool = require('../config/database');
 const ModuloXPerfil = {
     findAll: async function() {
         try {
-            const [rows, fields] = await pool.execute('SELECT * FROM moduloxperfil');
+            const sql = `
+                SELECT m.*, p.*, mxp.*
+                FROM moduloxperfil mxp
+                JOIN modulo m ON mxp.idmodulo = m.idmodulo
+                JOIN perfil p ON mxp.idperfil = p.idperfil
+            `;
+            const [rows, fields] = await pool.execute(sql);
             return rows;
         } catch (error) {
             throw error;
