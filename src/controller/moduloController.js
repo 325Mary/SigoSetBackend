@@ -1,127 +1,62 @@
-// const ModuloService = require('../services/moduloService');
+const { ResponseStructure } = require('../helpers/ResponseStructure');
+const { crearModulo, obtenerModulos, editarModulo, eliminarModuloS } = require('../services/moduloService');
+const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 
-// const ModuloController = {
-//     findAll: async function(req, res, next) {
-//         try {
-//             const modulos = await ModuloService.findAll();
-//             res.status(200).json(modulos);
-//         } catch (error) {
-//             res.status(500).json({ error: error.message });
-//         }
-//     },
-//     findById: async function(req, res, next) {
-//         try {
-//             const idmodulo = req.params.idmodulo;
-//             const modulo = await ModuloService.findById(idmodulo);
-//             if (!modulo) {
-//                 res.status(404).json({ message: 'Modulo no encontrado' });
-//             } else {
-//                 res.status(200).json(modulo);
-//             }
-//         } catch (error) {
-//             res.status(500).json({ error: error.message });
-//         }
-//     },
-//     create: async function(req, res, next) {
-//         try {
-//             const moduloData = req.body;
-//             const newModuloId = await ModuloService.create(moduloData);
-//             res.status(201).json({ message: 'Modulo creado exitosamente', id: newModuloId });
-//         } catch (error) {
-//             res.status(500).json({ error: error.message });
-//         }
-//     },
-//     update: async function(req, res, next) {
-//         try {
-//             const idmodulo = req.params.idmodulo;
-//             const moduloData = req.body;
-//             const rowsAffected = await ModuloService.update(idmodulo, moduloData);
-//             if (rowsAffected === 0) {
-//                 res.status(404).json({ message: 'Modulo no encontrado' });
-//             } else {
-//                 res.status(200).json({ message: 'Modulo actualizado exitosamente' });
-//             }
-//         } catch (error) {
-//             res.status(500).json({ error: error.message });
-//         }
-//     },
-//     deleteById: async function(req, res, next) {
-//         try {
-//             const idmodulo = req.params.idmodulo;
-//             const rowsAffected = await ModuloService.deleteById(idmodulo);
-//             if (rowsAffected === 0) {
-//                 res.status(404).json({ message: 'Modulo no encontrado' });
-//             } else {
-//                 res.status(200).json({ message: 'Modulo eliminado exitosamente' });
-//             }
-//         } catch (error) {
-//             res.status(500).json({ error: error.message });
-//         }
-//     }
-// };
+const controller = {};
 
-// module.exports = ModuloController;
-
-const ModuloService = require('../services/moduloService');
-
-const ModuloController = {
-    findAll: async function(req, res, next) {
-        try {
-            const modulos = await ModuloService.findAll();
-            res.status(200).json(modulos);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    },
-    findById: async function(req, res, next) {
-        try {
-            const idmodulo = req.params.idmodulo;
-            const modulo = await ModuloService.findById(idmodulo);
-            if (!modulo) {
-                res.status(404).json({ message: 'Modulo no encontrado' });
-            } else {
-                res.status(200).json(modulo);
-            }
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    },
-    create: async function(req, res, next) {
-        try {
-            const moduloData = req.body;
-            const newModuloId = await ModuloService.create(moduloData);
-            res.status(201).json({ message: 'Modulo creado exitosamente', id: newModuloId });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    },
-    update: async function(req, res, next) {
-        try {
-            const idmodulo = req.params.idmodulo;
-            const moduloData = req.body;
-            const rowsAffected = await ModuloService.update(idmodulo, moduloData);
-            if (rowsAffected === 0) {
-                res.status(404).json({ message: 'Modulo no encontrado' });
-            } else {
-                res.status(200).json({ message: 'Modulo actualizado exitosamente' });
-            }
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-    },
-    deleteById: async function(req, res, next) {
-        try {
-            const idmodulo = req.params.idmodulo;
-            const rowsAffected = await ModuloService.deleteById(idmodulo);
-            if (rowsAffected === 0) {
-                res.status(404).json({ message: 'Modulo no encontrado' });
-            } else {
-                res.status(200).json({ message: 'Modulo eliminado exitosamente' });
-            }
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+controller.crearModuloC = async (req, res, next) => {
+  validarCamposRequeridos(['id_modulo_padre', 'modulo', 'url_modulo', 'icono', 'orden', 'hijos'])(req, res, async () => {
+    try {
+      const moduloData = req.body;
+      const nuevoModulo = await crearModulo(moduloData);
+      res.status(201).json({ ...ResponseStructure, message: 'Modulo creado exitosamente', data: nuevoModulo });
+    } catch (error) {
+      next(error);
     }
+  });
 };
 
-module.exports = ModuloController;
+controller.obtenerModulosC = async (req, res, next) => {
+  try {
+    const listModulos = await obtenerModulos();
+    res.status(200).json({ ...ResponseStructure, data: listModulos });
+  } catch (error) {
+    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los modulos' });
+  }
+};
+
+controller.editarModuloC = async (req, res, next) => {
+  try {
+    const idmodulo = req.params.idmodulo;
+    const nuevoModuloData = req.body;
+
+    if (Object.keys(nuevoModuloData).length === 0) {
+      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
+    }
+
+    const camposValidos = ['id_modulo_padre', 'modulo', 'url_modulo', 'icono', 'orden', 'hijos'];
+    const camposRecibidos = Object.keys(nuevoModuloData);
+    const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
+
+    if (camposInvalidos.length > 0) {
+      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
+    }
+
+    const moduloActualizado = await editarModulo(idmodulo, nuevoModuloData);
+    res.status(200).json({ ...ResponseStructure, message: 'Modulo actualizado exitosamente', data: moduloActualizado });
+  } catch (error) {
+    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún modulo con el ID proporcionado' });
+  }
+};
+
+controller.eliminarModuloC = async (req, res, next) => {
+  try {
+    const idmodulo = req.params.idmodulo;
+    await eliminarModuloS(idmodulo);
+    res.status(200).json({ ...ResponseStructure, message: 'Modulo eliminado exitosamente' });
+  } catch (error) {
+    res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún modulo con el ID ${req.params.idmodulo} proporcionado` });
+  }
+};
+
+module.exports = controller;

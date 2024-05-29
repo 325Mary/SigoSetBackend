@@ -72,7 +72,7 @@ async function editarPuesto(idpuesto_vigilancia, nuevoPuestoData) {
       }
 
       // Validar que solo se reciban los campos descripcion, tarifa y ays
-      const camposValidos = ['descripcion_puesto', 'tarifa_puesto'];
+      const camposValidos = ['descripcion_puesto', 'tarifa_puesto', 'ays', 'iva' ,'total'];
       const camposRecibidos = Object.keys(nuevoPuestoData);
       const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
 
