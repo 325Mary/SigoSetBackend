@@ -17,6 +17,9 @@ const modulo = {
       moduloData.orden,
       moduloData.hijos
     ]);
+  },
+  findByModuloAndUrl: function(modulo, url_modulo) {
+    return pool.execute('SELECT * FROM modulo WHERE modulo = ? AND url_modulo = ?', [modulo, url_modulo]);
   }
 };
 

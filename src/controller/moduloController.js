@@ -1,6 +1,7 @@
 const { ResponseStructure } = require('../helpers/ResponseStructure');
 const { crearModulo, obtenerModulos, editarModulo, eliminarModuloS } = require('../services/moduloService');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
+const {modulo} = require('../models/moduloModel')
 
 const controller = {};
 
@@ -8,6 +9,11 @@ controller.crearModuloC = async (req, res, next) => {
   validarCamposRequeridos(['id_modulo_padre', 'modulo', 'url_modulo', 'icono', 'orden', 'hijos'])(req, res, async () => {
     try {
       const moduloData = req.body;
+      
+      const [moduloExistente] = await modulo.findByModuloAndUrl(moduloData.modulo, moduloData.url_modulo);
+      if (moduloExistente.length > 0) {
+        return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El modulo  y URL ya está registrado' });
+      }
       const nuevoModulo = await crearModulo(moduloData);
       res.status(201).json({ ...ResponseStructure, message: 'Modulo creado exitosamente', data: nuevoModulo });
     } catch (error) {
