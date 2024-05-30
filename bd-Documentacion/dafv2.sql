@@ -21,7 +21,7 @@ USE `dafv2` ;
 -- Table `dafv2`.`zona`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`zona` (
-  `idzona` TINYINT(2) NOT NULL,
+  `idzona` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `Nombre_zona` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idzona`))
 ENGINE = InnoDB;
@@ -42,7 +42,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`departamento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`departamento` (
-  `iddepartamento` TINYINT(2) NOT NULL,
+  `iddepartamento` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `departamento` VARCHAR(75) NULL,
   PRIMARY KEY (`iddepartamento`))
 ENGINE = InnoDB;
@@ -52,7 +52,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`municipio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`municipio` (
-  `idmunicipio` TINYINT(3) NOT NULL,
+  `idmunicipio` TINYINT(3) NOT NULL AUTO_INCREMENT,
   `iddepartamento` TINYINT(2) NOT NULL,
   `municipio` VARCHAR(100) NULL,
   PRIMARY KEY (`idmunicipio`),
@@ -126,7 +126,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`puestos_vigilancia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`puestos_vigilancia` (
-  `idpuesto_vigilancia` TINYINT(2) NOT NULL,
+  `idpuesto_vigilancia` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `descripcion_puesto` VARCHAR(70) NOT NULL,
   `tarifa_puesto` DECIMAL(4) NOT NULL,
   `ays` DECIMAL(5) NULL,
@@ -139,8 +139,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `dafv2`.`empresa_vigilancia`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `dafv2`.`empresa_vigilancia` (
-  `idempresa_vigilancia` INT NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `dafv2`.`empresa` (
+  `idempresa
+  
+  ` INT NOT NULL AUTO_INCREMENT,
   `nombre_empresav` VARCHAR(100) NOT NULL,
   `nit_empresa` VARCHAR(25) NOT NULL,
   `direccion_empresav` VARCHAR(75) NOT NULL,
@@ -329,7 +331,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`perfil`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`perfil` (
-  `idperfil` TINYINT(2) NOT NULL,
+  `idperfil` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `perfil` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`idperfil`))
 ENGINE = InnoDB;
@@ -339,7 +341,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`modulo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`modulo` (
-  `idmodulo` TINYINT(2) NOT NULL,
+  `idmodulo` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `id_modulo_padre` TINYINT(2) NOT NULL,
   `modulo` VARCHAR(45) NOT NULL,
   `url_modulo` VARCHAR(100) NOT NULL,
@@ -354,7 +356,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`moduloxperfil`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`moduloxperfil` (
-  `idmodulo` TINYINT(2) NOT NULL,
+  `idmodulo` TINYINT(2) NOT NULL AUTO_INCREMENT,
   `idperfil` TINYINT(2) NOT NULL,
   `permiso` VARCHAR(10) NULL,
   INDEX `fk_moduloxperfil_modulo1_idx` (`idmodulo` ASC),
@@ -376,7 +378,7 @@ ENGINE = InnoDB;
 -- Table `dafv2`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `dafv2`.`Usuario` (
-  `idUsuario` TINYINT(3) NOT NULL,
+  `idUsuario` TINYINT(3) NOT NULL AUTO_INCREMENT,
   `idperfil` TINYINT(2) NOT NULL,
   `idcentro_formacion` INT NOT NULL,
   `identificacion` VARCHAR(30) NOT NULL,
