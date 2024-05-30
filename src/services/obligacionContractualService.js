@@ -12,12 +12,12 @@ const crearObligacionContractual = async(data) => {
     return await ObligacionesContractuales.create(data);
 };
 
-const actualizarObligacionContractualPorId = async(id, data) => {
-    return await ObligacionesContractuales.updateById(id, data);
+const actualizarObligacionContractualPorId = async(idobligaciones_contractuales, data) => {
+    return await ObligacionesContractuales.updateById(idobligaciones_contractuales, data);
 };
 
-const eliminarObligacionContractualPorId = async(id) => {
-    return await ObligacionesContractuales.deleteById(id);
+const eliminarObligacionContractualPorId = async(idobligaciones_contractuales) => {
+    return await ObligacionesContractuales.deleteById(idobligaciones_contractuales);
 };
 
 module.exports = {

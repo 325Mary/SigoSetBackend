@@ -1,34 +1,32 @@
 const mysql = require('mysql2');
-
-
 const pool = require('../config/database');
 
 const ObligacionesContractuales = {
-    getAll: async() => {
+    getAll: async () => {
         const [rows] = await pool.query('SELECT * FROM obligaciones_contractuales');
         return rows;
     },
 
-    getById: async(id) => {
-        const [rows] = await pool.query('SELECT * FROM obligaciones_contractuales WHERE id_obligaciones_contractuales = ?', [id]);
+    getById: async (idobligaciones_contractuales) => {
+        const [rows] = await pool.query('SELECT * FROM obligaciones_contractuales WHERE idobligaciones_contractuales = ?', [idobligaciones_contractuales]);
         if (rows.length === 0) {
-            throw new Error('obligacion contractual no encontrada');
+            throw new Error('Obligación contractual no encontrada');
         }
         return rows[0];
     },
 
-    create: async(data) => {
+    create: async (data) => {
         const [result] = await pool.query('INSERT INTO obligaciones_contractuales SET ?', data);
         return result;
     },
 
-    updateById: async(id, data) => {
-        const [result] = await pool.query('UPDATE obligaciones_contractuales SET ? WHERE id_obligaciones_contractuales = ?', [data, id]);
+    updateById: async (idobligaciones_contractuales, data) => {
+        const [result] = await pool.query('UPDATE obligaciones_contractuales SET obligaciones_contractuales = ? WHERE idobligaciones_contractuales = ?', [data.obligaciones_contractuales, idobligaciones_contractuales]);
         return result;
     },
 
-    deleteById: async(id) => {
-        const [result] = await pool.query('DELETE FROM obligaciones_contractuales WHERE id_obligaciones_contractuales = ?', [id]);
+    deleteById: async (idobligaciones_contractuales) => {
+        const [result] = await pool.query('DELETE FROM obligaciones_contractuales WHERE idobligaciones_contractuales = ?', [idobligaciones_contractuales]);
         return result;
     }
 };

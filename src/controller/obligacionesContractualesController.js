@@ -35,9 +35,9 @@ const crearObligacionContractual = async(req, res) => {
 
 const actualizarObligacionContractualPorId = async(req, res) => {
     try {
-        const id = req.params.id;
+        const idobligaciones_contractuales = req.params.idobligaciones_contractuales;
         const data = req.body;
-        await obligacionContractualService.actualizarObligacionContractualPorId(id, data);
+        await obligacionContractualService.actualizarObligacionContractualPorId(idobligaciones_contractuales, data);
         res.json({ message: 'Obligación Contractual actualizada' });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -46,8 +46,8 @@ const actualizarObligacionContractualPorId = async(req, res) => {
 
 const eliminarObligacionContractualPorId = async(req, res) => {
     try {
-        const id = req.params.id;
-        await obligacionContractualService.eliminarObligacionContractualPorId(id);
+        const idobligaciones_contractuales = req.params.idobligaciones_contractuales;
+        await obligacionContractualService.eliminarObligacionContractualPorId(idobligaciones_contractuales);
         res.json({ message: 'Obligación Contractual eliminada' });
     } catch (error) {
         res.status(500).json({ error: error.message });
