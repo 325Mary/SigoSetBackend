@@ -51,8 +51,8 @@ exports.crearCentroFormacion = async (req, res) => {
                 
        
         const CentroDeformacion = await pool.query(
-            "INSERT INTO Centro_formacion (idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof, ordenador_gasto, telefono_ordenadorg, email_ordenadorg) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof, ordenador_gasto, telefono_ordenadorg, email_ordenadorg]
+            "INSERT INTO Centro_formacion (idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof ) VALUES (?, ?, ?, ?, ?, ?)",
+            [idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof]
         );
         
         res.status(200).json({ ...ResponseStructure,status:"success", message: 'Centro de  formacion creado exitoxamente', data: CentroDeformacion });
