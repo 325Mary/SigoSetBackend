@@ -1,70 +1,67 @@
 const {
-    verTodoObligaciones,
-    crearObligacionesContrato,
-    verObligacionesContratoPorId,
-    actualizarObligacionesContrato,
-    eliminarObligacionesContratoPorId
+    crearObligacionContrato,
+    obtenerObligaciones_contrato,
+    editarObligacionesContrato,
+    eliminarObligacionesContrato
 } = require('../services/obligacionesContratoService');
+const { ResponseStructure } = require('../helpers/ResponseStructure');
+const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 
-const obligacionesContratoController = {};
+const controller = {}
 
-obligacionesContratoController.verTodoObligaciones = async(req, res) => {
+controller.crearObligacionesContratoC = async (req, res, next) => {
     try {
-        const obligaciones = await verTodoObligaciones();
-        res.json(obligaciones);
+        validarCamposRequeridos(['idContrato_empresa', 'idobligaciones_contratista'])(req, res, async () => {
+            const obligaciones_contratoData = req.body;
+            const ObligacionesContrato = await crearObligacionContrato(obligaciones_contratoData);
+            res.status(201).json({ ...ResponseStructure, message: 'obligaciones_contrato creado exitosamente', data: ObligacionesContrato });
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al obtener las obligaciones del contrato' });
+        next(error);
     }
 };
 
-obligacionesContratoController.verObligacionesContratoPorId = async(req, res) => {
-    const id = req.params.id;
+controller.obtenerObligacionesContratoC = async (req, res, next) => {
     try {
-        const obligaciones = await verObligacionesContratoPorId(id);
-        if (obligaciones) {
-            res.json(obligaciones);
-        } else {
-            res.status(404).json({ message: 'Obligación del contrato no encontrada' });
+        const listObligacionesContrato = await obtenerObligaciones_contrato();
+        res.status(200).json({ ...ResponseStructure, data: listObligacionesContrato });
+    } catch (error) {
+        res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los ObligacionesContrato' });
+    }
+};
+
+controller.editarObligacionesContratoC = async (req, res, next) => {
+    try {
+        const idobligaciones_contrato = req.params.idobligaciones_contrato;
+        const nuevoObligacionesContratoData = req.body;
+
+        if (Object.keys(nuevoObligacionesContratoData).length === 0) {
+            return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
         }
+
+        const camposValidos = ['idContrato_empresa', 'idobligaciones_contratista'];
+        const camposRecibidos = Object.keys(nuevoObligacionesContratoData);
+        const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
+
+        if (camposInvalidos.length > 0) {
+            return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
+        }
+
+        const ObligacionesContratoActualizado = await editarObligacionesContrato(idobligaciones_contrato, nuevoObligacionesContratoData);
+        res.status(200).json({ ...ResponseStructure, message: 'ObligacionesContrato actualizado exitosamente', data: ObligacionesContratoActualizado });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al obtener la obligación del contrato' });
+        res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún ObligacionesContrato con el ID proporcionado' });
     }
 };
 
-obligacionesContratoController.crearObligacionesContrato = async(req, res) => {
-    const obligaciones_contratoData = req.body;
+controller.eliminarObligacionesContratoC = async (req, res, next) => {
     try {
-        const newObligaciones_contrato = await crearObligacionesContrato(obligaciones_contratoData);
-        res.status(201).json(newObligaciones_contrato);
+        const idobligaciones_contrato = req.params.idobligaciones_contrato;
+        await eliminarObligacionesContrato(idobligaciones_contrato);
+        res.status(200).json({ ...ResponseStructure, message: 'ObligacionesContrato eliminado exitosamente' });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al crear la obligación del contrato' });
+        res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún ObligacionesContrato con el ID ${req.params.idobligaciones_contrato} proporcionado` });
     }
 };
 
-obligacionesContratoController.actualizarObligacionesContrato = async(req, res) => {
-    const id = req.params.id;
-    const obligaciones_contratoData = req.body;
-    try {
-        const updatedObligaciones_contrato = await actualizarObligacionesContrato(id, obligaciones_contratoData);
-        res.json(updatedObligaciones_contrato);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al actualizar la obligación del contrato' });
-    }
-};
-
-obligacionesContratoController.eliminarObligacionesContratoPorId = async(req, res) => {
-    const id = req.params.id;
-    try {
-        await eliminarObligacionesContratoPorId(id);
-        res.json({ message: 'Obligación del contrato eliminada exitosamente' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Error al eliminar la obligación del contrato' });
-    }
-};
-
-module.exports = obligacionesContratoController;
+module.exports = controller;

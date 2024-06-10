@@ -1,54 +1,56 @@
-const ObligacionesContratoModel = require('../models/obligacionesContratoModel');
+const ObligacionesContrato = require('../models/obligacionesContratoModel');
 
-const verTodoObligaciones = async() => {
+async function crearObligacionContrato(obligaciones_contratoData) {
     try {
-        const obligaciones = await ObligacionesContratoModel.findAll();
-        return obligaciones;
+        if (!obligaciones_contratoData || !obligaciones_contratoData.idContrato_empresa || !obligaciones_contratoData.idobligaciones_contratista) {
+            throw new Error('Faltan datos');
+        }
+
+        const nuevoObligaciones_contratista = await ObligacionesContrato.create(obligaciones_contratoData);
+        return nuevoObligaciones_contratista;
+    } catch (error) {
+        throw error;
+    }
+}
+
+const obtenerObligaciones_contrato = async () => {
+    try {
+        const [obligaciones_contrato] = await ObligacionesContrato.findAll();
+        return obligaciones_contrato;
     } catch (error) {
         throw error;
     }
 };
 
-const crearObligacionesContrato = async(obligaciones_contratoData) => {
+async function editarObligacionesContrato(idobligaciones_contrato, nuevoObligacionesContratoData) {
     try {
-        const result = await ObligacionesContratoModel.create(obligaciones_contratoData);
-        return result;
-    } catch (error) {
-        throw error;
-    }
-};
+        const [ObligacionesContratoExistente] = await ObligacionesContrato.findById(idobligaciones_contrato);
+        if (!ObligacionesContratoExistente.length) {
+            throw new Error('El ObligacionesContrato no existe');
+        }
 
-const verObligacionesContratoPorId = async(id) => {
-    try {
-        const obligaciones = await ObligacionesContratoModel.findById(id);
-        return obligaciones;
-    } catch (error) {
-        throw error;
-    }
-};
+        const ObligacionesContratoActualizado = { ...ObligacionesContratoExistente[0], ...nuevoObligacionesContratoData };
 
-const actualizarObligacionesContrato = async(id, obligaciones_contratoData) => {
-    try {
-        const result = await ObligacionesContratoModel.update(id, obligaciones_contratoData);
-        return result;
-    } catch (error) {
-        throw error;
-    }
-};
+        await ObligacionesContrato.update(idobligaciones_contrato, ObligacionesContratoActualizado);
 
-const eliminarObligacionesContratoPorId = async(id) => {
-    try {
-        const result = await ObligacionesContratoModel.deleteById(id);
-        return result;
+        return ObligacionesContratoActualizado;
     } catch (error) {
         throw error;
     }
-};
+}
+
+async function eliminarObligacionesContrato(idobligaciones_contrato) {
+    try {
+        await ObligacionesContrato.deleteById(idobligaciones_contrato);
+        return { message: 'idobligaciones_contrato eliminado exitosamente' };
+    } catch (error) {
+        throw error;
+    }
+}
 
 module.exports = {
-    verTodoObligaciones,
-    crearObligacionesContrato,
-    verObligacionesContratoPorId,
-    actualizarObligacionesContrato,
-    eliminarObligacionesContratoPorId
+    crearObligacionContrato,
+    obtenerObligaciones_contrato,
+    editarObligacionesContrato,
+    eliminarObligacionesContrato
 };
