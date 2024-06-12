@@ -1,24 +1,23 @@
-
 const ObligacionesContractuales = require('../models/obligacionContractualModel');
 
-const obtenerObligacionesContractuales = (callback) => {
-    ObligacionesContractuales.getAll(callback);
+const obtenerObligacionesContractuales = async() => {
+    return await ObligacionesContractuales.getAll();
 };
 
-const obtenerObligacionContractualPorId = (id, callback) => {
-    ObligacionesContractuales.getById(id, callback);
+const obtenerObligacionContractualPorId = async(id) => {
+    return await ObligacionesContractuales.getById(id);
 };
 
-const crearObligacionContractual = (data, callback) => {
-    ObligacionesContractuales.create(data, callback);
+const crearObligacionContractual = async(data) => {
+    return await ObligacionesContractuales.create(data);
 };
 
-const actualizarObligacionContractualPorId = (id, data, callback) => {
-    ObligacionesContractuales.updateById(id, data, callback);
+const actualizarObligacionContractualPorId = async(idobligaciones_contractuales, data) => {
+    return await ObligacionesContractuales.updateById(idobligaciones_contractuales, data);
 };
 
-const eliminarObligacionContractualPorId = (id, callback) => {
-    ObligacionesContractuales.deleteById(id, callback);
+const eliminarObligacionContractualPorId = async(idobligaciones_contractuales) => {
+    return await ObligacionesContractuales.deleteById(idobligaciones_contractuales);
 };
 
 module.exports = {

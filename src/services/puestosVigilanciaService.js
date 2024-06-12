@@ -5,6 +5,7 @@ const {
 } = require("../models/puestosVigilanciaModel");
 const pool = require("../config/database");
 const { Empresa } = require("../models/empresaModel");
+
 const { default: Decimal } = require("decimal.js");
 
 async function crearPuesto(puestoData) {
@@ -20,10 +21,10 @@ async function crearPuesto(puestoData) {
   const iva =new Decimal (puestoData.tarifa_puesto).plus(ays).times(0.019);
   const total = new Decimal(puestoData.tarifa_puesto).plus(ays).plus(iva)
 
-  puestoData.ays = parseFloat(ays.toFixed(2));
-  puestoData.iva = parseFloat(iva.toFixed(2));
-  puestoData.total = parseFloat(total.toFixed(2))
-  
+    puestoData.ays = parseFloat(ays.toFixed(2));
+    puestoData.iva = parseFloat(iva.toFixed(2));
+    puestoData.total = parseFloat(total.toFixed(2));
+
     const nuevoPuesto = await Puestos.create(puestoData);
     return nuevoPuesto;
   } catch (error) {
@@ -34,30 +35,30 @@ async function crearPuesto(puestoData) {
 const obtenerPuestos = async () => {
   try {
     const puestos = await Puestos.findAll();
-    return puestos
+    return puestos;
   } catch (error) {
-   throw error
+    throw error;
   }
 };
 
-// const obtenerPuestoPorId = async (req, res, next) => {
-//   const id = parseInt(req.params.id);
-//   if (isNaN(id)) {
-//     return res.status(400).json({ message: "ID inválido" });
-//   }
+const obtenerPuestoPorId = async (req, res, next) => {
+  const id = parseInt(req.params.id);
+  if (isNaN(id)) {
+    return res.status(400).json({ message: "ID inválido" });
+  }
 
-//   try {
-//     const puesto = await PuestoVigilanciaService.obtenerPuestoPorId(id);
-//     if (!puesto) {
-//       return res.status(404).json({ message: "Puesto no encontrado" });
-//     }
-//     res
-//       .status(200)
-//       .json({ message: "Puesto obtenido correctamente", data: puesto });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+  try {
+    const puesto = await PuestoVigilanciaService.obtenerPuestoPorId(id);
+    if (!puesto) {
+      return res.status(404).json({ message: "Puesto no encontrado" });
+    }
+    res
+      .status(200)
+      .json({ message: "Puesto obtenido correctamente", data: puesto });
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 
@@ -122,18 +123,19 @@ async function editarPuesto(idpuesto_vigilancia, nuevoPuestoData) {
    }
  
 
-async function eliminarPuesto(idpuesto_vigilancia){
- try {
+async function eliminarPuesto(idpuesto_vigilancia) {
+  try {
     await deleteByPuesto(idpuesto_vigilancia);
-    return { message: 'Puesto eliminado'}
- } catch (error) {
-    throw error
- }
-};
+    return { message: "Puesto eliminado" };
+  } catch (error) {
+    throw error;
+  }
+}
 
 module.exports = {
   obtenerPuestos,
   crearPuesto,
   editarPuesto,
   eliminarPuesto,
+  obtenerPuestoPorId
 };

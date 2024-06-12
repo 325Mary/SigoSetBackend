@@ -1,43 +1,26 @@
-const mysql = require('mysql2');
-
-
 const pool = require('../config/database');
 
 const Municipio = {
-  findAll: function() {
-    return pool.execute('SELECT * FROM municipio'); // Utiliza pool.execute() para obtener una promesa
-  },
-  create: function(municipioData) {
-    const sql = `INSERT INTO municipio ( iddepartamento, municipio) VALUES ( ?, ?)`;
-    return pool.execute(sql, [ municipioData.iddepartamento, municipioData.municipio]);
-  }
-};
-async function findOneMunicipio(municipio) {
-  const [rows, fields] = await pool.execute('SELECT * FROM municipio WHERE municipio = ?', [municipio]);
-  return rows[0];
-}
-
-
-async function findByMunicipio (idmunicipio) {
-    const [rows, fields] = await pool.execute(`SELECT * FROM municipio WHERE idmunicipio = ?` , [idmunicipio]);
-    return rows[0];    throw error;
-  }
-
-async function deleteByIdMunicipio(idmunicipio) {
-    try {
-      const [result] = await pool.execute('DELETE FROM municipio WHERE idmunicipio = ?', [idmunicipio]);
-      if (result.affectedRows === 0) {
-        throw new Error('El municipio no existe');
-      }
-      return { message: 'municipio eliminado exitosamente' };
-    } catch (error) {
-      throw error;
+    findAll: function() {
+        return pool.execute('SELECT * FROM municipio');
+    },
+    findById: function(id) {
+        return pool.execute('SELECT * FROM municipio WHERE idmunicipio = ?', [id]);
+    },
+    create: function(municipioData) {
+        const sql = `INSERT INTO municipio (iddepartamento, municipio) VALUES (?, ?)`;
+        return pool.execute(sql, [municipioData.iddepartamento, municipioData.municipio]);
+    },
+    update: function(id, municipioData) {
+        const sql = `UPDATE municipio SET iddepartamento = ?, municipio = ? WHERE idmunicipio = ?`;
+        return pool.execute(sql, [municipioData.iddepartamento, municipioData.municipio, id]);
+    },
+    deleteById: function(id) {
+        return pool.execute('DELETE FROM municipio WHERE idmunicipio = ?', [id]);
+    },
+    searchByName: function(nombre) {
+        return pool.execute('SELECT * FROM municipio WHERE municipio LIKE ?', [`%${nombre}%`]);
     }
-  }
-  
+};
 
-
-module.exports = {Municipio     ,
-    findByMunicipio,
-  deleteByIdMunicipio,
-  findOneMunicipio};
+module.exports = Municipio;

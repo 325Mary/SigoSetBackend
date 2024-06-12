@@ -17,9 +17,7 @@ exports.getZonas = async (req, res) => {
 exports.getZona = async (req, res) => {
     try {
         const [zona] =  await pool.query(
-            "SELECT * FROM zona WHERE idzona = ?", [
-                req.params.idZona
-        ]);
+            "SELECT * FROM zona WHERE idzona = ?", [ req.params.idZona]);
         if (zona.length === 0){
             return res.status(404).json({message: "Zona no encontrada."})
         }

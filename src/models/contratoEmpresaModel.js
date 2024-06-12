@@ -18,6 +18,10 @@ const contratoEmpresa = {
   }
 };
 
+async function findOneContratoEmpres (idempresa) {
+  const [rows, fields] = await pool.execute(`SELECT * FROM contrato_empresa WHERE idContrato_empresa = ?` , [idempresa]);
+  return rows[0];    throw error;
+}
 
 
 async function findByContratoEmpres (idContrato_empresa) {
@@ -42,4 +46,5 @@ async function deleteByIdContratoEmpres(idContrato_empresa) {
 module.exports = {contratoEmpresa     ,
     findByContratoEmpres,
     deleteByIdContratoEmpres,
+    findOneContratoEmpres
   };

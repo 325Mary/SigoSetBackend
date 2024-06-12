@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const {
@@ -10,9 +9,9 @@ const {
 } = require('../controller/obligacionesContractualesController');
 
 router.get('/vertodoObligacionesContractuales', obtenerObligacionesContractuales);
-router.get('/obligacionContractualPorId', obtenerObligacionContractualPorId);
+router.get('/obligacionContractualPorId/:idobligaciones_contractuales', obtenerObligacionContractualPorId);
 router.post('/crearObligacionContractual', crearObligacionContractual);
-router.put('/editarObligacionContractual', actualizarObligacionContractualPorId);
-router.delete('/eliminarObligacionContractual', eliminarObligacionContractualPorId);
+router.put('/editarObligacionContractual/:idobligaciones_contractuales', actualizarObligacionContractualPorId);
+router.delete('/eliminarObligacionContractual/:idobligaciones_contractuales', eliminarObligacionContractualPorId);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const ObligacionesContrato = require('../models/obligacionesContratoModel');
 
 async function crearObligacionContrato(obligaciones_contratoData) {
     try {
-        if (!obligaciones_contratoData || !obligaciones_contratoData.idContrato_empresa || !obligaciones_contratoData.idobligaciones_contratista) {
+        if (!obligaciones_contratoData || !obligaciones_contratoData.idContrato_empresa || !obligaciones_contratoData.idobligaciones_contratista || !obligaciones_contratoData.idobligaciones_contractuales ) {
             throw new Error('Faltan datos');
         }
 

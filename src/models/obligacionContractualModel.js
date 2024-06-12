@@ -1,26 +1,33 @@
-
 const mysql = require('mysql2');
 const pool = require('../config/database');
 
 const ObligacionesContractuales = {
-    getAll: (callback) => {
-        pool.query('SELECT * FROM obligaciones_contractuales', callback);
+    getAll: async () => {
+        const [rows] = await pool.query('SELECT * FROM obligaciones_contractuales');
+        return rows;
     },
 
-    getById: (id, callback) => {
-        pool.query('SELECT * FROM obligaciones_contractuales WHERE id_obligaciones_contractuales = ?', [id], callback);
+    getById: async (idobligaciones_contractuales) => {
+        const [rows] = await pool.query('SELECT * FROM obligaciones_contractuales WHERE idobligaciones_contractuales = ?', [idobligaciones_contractuales]);
+        if (rows.length === 0) {
+            throw new Error('Obligación contractual no encontrada');
+        }
+        return rows[0];
     },
 
-    create: (data, callback) => {
-        pool.query('INSERT INTO obligaciones_contractuales SET ?', data, callback);
+    create: async (data) => {
+        const [result] = await pool.query('INSERT INTO obligaciones_contractuales SET ?', data);
+        return result;
     },
 
-    updateById: (id, data, callback) => {
-        pool.query('UPDATE obligaciones_contractuales SET ? WHERE id_obligaciones_contractuales = ?', [data, id], callback);
+    updateById: async (idobligaciones_contractuales, data) => {
+        const [result] = await pool.query('UPDATE obligaciones_contractuales SET obligaciones_contractuales = ? WHERE idobligaciones_contractuales = ?', [data.obligaciones_contractuales, idobligaciones_contractuales]);
+        return result;
     },
 
-    deleteById: (id, callback) => {
-        pool.query('DELETE FROM obligaciones_contractuales WHERE id_obligaciones_contractuales = ?', [id], callback);
+    deleteById: async (idobligaciones_contractuales) => {
+        const [result] = await pool.query('DELETE FROM obligaciones_contractuales WHERE idobligaciones_contractuales = ?', [idobligaciones_contractuales]);
+        return result;
     }
 };
 

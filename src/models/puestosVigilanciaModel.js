@@ -22,8 +22,8 @@ const Puestos = {
       if (result.affectedRows === 1) {
         const nuevoPuesto = {
             id: result.insertId,
-            descripcion: Puestosdata.descripcion_puesto,
-            tarifa: Puestosdata.tarifa_puesto,
+            descripcion_puesto: Puestosdata.descripcion_puesto,
+            tarifa_puesto: Puestosdata.tarifa_puesto,
             ays: Puestosdata.ays,
             iva: Puestosdata.iva,
             total: Puestosdata.total
@@ -41,7 +41,7 @@ async function findPuesto(idpuesto_vigilancia) {
     return rows[0]
   }
 
-async function findOnePuesto(idpuesto_vigilancia) {
+async function findOnePuesto(descripcion_puesto) {
     const [rows, fields] = await pool.execute(
       "SELECT * FROM puestos_vigilancia WHERE descripcion_puesto = ?",
       [descripcion_puesto]);

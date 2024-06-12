@@ -5,7 +5,7 @@ const { crearContratoEmpresa,
   editarContratoEmpresa,
   eliminarContratoEmpresa} = require('../services/contratoEmpresaService');
   const {
-    findByContratoEmpre
+    findOneContratoEmpres
    } = require('../models/contratoEmpresaModel');
 const controller = {}
 
@@ -14,7 +14,7 @@ controller.crearContratoEmpresaC = async (req, res, next) => {
     validarCamposRequeridos(['idempresa', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const contratoEmpresaData = req.body;
 
-      const contrato_empresaExistente= await findByContratoEmpre(contratoEmpresaData.idempresa);
+      const contrato_empresaExistente = await findOneContratoEmpres(contratoEmpresaData.idempresa);
       if(contrato_empresaExistente){
       return res.status(400).json({ ...ResponseStructure, status: 400, message: ' ya está registrado' });
       }
