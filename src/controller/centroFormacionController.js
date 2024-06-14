@@ -46,7 +46,7 @@ exports.crearCentroFormacion = async (req, res) => {
     
     try {
         const { idRegional, idzona, centro_formacion , dir_centro_formacion, telefono_centrof, 
-                email_centrof,ordenador_gasto, telefono_ordenadorg, email_ordenadorg,
+                email_centrof
                 } = req.body
                 
        
