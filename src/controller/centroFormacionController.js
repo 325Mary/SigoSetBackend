@@ -53,7 +53,7 @@ exports.crearCentroFormacion = async (req, res) => {
         );
         
         res.status(200).json({ 
-            ...ResponseStructure, 
+            ...ResponseStructure,  
             status: "success", 
             message: 'Centro de formación creado exitosamente', 
             data: CentroDeformacion 
