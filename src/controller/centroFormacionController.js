@@ -4,7 +4,7 @@ const { ResponseStructure } = require('../helpers/ResponseStructure');
 exports.getCentrosFormacion = async (req, res) => {
     try {
         const [CentrosDeformacion] =  await pool.query(
-            "SELECT * FROM Centro_formacion"
+            "SELECT * FROM centro_formacion"
         );
     
         res.status(200).json({ ...ResponseStructure, message: 'Centros de formacion listados correctamente', data: CentrosDeformacion });
@@ -51,7 +51,7 @@ exports.crearCentroFormacion = async (req, res) => {
                 
        
         const CentroDeformacion = await pool.query(
-            "INSERT INTO Centro_formacion (idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof ) VALUES (?, ?, ?, ?, ?, ?)",
+            "INSERT INTO centro_formacion (idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof ) VALUES (?, ?, ?, ?, ?, ?)",
             [idRegional, idzona, centro_formacion, dir_centro_formacion, telefono_centrof, email_centrof]
         );
         

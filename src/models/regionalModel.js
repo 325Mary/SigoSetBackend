@@ -2,7 +2,7 @@ const pool = require('../config/database');
 
 const Regional = {
     findAll: function() {
-        return pool.execute('SELECT * FROM Regional');
+        return pool.execute('SELECT * FROM regional');
     },
 
     createRegional: function(regionalData) {
