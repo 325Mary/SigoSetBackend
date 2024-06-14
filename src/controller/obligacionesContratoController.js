@@ -12,19 +12,22 @@ const controller = {}
 
 controller.crearObligacionesContratoC = async (req, res, next) => {
     try {
-        validarCamposRequeridos(['idContrato_empresa', 'idobligaciones_contratista', 'idobligaciones_contractuales'])(req, res, async () => {
-            const obligaciones_contratoData = req.body;
+        const obligaciones_contratoData = req.body;
 
-            // Verificar si la obligación ya existe
-            const [rows] = await ObligacionesContrato.findByTodo(obligaciones_contratoData.idContrato_empresa, obligaciones_contratoData.idobligaciones_contratista, obligaciones_contratoData.idobligaciones_contractuales);
-            if (rows.length > 0) {
-                return res.status(400).json({ ...ResponseStructure, status: 400, message: 'La obligación ya está registrada' });
-            }
+        // Verificar si la obligación ya existe
+        const [rows] = await ObligacionesContrato.findByTodo(
+            obligaciones_contratoData.idContrato_empresa,
+            obligaciones_contratoData.idobligaciones_contratista,
+            obligaciones_contratoData.idobligaciones_contractuales
+        );
+        
+        if (rows.length > 0) {
+            return res.status(400).json({ ...ResponseStructure, status: 400, message: 'La obligación ya está registrada' });
+        }
 
-            // Crear nueva obligación
-            const [result] = await ObligacionesContrato.create(obligaciones_contratoData);
-            res.status(201).json({ ...ResponseStructure, message: 'Obligación creada exitosamente', data: result });
-        });
+        // Crear nueva obligación
+        const [result] = await ObligacionesContrato.create(obligaciones_contratoData);
+        res.status(201).json({ ...ResponseStructure, message: 'Obligación creada exitosamente', data: result });
     } catch (error) {
         next(error);
     }
