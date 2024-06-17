@@ -4,12 +4,39 @@ const { ResponseStructure } = require('../helpers/ResponseStructure');
 // Listar todos los centros de formación
 exports.getCentrosFormacion = async (req, res) => {
     try {
-        const [CentrosDeformacion] = await pool.query("SELECT * FROM centro_formacion");
-        res.status(200).json({ 
-            ...ResponseStructure, 
-            message: 'Centros de formación listados correctamente', 
-            data: CentrosDeformacion 
-        });
+        // Obtener el perfil del usuario desde el token (suponiendo que se almacena en req.user)
+        const perfilUsuario = req.user.idperfil;
+
+        // Verificar el perfil del usuario
+        if (perfilUsuario === 1) {
+            // Usuario con perfil 1 (administrador), puede listar todos los centros
+            const [CentrosDeformacion] = await pool.query("SELECT * FROM centro_formacion");
+            res.status(200).json({ 
+                ...ResponseStructure, 
+                message: 'Centros de formación listados correctamente', 
+                data: CentrosDeformacion 
+            });
+        } else {
+            // Otros perfiles: listar solo el centro al que pertenece el usuario
+            const [CentroDeformacion] = await pool.query(
+                `SELECT centro_formacion.*, regional.regional AS regional 
+                 FROM centro_formacion 
+                 JOIN regional ON centro_formacion.idRegional = regional.idRegional 
+                 WHERE centro_formacion.idcentro_formacion = ?`, 
+                [req.user.idcentro_formacion]
+            );
+
+            if (CentroDeformacion.length === 0) {
+                return res.status(404).json({message: "Centro de formación no encontrado."});
+            }
+
+            res.status(200).json({ 
+                ...ResponseStructure, 
+                status: "success", 
+                message: 'Centro de formación encontrado correctamente', 
+                data: CentroDeformacion[0] 
+            });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({message: "Error interno del servidor. Inténtalo de nuevo más tarde."});
