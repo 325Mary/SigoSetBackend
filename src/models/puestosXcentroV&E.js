@@ -3,8 +3,8 @@ const pool = require('../config/database');
 
 const Puestos = {
   createPuestosVxCentro: function(  puestosvigilanciaXcentroData) {
-    const sql = `INSERT INTO puestosvxcentrof ( idcentro_formacion, idempresa, idpuesto_vigilancia, cantidad_puestov) VALUES ( ?, ?, ?, ?)`;
-    return pool.execute(sql, [ puestosvigilanciaXcentroData.idcentro_formacion,puestosvigilanciaXcentroData.idempresa, puestosvigilanciaXcentroData.idpuesto_vigilancia , puestosvigilanciaXcentroData.cantidad_puestov]);
+    const sql = `INSERT INTO puestosvxcentrof ( idcentro_formacion, idempresa, idpuesto_vigilancia, cantidad_puestov, idsede_formacion) VALUES ( ?, ?, ?, ?, ?)`;
+    return pool.execute(sql, [ puestosvigilanciaXcentroData.idcentro_formacion,puestosvigilanciaXcentroData.idempresa, puestosvigilanciaXcentroData.idpuesto_vigilancia , puestosvigilanciaXcentroData.cantidad_puestov, puestosvigilanciaXcentroData.idsede_formacion]);
   },
  
 
@@ -13,11 +13,12 @@ const Puestos = {
   },
   findAllPuestosXcentro: function(idcentro_formacion) {
     return pool.execute(`
-      SELECT pvc.*, cf.centro_formacion AS centro_formacion, e.nombre_empresa AS nombre_empresa, pv.descripcion_puesto AS descripcion_puesto
+      SELECT pvc.*, cf.centro_formacion AS centro_formacion, e.nombre_empresa AS nombre_empresa, pv.descripcion_puesto AS descripcion_puesto, s.sede_formacion AS sede_formacion, s.dir_sede_formacion AS direccionSede
       FROM puestosvxcentrof pvc
       INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
       INNER JOIN empresa e ON pvc.idempresa = e.idempresa
       INNER JOIN puestos_vigilancia pv ON pvc.idpuesto_vigilancia = pv.idpuesto_vigilancia
+      INNER  JOIN sede_formacion s ON pvc.idsede_formacion = s.idsede_formacion
       WHERE pvc.idcentro_formacion = ?
     `, [idcentro_formacion])
     .then(([rows, fields]) => {
@@ -30,11 +31,12 @@ const Puestos = {
 
 findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
     return pool.execute(`
-      SELECT pvc.*, cf.centro_formacion AS centro_formacion, e.nombre_empresa AS nombre_empresa, pv.descripcion AS descripcion
+      SELECT pvc.*, cf.centro_formacion AS centro_formacion, e.nombre_empresa AS nombre_empresa, pv.descripcion AS descripcion, s.sede_formacion AS sede_formacion, s.dir_sede_formacion AS direccionSede
       FROM puntosvelectronica pvc
       INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
       INNER JOIN empresa e ON pvc.idempresa = e.idempresa
       INNER JOIN vigilancia_electronica pv ON pvc.idvigilancia_electronica = pv.idvigilancia_electronica
+      INNER JOIN sede_formacion s ON pvc.idsede_formacion = s.idsede_formacion
       WHERE pvc.idcentro_formacion = ?
     `, [idcentro_formacion])
     .then(([rows, fields]) => {
@@ -47,8 +49,8 @@ findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
 }
   
  async function createPuestosVExCentro (puntosvelectronicaData) {
-    const sql = `INSERT INTO puntosvelectronica (idcentro_formacion, idempresa, idvigilancia_electronica, cantidad) VALUES (?, ?, ?, ?)`;
-    return pool.execute(sql, [puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idempresa, puntosvelectronicaData.idvigilancia_electronica, puntosvelectronicaData.cantidad]);
+    const sql = `INSERT INTO puntosvelectronica (idcentro_formacion, idempresa, idvigilancia_electronica, cantidad, idsede_formacion) VALUES (?, ?, ?, ?, ?)`;
+    return pool.execute(sql, [puntosvelectronicaData.idcentro_formacion, puntosvelectronicaData.idempresa, puntosvelectronicaData.idvigilancia_electronica, puntosvelectronicaData.cantidad, puntosvelectronicaData.idsede_formacion]);
 }
 async function findByPuestosV(idpuestosvxcentrof) {
   try {

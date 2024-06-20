@@ -1,17 +1,15 @@
-const express = require("express")
-const router = express.Router()
-const obligacionesContratoController = require("../controller/obligacionesContratoController.js")
+const express = require("express");
+const router = express.Router();
+const {
+    crearObligacionesContratoC,
+    obtenerObligacionesContratoC,
+    editarObligacionesContratoC,
+    eliminarObligacionesContratoC
+} = require("../controller/obligacionesContratoController");
 
-
-
-router.get('/verTodoObligaciones', obligacionesContratoController.verTodoObligaciones);
-
-router.get('/verObligacionPorid', obligacionesContratoController.verObligacionesContratoPorId);
-
-router.post('/crearObligacion', obligacionesContratoController.crearObligacionesContrato);
-
-router.put('/actualizarObligacion', obligacionesContratoController.actualizarObligacionesContrato);
-
-router.delete('/eliminarObligacion', obligacionesContratoController.eliminarObligacionesContratoPorId);
+router.get('/obtenerObligacionesContrato', obtenerObligacionesContratoC);
+router.post('/crearObligacion', crearObligacionesContratoC);
+router.put('/actualizarObligacion/:idobligaciones_contrato', editarObligacionesContratoC);
+router.delete('/eliminarObligacion/:idobligaciones_contrato', eliminarObligacionesContratoC);
 
 module.exports = router;
