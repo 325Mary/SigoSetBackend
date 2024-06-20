@@ -22,6 +22,14 @@ const obtenerObligaciones_contrato = async () => {
     }
 };
 
+const obtenerObligaciones_contratoPorId = async (idobligaciones_contrato) => {
+    try {
+        const obligaciones_contratoId = await ObligacionesContrato.findById(idobligaciones_contrato);
+        return obligaciones_contratoId;
+    } catch (error) {
+        throw error;
+    }
+};
 async function editarObligacionesContrato(idobligaciones_contrato, nuevoObligacionesContratoData) {
     try {
         const [ObligacionesContratoExistente] = await ObligacionesContrato.findById(idobligaciones_contrato);
@@ -52,5 +60,6 @@ module.exports = {
     crearObligacionContrato,
     obtenerObligaciones_contrato,
     editarObligacionesContrato,
-    eliminarObligacionesContrato
+    eliminarObligacionesContrato,
+    obtenerObligaciones_contratoPorId
 };

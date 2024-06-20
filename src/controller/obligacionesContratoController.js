@@ -2,7 +2,8 @@ const {
     crearObligacionContrato,
     obtenerObligaciones_contrato,
     editarObligacionesContrato,
-    eliminarObligacionesContrato
+    eliminarObligacionesContrato,
+    obtenerObligaciones_contratoPorId
 } = require('../services/obligacionesContratoService');
 const { ResponseStructure } = require('../helpers/ResponseStructure');
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
@@ -37,6 +38,16 @@ controller.obtenerObligacionesContratoC = async (req, res, next) => {
     try {
         const listObligacionesContrato = await obtenerObligaciones_contrato();
         res.status(200).json({ ...ResponseStructure, data: listObligacionesContrato });
+    } catch (error) {
+        res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los ObligacionesContrato' });
+    }
+};
+
+controller.obtenerObligacionesContratoIdC = async (req, res, next) => {
+    try {
+        const idobligaciones_contrato = req.params.idobligaciones_contrato;
+        const listObligacionesContratoId = await obtenerObligaciones_contratoPorId(idobligaciones_contrato);
+        res.status(200).json({ ...ResponseStructure, data: listObligacionesContratoId });
     } catch (error) {
         res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los ObligacionesContrato' });
     }

@@ -4,9 +4,11 @@ const {
     crearObligacionesContratoC,
     obtenerObligacionesContratoC,
     editarObligacionesContratoC,
-    eliminarObligacionesContratoC
+    eliminarObligacionesContratoC,
+    obtenerObligacionesContratoIdC
 } = require("../controller/obligacionesContratoController");
 
+router.get('/obtenerObligacionContratoId/:idobligaciones_contrato', obtenerObligacionesContratoIdC);
 router.get('/obtenerObligacionesContrato', obtenerObligacionesContratoC);
 router.post('/crearObligacion', crearObligacionesContratoC);
 router.put('/actualizarObligacion/:idobligaciones_contrato', editarObligacionesContratoC);
