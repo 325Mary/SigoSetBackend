@@ -32,6 +32,7 @@ LEFT JOIN obligaciones_contractuales AS ocont ON oc.idobligaciones_contractuales
     findById: function(idobligaciones_contrato) {
         return pool.execute('SELECT * FROM obligaciones_contrato WHERE idobligaciones_contrato = ?', [idobligaciones_contrato]);
     },
+    
 
     findByTodo: function(idContrato_empresa, idobligaciones_contratista, idobligaciones_contractuales) {
         const params = [

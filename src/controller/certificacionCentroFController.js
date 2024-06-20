@@ -11,14 +11,26 @@ controller.crearCertificacionCentrofC = async (req, res, next) => {
     validarCamposRequeridos(['idcentro_formacion', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const certificacionCentrofData = req.body;
 
-     
-      const CertificacionCentrof = await crearCertificacionCentrof(certificacionCentrofData);
-      res.status(201).json({ ...ResponseStructure, message: 'certificado de centro creado exitosamente', data: CertificacionCentrof });
+      // Suponiendo que crearCertificacionCentrof retorna un arreglo donde el objeto deseado está en la primera posición
+      const result = await crearCertificacionCentrof(certificacionCentrofData);
+      
+      // Extraer el objeto de certificación del centro del resultado
+      const CertificacionCentrof = result[0];
+
+      res.status(201).json({
+        ...ResponseStructure,
+        message: 'certificado de centro creado exitosamente',
+        data: {
+          idcertificacion_centrof: CertificacionCentrof.insertId, // Aquí se usa insertId como el id generado
+          ...certificacionCentrofData  // Aquí conservamos los datos originales enviados
+        }
+      });
     });
   } catch (error) {
     next(error);
   }
 };
+
 
 controller.obtenerCertificacionCentrofC = async (req, res, next) => {
   try {
