@@ -1,22 +1,24 @@
 const {detalleContrato     ,
     findByDetalle_contrato,
-    deleteByiDetalle_contrato} = require('../models/detalleContratoModel');
+    deleteByiDetalle_contrato,
+    findByDetalle_contratoxNombre} = require('../models/detalleContratoModel');
  const pool = require('../config/database');
  
  
  async function crearDetalleContrato(detalle_contratoData) {
-   try {
-       if (!detalle_contratoData  || !detalle_contratoData.dcertificacion_centrof || !detalle_contratoData.idobligaciones_contrato || !detalle_contratoData.cumple) {
-           throw new Error('Faltan datos de detalle de contrato');
-       }
- 
+  try {
+      if (!detalle_contratoData || !detalle_contratoData.idcertificacion_centrof || !detalle_contratoData.idobligaciones_contrato || !detalle_contratoData.cumple || !detalle_contratoData.nombreDetalleContrato) {
+          throw new Error('Faltan datos de detalle de contrato');
+      }
 
-       const nuevoDetalleContrato = await detalleContrato.create(detalle_contratoData);
-       return nuevoDetalleContrato;
-   } catch (error) {
-       throw error;
-   }
- }
+      const nuevoDetalleContrato = await detalleContrato.create(detalle_contratoData);
+      return nuevoDetalleContrato;
+  } catch (error) {
+      throw error;
+  }
+}
+
+
  
  const obtenerDetallesdeContrato = async () => {
    try {
@@ -42,7 +44,7 @@ const {detalleContrato     ,
  
      // Realizar la actualización en la base de datos
      const [result] = await pool.execute(
-       'UPDATE detalle_contrato SET  dcertificacion_centrof = ?, idobligaciones_contrato = ?, cumple= ?  WHERE iddetalle_contrato = ?',
+       'UPDATE detalle_contrato SET  dcertificacion_centrof = ?, idobligaciones_contrato = ?, cumple= ?, nombreDetalleContrato = ?  WHERE iddetalle_contrato = ?',
        [
         detalleContratoActualizado.dcertificacion_centrof,
         detalleContratoActualizado.idobligaciones_contrato,
@@ -69,9 +71,28 @@ const {detalleContrato     ,
    } catch (error) {
      throw error;
    }
- }
+  }
+async function obtenerDetalleContratoPorId(iddetalle_contrato){
+    try {
+      // Llamar al modelo para buscar el detalle de contrato por ID
+      const detalleContrato = await findByDetalle_contrato(iddetalle_contrato);
+      return detalleContrato;
+    } catch (error) {
+      throw error; // Propagar el error para ser manejado por el controlador
+    }
+  }
+ 
  
 
+  async function obtenerDetalleContratoPorNombre(nombreDetalleContrato){
+    try {
+      // Llamar al modelo para buscar el detalle de contrato por ID
+      const detalleContratoNombre = await findByDetalle_contratoxNombre(nombreDetalleContrato);
+      return detalleContratoNombre;
+    } catch (error) {
+      throw error; // Propagar el error para ser manejado por el controlador
+    }
+  }
  
 
  
@@ -82,6 +103,8 @@ const {detalleContrato     ,
     crearDetalleContrato,
     obtenerDetallesdeContrato,
     editarDetalleContrato,
-    eliminarDetalleContrato
+    eliminarDetalleContrato,
+    obtenerDetalleContratoPorId,
+    obtenerDetalleContratoPorNombre
  };
  

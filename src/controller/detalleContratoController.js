@@ -3,25 +3,29 @@ const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 const {  crearDetalleContrato,
     obtenerDetallesdeContrato,
     editarDetalleContrato,
-    eliminarDetalleContrato} = require('../services/detalleContratoService');
+    obtenerDetalleContratoPorId,
+    eliminarDetalleContrato,
+    obtenerDetalleContratoPorNombre} = require('../services/detalleContratoService');
 const controller = {}
 
 controller.crearDetalleContratoC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['dcertificacion_centrof', 'idobligaciones_contrato', 'cumple'])(req, res, async () => {
+    // Utiliza el middleware para validar los campos requeridos
+    validarCamposRequeridos(['idcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato'])(req, res, async () => {
       const detalle_contratoData = req.body;
 
-    //   const detalleContratoExistente= await findOneDetalleContrato(detalle_contratoData.cumple);
-    //   if(detalleContratoExistente){
-    //   return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El detalle contrato  ya está registrado' });
-    //   }
-      const detalleContrato = await crearDetalleContrato(detalle_contratoData);
-      res.status(201).json({ ...ResponseStructure, message: 'detalle contrato creado exitosamente', data: detalle_contratoData });
+      // Llamar al servicio para crear el detalle de contrato
+      const nuevoDetalleContrato = await crearDetalleContrato(detalle_contratoData);
+
+      // Responder con éxito
+      res.status(201).json({ ...ResponseStructure, message: 'Detalle contrato creado exitosamente', data: nuevoDetalleContrato });
     });
   } catch (error) {
+    // Si hay un error, pasa el control al middleware de manejo de errores
     next(error);
   }
-};
+}
+
 
 controller.obtenerdetalleContratosC = async (req, res, next) => {
   try {
@@ -43,7 +47,7 @@ controller.editarDetalleContratosC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['dcertificacion_centrof', 'idobligaciones_contrato', 'cumple'];
+    const camposValidos = ['dcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoDetalleContratoData);
@@ -69,5 +73,39 @@ controller.eliminardetalleContratoC = async (req, res, next) => {
     res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún detalle de contrato con el ID ${req.params.iddetalle_contrato} proporcionado` });
   }
 };
+
+controller.obtenerDetalleContratoPorIdC = async (req, res, next) => {
+  try {
+    const iddetalle_contrato = req.params.iddetalle_contrato;
+
+    // Llamar al servicio para obtener el detalle de contrato por ID
+    const detalleContrato = await obtenerDetalleContratoPorId(iddetalle_contrato);
+
+    if (!detalleContrato) {
+      return res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún detalle de contrato con el ID ${iddetalle_contrato}` });
+    }
+
+    res.status(200).json({ ...ResponseStructure, data: detalleContrato });
+  } catch (error) {
+    res.status(500).json({ ...ResponseStructure, status: 500, error: 'Error al obtener el detalle de contrato', message: error.message });
+  }
+}
+
+controller.obtenerDetalleContratoPorNombreC = async (req, res, next) => {
+  try {
+    const nombreDetalleContrato = req.params.nombreDetalleContrato;
+
+    // Llamar al servicio para obtener el detalle de contrato por nombre
+    const detalleContrato = await obtenerDetalleContratoPorNombre(nombreDetalleContrato);
+
+    if (!detalleContrato) {
+      return res.status(404).json({ ...ResponseStructure, status: 404, error: `No se encontró ningún detalle de contrato con el nombre ${nombreDetalleContrato}` });
+    }
+
+    res.status(200).json({ ...ResponseStructure, data: detalleContrato });
+  } catch (error) {
+    res.status(500).json({ ...ResponseStructure, status: 500, error: 'Error al obtener el detalle de contrato', message: error.message });
+  }
+}
 
 module.exports = controller;
