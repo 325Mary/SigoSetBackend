@@ -33,12 +33,12 @@ exports.getSedeFormacion= async (req, res) => {
 
 exports.crearSedeFormacion = async (req, res) => {
     try {
-        const { idcentro_formacion, idmunicipio, sede_formacion,
+        const {  idmunicipio, sede_formacion,
             dir_sede_formacion, telefono_sedef, email_sedef
         } = req.body
         const sedeFormacion = await pool.query(
-            "INSERT INTO sede_formacion (idcentro_formacion, idmunicipio, sede_formacion, dir_sede_formacion, telefono_sedef, email_sedef ) VALUES (?, ?, ?, ?, ?, ?)",
-            [idcentro_formacion, idmunicipio, sede_formacion,
+            "INSERT INTO sede_formacion ( idmunicipio, sede_formacion, dir_sede_formacion, telefono_sedef, email_sedef ) VALUES ( ?, ?, ?, ?, ?)",
+            [ idmunicipio, sede_formacion,
                 dir_sede_formacion, telefono_sedef, email_sedef]
         );
        

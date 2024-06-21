@@ -1,22 +1,22 @@
 
 const pool = require('../../config/database')
 const validateSedeFormacionMiddleware = async (req, res, next) => {
-    const { idcentro_formacion, idmunicipio, sede_formacion,
+    const {  idmunicipio, sede_formacion,
       dir_sede_formacion, telefono_sedef, email_sedef
     } = req.body;
     console.log('validateSedeFormacionMiddleware');
     // Verifica que se proporcionen todos los campos requeridos
-    if (!idcentro_formacion || !idmunicipio || !sede_formacion || !dir_sede_formacion || !telefono_sedef || !email_sedef) {
+    if ( !idmunicipio || !sede_formacion || !dir_sede_formacion || !telefono_sedef || !email_sedef) {
       return res.status(400).json({message:"Debe proporcionar todos los campos requeridos."});
     }
      // Verifica que el idcentro_formacion existe en la base de datos
-  const centroFormacionExists = await pool.query(
-    "SELECT COUNT(*) AS count FROM centro_formacion WHERE idcentro_formacion = ?",
-    [idcentro_formacion]
-  );
-    if (centroFormacionExists[0].count === 0) {
-        return res.status(404).json({message:"El centro  formacion proporcionado no existe."});
-      }
+  // const centroFormacionExists = await pool.query(
+  //   "SELECT COUNT(*) AS count FROM centro_formacion WHERE idcentro_formacion = ?",
+  //   [idcentro_formacion]
+  // );
+  //   if (centroFormacionExists[0].count === 0) {
+  //       return res.status(404).json({message:"El centro  formacion proporcionado no existe."});
+  //     }
   
     // Verifica que el idmunicipio existe en la base de datos
   const municipioExists = await pool.query(
