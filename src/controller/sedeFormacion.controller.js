@@ -17,8 +17,8 @@ exports.getSedesFormacion = async (req, res) => {
 exports.getSedeFormacion= async (req, res) => {
     try {
         const [sedeFormacion] =  await pool.query(
-            "SELECT * FROM zona WHERE idsede_formacion = ?", [
-                req.params.idSedeFormacion
+            "SELECT * FROM sede_formacion WHERE idsede_formacion = ?", [
+                req.params.idsede_formacion
         ]);
         if (sedeFormacion.length === 0){
             return res.status(404).json({message: "La sede de formación no encontrada."})
@@ -55,7 +55,7 @@ exports.editarSedeFormacion= async ( req, res) => {
             "UPDATE sede_formacion SET ? WHERE idsede_formacion = ? ",
             [
                 req.body,
-                req.params.idSedeFormacion
+                req.params.idsede_formacion
         ]);
 
         return res.status(200).json({message: "La sede de formación se actualizo exitoxamente"})
@@ -70,7 +70,7 @@ exports.eliminarSedeFormacion= async (req, res) =>  {
      
         const  [ sedeFormacion ] = await pool.query(
             "DELETE FROM sede_formacion WHERE idsede_formacion = ?",[
-               req.params.idSedeFormacion
+               req.params.idsede_formacion
             ]
         )
         if ( sedeFormacion.affectedRows === 0){
