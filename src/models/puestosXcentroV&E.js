@@ -13,13 +13,19 @@ const Puestos = {
   },
   findAllPuestosXcentro: function(idcentro_formacion) {
     return pool.execute(`
-      SELECT pvc.*, cf.centro_formacion AS centro_formacion, e.nombre_empresa AS nombre_empresa, pv.descripcion_puesto AS descripcion_puesto, s.sede_formacion AS sede_formacion, s.dir_sede_formacion AS direccionSede
-      FROM puestosvxcentrof pvc
-      INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
-      INNER JOIN empresa e ON pvc.idempresa = e.idempresa
-      INNER JOIN puestos_vigilancia pv ON pvc.idpuesto_vigilancia = pv.idpuesto_vigilancia
-      INNER  JOIN sede_formacion s ON pvc.idsede_formacion = s.idsede_formacion
-      WHERE pvc.idcentro_formacion = ?
+       SELECT pvc.*, 
+           cf.centro_formacion AS centro_formacion, 
+           e.nombre_empresa AS nombre_empresa, 
+           pv.descripcion_puesto AS descripcionVHumana, 
+           pv.total AS total, 
+           s.sede_formacion AS sede_formacion, 
+           s.dir_sede_formacion AS direccionSedeVHumana
+    FROM puestosvxcentrof pvc
+    INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
+    INNER JOIN empresa e ON pvc.idempresa = e.idempresa
+    INNER JOIN puestos_vigilancia pv ON pvc.idpuesto_vigilancia = pv.idpuesto_vigilancia
+    INNER JOIN sede_formacion s ON pvc.idsede_formacion = s.idsede_formacion
+    WHERE pvc.idcentro_formacion = ?
     `, [idcentro_formacion])
     .then(([rows, fields]) => {
       if (rows.length === 0) {
@@ -31,13 +37,19 @@ const Puestos = {
 
 findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
     return pool.execute(`
-      SELECT pvc.*, cf.centro_formacion AS centro_formacion, e.nombre_empresa AS nombre_empresa, pv.descripcion AS descripcion, s.sede_formacion AS sede_formacion, s.dir_sede_formacion AS direccionSede
-      FROM puntosvelectronica pvc
-      INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
-      INNER JOIN empresa e ON pvc.idempresa = e.idempresa
-      INNER JOIN vigilancia_electronica pv ON pvc.idvigilancia_electronica = pv.idvigilancia_electronica
-      INNER JOIN sede_formacion s ON pvc.idsede_formacion = s.idsede_formacion
-      WHERE pvc.idcentro_formacion = ?
+     SELECT pvc.*, 
+           cf.centro_formacion AS centro_formacion, 
+           e.nombre_empresa AS nombre_empresa, 
+           pv.descripcion AS descripcion, 
+           pv.totalE AS totalE, 
+           s.sede_formacion AS sede_formacion, 
+           s.dir_sede_formacion AS direccionSedeVElectronica
+    FROM puntosvelectronica pvc
+    INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
+    INNER JOIN empresa e ON pvc.idempresa = e.idempresa
+    INNER JOIN vigilancia_electronica pv ON pvc.idvigilancia_electronica = pv.idvigilancia_electronica
+    INNER JOIN sede_formacion s ON pvc.idsede_formacion = s.idsede_formacion
+    WHERE pvc.idcentro_formacion = ?
     `, [idcentro_formacion])
     .then(([rows, fields]) => {
       if (rows.length === 0) {
