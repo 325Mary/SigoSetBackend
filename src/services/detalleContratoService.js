@@ -5,18 +5,14 @@ const {detalleContrato     ,
 const pool = require('../config/database');
 
 
-async function crearDetalleContrato(detalle_contratoData) {
-try {
-    if (!detalle_contratoData || !detalle_contratoData.idcertificacion_centrof || !detalle_contratoData.idobligaciones_contrato || !detalle_contratoData.cumple || !detalle_contratoData.nombreDetalleContrato) {
-        throw new Error('Faltan datos de detalle de contrato');
-    }
-
+const crearDetalleContrato = async (detalle_contratoData) => {
+  try {
     const nuevoDetalleContrato = await detalleContrato.create(detalle_contratoData);
     return nuevoDetalleContrato;
-} catch (error) {
+  } catch (error) {
     throw error;
-}
-}
+  }
+};
 
 
 
@@ -34,35 +30,63 @@ const obtenerDetallesdeContrato = async () => {
 
 
 async function editarDetalleContrato(iddetalle_contrato, nuevoDetalleContratoData) {
- try {
-   const detalleContratoExistente = await findByDetalle_contrato(iddetalle_contrato);
-   if (!detalleContratoExistente) {
-     throw new Error('El detalle contrato no existe');
-   }
+  try {
+    const detalleContratoExistente = await findByDetalle_contrato(iddetalle_contrato);
+    if (!detalleContratoExistente) {
+      throw new Error('El detalle contrato no existe');
+    }
 
-   const detalleContratoActualizado = { ...detalleContratoExistente, ...nuevoDetalleContratoData };
+    const detalleContratoActualizado = { ...detalleContratoExistente, ...nuevoDetalleContratoData };
 
-   // Realizar la actualización en la base de datos
-   const [result] = await pool.execute(
-     'UPDATE detalle_contrato SET  dcertificacion_centrof = ?, idobligaciones_contrato = ?, cumple= ?, nombreDetalleContrato = ?  WHERE iddetalle_contrato = ?',
-     [
-      detalleContratoActualizado.dcertificacion_centrof,
+    const sql = `
+      UPDATE detalle_contrato SET
+        idcertificacion_centrof = ?,
+        idobligaciones_contrato = ?,
+        cumple = ?,
+        nombreDetalleContrato = ?,
+        descripcionVHumana = ?,
+        cantidad_puestov = ?,
+        direccionSedeVHumana = ?,
+        total = ?,
+        descripcion = ?,
+        cantidad = ?,
+        direccionSedeVElectronica = ?,
+        totalE = ?,
+        observaciones1 = ?,
+        observaciones2 = ?,
+        fechaCreacion = ?
+      WHERE iddetalle_contrato = ?`;
+
+    const [result] = await pool.execute(sql, [
+      detalleContratoActualizado.idcertificacion_centrof,
       detalleContratoActualizado.idobligaciones_contrato,
       detalleContratoActualizado.cumple,
-       iddetalle_contrato
-     ]
-   );
+      detalleContratoActualizado.nombreDetalleContrato,
+      detalleContratoActualizado.descripcionVHumana,
+      detalleContratoActualizado.cantidad_puestov,
+      detalleContratoActualizado.direccionSedeVHumana,
+      detalleContratoActualizado.total,
+      detalleContratoActualizado.descripcion,
+      detalleContratoActualizado.cantidad,
+      detalleContratoActualizado.direccionSedeVElectronica,
+      detalleContratoActualizado.totalE,
+      detalleContratoActualizado.observaciones1,
+      detalleContratoActualizado.observaciones2,
+      detalleContratoActualizado.fechaCreacion,
+      iddetalle_contrato
+    ]);
 
-   // Verificar si la actualización fue exitosa
-   if (result.affectedRows === 0) {
-     throw new Error('No se pudo actualizar el detalle de contrato');
-   }
+    if (result.affectedRows === 0) {
+      throw new Error('No se pudo actualizar el detalle de contrato');
+    }
 
-   return detalleContratoActualizado;
- } catch (error) {
-   throw error;
- }
+    return detalleContratoActualizado;
+  } catch (error) {
+    console.error('Error actualizando detalle_contrato:', error);
+    throw error;
+  }
 }
+
 
 async function eliminarDetalleContrato(iddetalle_contrato) {
  try {

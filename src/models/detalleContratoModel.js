@@ -23,9 +23,60 @@ const detalleContrato = {
               LEFT JOIN empresa e ON ce.idempresa = e.idempresa`); 
   },
   create: function(detalle_contratoData) {
-    const { idcertificacion_centrof, idobligaciones_contrato, cumple, nombreDetalleContrato } = detalle_contratoData;
-    const sql = `INSERT INTO detalle_contrato (idcertificacion_centrof, idobligaciones_contrato, cumple, nombreDetalleContrato) VALUES (?, ?, ?, ?)`;
-    return pool.execute(sql, [idcertificacion_centrof, idobligaciones_contrato, cumple, nombreDetalleContrato]);
+    const {
+      idcertificacion_centrof,
+      idobligaciones_contrato,
+      cumple,
+      nombreDetalleContrato,
+      descripcionVHumana,
+      cantidad_puestov,
+      direccionSedeVHumana,
+      total,
+      descripcion,
+      cantidad,
+      direccionSedeVElectronica,
+      totalE,
+      observaciones1,
+      observaciones2,
+      fechaCreacion
+    } = detalle_contratoData;
+
+    const sql = `
+      INSERT INTO detalle_contrato (
+        idcertificacion_centrof,
+        idobligaciones_contrato,
+        cumple,
+        nombreDetalleContrato,
+        descripcionVHumana,
+        cantidad_puestov,
+        direccionSedeVHumana,
+        total,
+        descripcion,
+        cantidad,
+        direccionSedeVElectronica,
+        totalE,
+        observaciones1,
+        observaciones2,
+        fechaCreacion
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    return pool.execute(sql, [
+      idcertificacion_centrof,
+      idobligaciones_contrato,
+      cumple,
+      nombreDetalleContrato,
+      descripcionVHumana,
+      cantidad_puestov,
+      direccionSedeVHumana,
+      total,
+      descripcion,
+      cantidad,
+      direccionSedeVElectronica,
+      totalE,
+      observaciones1,
+      observaciones2,
+      fechaCreacion
+    ]);
   }
 };
 

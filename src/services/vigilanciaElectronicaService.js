@@ -41,8 +41,8 @@ const { vigilanciaElectronica,
             throw new Error('Faltan datos');
         }
 
-        const total = new Decimal(VigilanciaElectronicaData.tarifa).plus(VigilanciaElectronicaData.ays).dividedBy(2);
-        VigilanciaElectronicaData.total = parseFloat(total.toFixed(2));
+        const totalE = new Decimal(VigilanciaElectronicaData.tarifa).plus(VigilanciaElectronicaData.ays).dividedBy(2);
+        VigilanciaElectronicaData.totalE = parseFloat(totalE.toFixed(2));
 
         const nuevaVigilanciaElectronica = await vigilanciaElectronica.create(VigilanciaElectronicaData);
         return nuevaVigilanciaElectronica;
@@ -88,18 +88,18 @@ const { vigilanciaElectronica,
             const nuevaTarifa = nuevoVigilanciaElectronicaData.tarifa !== undefined ? nuevoVigilanciaElectronicaData.tarifa : VigilanciaElectronicaExistente.tarifa;
             const nuevoAys = nuevoVigilanciaElectronicaData.ays !== undefined ? nuevoVigilanciaElectronicaData.ays : VigilanciaElectronicaExistente.ays;
 
-            const total = new Decimal(nuevaTarifa).plus(nuevoAys).dividedBy(2);
-            VigilanciaElectronicaActualizada.total = parseFloat(total.toFixed(2));
+            const totalE = new Decimal(nuevaTarifa).plus(nuevoAys).dividedBy(2);
+            VigilanciaElectronicaActualizada.totalE = parseFloat(totalE.toFixed(2));
         }
 
         // Realizar la actualización en la base de datos
         const [result] = await pool.execute(
-            'UPDATE vigilancia_electronica SET descripcion= ?, tarifa= ?, ays= ?, total= ? WHERE idvigilancia_electronica = ?',
+            'UPDATE vigilancia_electronica SET descripcion= ?, tarifa= ?, ays= ?, totalE= ? WHERE idvigilancia_electronica = ?',
             [
                 VigilanciaElectronicaActualizada.descripcion,
                 VigilanciaElectronicaActualizada.tarifa,
                 VigilanciaElectronicaActualizada.ays,
-                VigilanciaElectronicaActualizada.total,
+                VigilanciaElectronicaActualizada.totalE,
                 idvigilancia_electronica
             ]
         );

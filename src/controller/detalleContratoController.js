@@ -10,21 +10,33 @@ const controller = {}
 
 controller.crearDetalleContratoC = async (req, res, next) => {
   try {
-    // Utiliza el middleware para validar los campos requeridos
     validarCamposRequeridos(['idcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato'])(req, res, async () => {
-      const detalle_contratoData = req.body;
+      const detalle_contratoData = {
+        idcertificacion_centrof: req.body.idcertificacion_centrof,
+        idobligaciones_contrato: req.body.idobligaciones_contrato,
+        cumple: req.body.cumple,
+        nombreDetalleContrato: req.body.nombreDetalleContrato,
+        descripcionVHumana: req.body.descripcionVHumana || null,
+        cantidad_puestov: req.body.cantidad_puestov || null,
+        direccionSedeVHumana: req.body.direccionSedeVHumana || null,
+        total: req.body.total || null,
+        descripcion: req.body.descripcion || null,
+        cantidad: req.body.cantidad || null,
+        direccionSedeVElectronica: req.body.direccionSedeVElectronica || null,
+        totalE: req.body.totalE || null,
+        observaciones1: req.body.observaciones1 || null,
+        observaciones2: req.body.observaciones2 || null,
+        fechaCreacion: req.body.fechaCreacion || null
+      };
 
-      // Llamar al servicio para crear el detalle de contrato
       const nuevoDetalleContrato = await crearDetalleContrato(detalle_contratoData);
-
-      // Responder con éxito
       res.status(201).json({ ...ResponseStructure, message: 'Detalle contrato creado exitosamente', data: nuevoDetalleContrato });
     });
   } catch (error) {
-    // Si hay un error, pasa el control al middleware de manejo de errores
     next(error);
   }
 }
+
 
 
 controller.obtenerdetalleContratosC = async (req, res, next) => {
@@ -47,7 +59,11 @@ controller.editarDetalleContratosC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['dcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato'];
+    const camposValidos = [
+      'idcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato', 
+      'descripcionVHumana', 'cantidad_puestov', 'direccionSedeVHumana', 'total', 'descripcion', 
+      'cantidad', 'direccionSedeVElectronica', 'totalE', 'observaciones1', 'observaciones2', 'fechaCreacion'
+    ];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoDetalleContratoData);
@@ -63,6 +79,7 @@ controller.editarDetalleContratosC = async (req, res, next) => {
     res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún detalle de contrato con el ID proporcionado' });
   }
 };
+
 
 controller.eliminardetalleContratoC = async (req, res, next) => {
   try {
