@@ -8,7 +8,7 @@ const vigilanciaElectronica = {
     return pool.execute('SELECT * FROM vigilancia_electronica'); // Utiliza pool.execute() para obtener una promesa
   },
   create: async function(vigilanciaElectronicaData) {
-    const sql = `INSERT INTO vigilancia_electronica (descripcion, tarifa, ays, totalE) VALUES (?, ?, ?, ?)`;
+    const sql = `INSERT INTO vigilancia_electronica (descripcion, tarifa, ays, total) VALUES (?, ?, ?, ?)`;
     try {
         const [result] = await pool.execute(sql, [
             vigilanciaElectronicaData.descripcion, 

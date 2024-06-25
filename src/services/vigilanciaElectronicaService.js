@@ -78,6 +78,7 @@ const { vigilanciaElectronica,
 
         if (camposInvalidos.length > 0) {
             throw new Error('El cuerpo de la solicitud contiene campos no válidos');
+        
         }
 
         // Actualizar la entrada con los nuevos datos
@@ -94,7 +95,7 @@ const { vigilanciaElectronica,
 
         // Realizar la actualización en la base de datos
         const [result] = await pool.execute(
-            'UPDATE vigilancia_electronica SET descripcion= ?, tarifa= ?, ays= ?, totalE= ? WHERE idvigilancia_electronica = ?',
+            'UPDATE vigilancia_electronica SET descripcion= ?, tarifa= ?, ays= ?, total= ? WHERE idvigilancia_electronica = ?',
             [
                 VigilanciaElectronicaActualizada.descripcion,
                 VigilanciaElectronicaActualizada.tarifa,

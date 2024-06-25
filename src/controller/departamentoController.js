@@ -4,7 +4,7 @@ const {crearDepartamento,
     obtenerDepartamentos,
     editarDepartamento,
     eliminarDepartamento } = require('../services/departamentoService');
-const {findOneDepartamento} = require('../models/departamentosModel')
+const {findOneDepartamento, update} = require('../models/departamentosModel')
 const controller = {}
 
 controller.crearDepartamentoC = async (req, res, next) => {
@@ -34,32 +34,17 @@ controller.obtenerDepartamentoC = async (req, res, next) => {
 };
 
 controller.editarDepartamentoC = async (req, res, next) => {
+  const iddepartamento = req.params.iddepartamento;
+  const DepartamentoData = req.body;
   try {
-    const iddepartamento = req.params.iddepartamento;
-    const nuevoDepartamentoData = req.body;
-
-    // Verificar si el cuerpo de la solicitud está vacío
-    if (Object.keys(nuevoDepartamentoData).length === 0) {
-      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
-    }
-
-    // Definir los campos válidos esperados
-    const camposValidos = ['departamento'];
-
-    // Verificar si todos los campos recibidos están en la lista de campos válidos
-    const camposRecibidos = Object.keys(nuevoDepartamentoData);
-    const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
-
-    if (camposInvalidos.length > 0) {
-      return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
-    }
-
-    const DepartamentoActualizado = await editarDepartamento(iddepartamento, nuevoMDepartamentoData);
-    res.status(200).json({ ...ResponseStructure, message: 'Departamento actualizado exitosamente', data: DepartamentoActualizado });
+      const updatedDepartamento = await update(iddepartamento, DepartamentoData);
+      res.json(updatedDepartamento);
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún Departamento con el ID proporcionado' });
+      console.error(error);
+      res.status(500).json({ message: 'Error al actualizar el departamento' });
   }
 };
+
 
 controller.eliminarDepartamentoC = async (req, res, next) => {
   try {
