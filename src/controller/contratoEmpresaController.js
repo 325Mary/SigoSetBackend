@@ -11,7 +11,7 @@ const controller = {}
 
 controller.crearContratoEmpresaC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idempresa', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
+    validarCamposRequeridos(['idempresa','descripcion_contrato', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const contratoEmpresaData = req.body;
 
       const contrato_empresaExistente = await findOneContratoEmpres(contratoEmpresaData.idempresa);
@@ -46,7 +46,7 @@ controller.editarContratoEmpresaC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['idempresa', 'fecha_inicio', 'fecha_fin'];
+    const camposValidos = ['idempresa','descripcion_contrato', 'fecha_inicio', 'fecha_fin'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoContratoEmpresaData);
@@ -59,7 +59,8 @@ controller.editarContratoEmpresaC = async (req, res, next) => {
     const contratoEmpresaActualizado = await editarContratoEmpresa(idContrato_empresa, nuevoContratoEmpresaData);
     res.status(200).json({ ...ResponseStructure, message: 'contrato empresa actualizado exitosamente', data: contratoEmpresaActualizado });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún contrato empresa con el ID proporcionado' });
+    // res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se actualizó ningún contrato empresa con el ID proporcionado' });
+  console.log(error);
   }
 };
 
