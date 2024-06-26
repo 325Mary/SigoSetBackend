@@ -72,7 +72,7 @@ const { vigilanciaElectronica,
         }
 
         // Validar que solo se reciban los campos descripcion, tarifa y ays
-        const camposValidos = ['descripcion', 'tarifa', 'ays'];
+        const camposValidos = ['descripcion', 'tarifa', 'ays', 'totalE'];
         const camposRecibidos = Object.keys(nuevoVigilanciaElectronicaData);
         const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
 
