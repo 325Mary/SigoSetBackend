@@ -2,12 +2,12 @@
 const mysql = require('mysql2');
 
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'root',
+  host: '192.168.1.4',
+  user: 'andres',
+  password: 'andres123',
   database: 'dafv2',
   waitForConnections: true,
-  connectionLimit: 50,
+  connectionLimit: 10,
   queueLimit: 0
 });
 

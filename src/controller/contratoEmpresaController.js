@@ -14,7 +14,7 @@ controller.crearContratoEmpresaC = async (req, res, next) => {
     validarCamposRequeridos(['idempresa','descripcion_contrato', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const contratoEmpresaData = req.body;
 
-      const contrato_empresaExistente = await findOneContratoEmpres(contratoEmpresaData.idempresa);
+      const contrato_empresaExistente = await findOneContratoEmpres(contratoEmpresaData.descripcion_contrato);
       if(contrato_empresaExistente){
       return res.status(400).json({ ...ResponseStructure, status: 400, message: ' ya está registrado' });
       }
