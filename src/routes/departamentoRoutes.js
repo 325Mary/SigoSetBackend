@@ -6,7 +6,7 @@ const {
     obtenerDepartamentoC,
     editarDepartamentoC,
     eliminarDepartamentoC,
-    obtenerDepartamentoPorId
+    
      } = require('../controller/departamentoController');
 
 router.post('/crearDepartamento', crearDepartamentoC); 
