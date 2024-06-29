@@ -14,7 +14,7 @@ require('dotenv').config();
 
 async function crearUsuario(usuarioData) {
   try {
-      if (!usuarioData || !usuarioData.idperfil || !usuarioData.idcentro_formacion || !usuarioData.identificacion || !usuarioData.nombre_usuario || !usuarioData.apellido_usuario || !usuarioData.telefono_usuario || !usuarioData.email_usuario || !usuarioData.estado) {
+      if (!usuarioData || !usuarioData.idperfil || !usuarioData.idcentro_formacion || !usuarioData.identificacion || !usuarioData.nombre_usuario || !usuarioData.apellido_usuario || !usuarioData.telefono_usuario || !usuarioData.email_usuario || !usuarioData.estado ) {
           throw new Error('Faltan datos del usuario');
       }
 
@@ -110,7 +110,7 @@ async function editarUsuario(idUsuario, nuevoUsuarioData) {
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE usuario SET idperfil = ?, idcentro_formacion = ?, identificacion = ?, nombre_usuario = ?, apellido_usuario = ?, telefono_usuario = ?, email_usuario = ?, password = ?, estado = ? WHERE idUsuario = ?',
+      'UPDATE usuario SET idperfil = ?, idcentro_formacion = ?, identificacion = ?, nombre_usuario = ?, apellido_usuario = ?, telefono_usuario = ?, email_usuario = ?, password = ?, estado = ?, firma_usuario = ? WHERE idUsuario = ?',
       [
         usuarioActualizado.idperfil,
         usuarioActualizado.idcentro_formacion,
@@ -121,6 +121,7 @@ async function editarUsuario(idUsuario, nuevoUsuarioData) {
         usuarioActualizado.email_usuario,
         usuarioActualizado.password,
         usuarioActualizado.estado,
+        usuarioActualizado.firma_usuario,
         idUsuario
       ]
     );
@@ -341,26 +342,31 @@ const getUserById = async (idUsuario) => {
     }
     
     // Seleccionar solo los campos deseados del usuario
-    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado,perfil } = user;
+    const {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado,perfil, firma_usuario } = user;
     
-    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado, perfil };
+    return {  nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, estado, perfil, firma_usuario };
   } catch (error) {
     throw new Error('Error al obtener el usuario por ID: ' + error.message);
   }
 };
 
 
-// Función del servicio para enviar datos específicos de un usuario por correo electrónico
 const enviarDatosUsuarioPorCorreo = async (idUsuario) => {
   try {
     // Obtener los datos del usuario por su ID
     const user = await findByPk(idUsuario);
+    const perfil = user.idperfil; // Suponiendo que tienes un campo idperfil en tu modelo de usuario
 
     if (!user) {
       throw new Error('Usuario no encontrado');
     }
 
     // Preparar el contenido del correo electrónico
+    let mensajeFirma = '';
+    if (perfil === 2) {
+      mensajeFirma = '<p>Por favor ingrese su firma digital despues de inicar Sesion</p>';
+    }
+
     const correoOptions = {
       from: 'sigoset66@gmail.com',
       to: user.email_usuario,
@@ -368,9 +374,9 @@ const enviarDatosUsuarioPorCorreo = async (idUsuario) => {
       html: `
       <html>
       <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-          body {
+ body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
             padding: 20px;
@@ -407,10 +413,7 @@ const enviarDatosUsuarioPorCorreo = async (idUsuario) => {
         .user-info li span {
             font-weight: bold;
         }
-        
-        /* Otras reglas de estilo que desees añadir */
-        
-        </style>
+       </style>
       </head>
       <body>
         <div class="container">
@@ -418,17 +421,18 @@ const enviarDatosUsuarioPorCorreo = async (idUsuario) => {
           <p>Estimado/a <span class="user-name">${user.nombre_usuario}</span>,</p>
           <p>A continuación se presentan sus credenciales:</p>
           <ul class="user-info">
-            <li><span>Email:</span> ${user.email_usuario}</li>
+            <li><span>Usuario:</span> ${user.email_usuario}</li>
             <li><span>Contraseña:</span> ${user.identificacion}</li>
             <!-- Agrega más campos según sea necesario -->
           </ul>
+          ${mensajeFirma} <!-- Mensaje de firma condicional -->
         </div>
       </body>
       </html>
-      
       `
     };
-    
+
+    // Configuración del transporte de correo (nodemailer)
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
@@ -446,6 +450,7 @@ const enviarDatosUsuarioPorCorreo = async (idUsuario) => {
     throw error;
   }
 };
+
 
 module.exports = {
     crearUsuario,

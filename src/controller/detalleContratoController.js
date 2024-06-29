@@ -60,6 +60,7 @@ controller.editarDetalleContratosC = async (req, res, next) => {
 
     // Definir los campos válidos esperados
     const camposValidos = [
+      'iddetalle_contrato',
       'idcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato', 
       'descripcionVHumana', 'cantidad_puestov', 'direccionSedeVHumana', 'total', 'descripcion', 
       'cantidad', 'direccionSedeVElectronica', 'totalE', 'observaciones1', 'observaciones2', 'fechaCreacion'

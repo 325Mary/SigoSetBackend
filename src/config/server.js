@@ -1,6 +1,9 @@
 const express = require("express");
 const morgan = require('morgan');
 const cors = require("cors");
+const path = require('path');
+
+
 const usuarioRoutes = require('../routes/usuarioRoutes')
 const municipioRoutes = require('../routes/municipioRoutes')
 const obligacionesContratistaRoutes=  require('../routes/obligacionContratistaRoutes')
@@ -28,6 +31,7 @@ const appSigoSet = express();
 const port = 3000;
 appSigoSet.use(cors());
 appSigoSet.use(express.json());
+appSigoSet.use('/uploads', express.static(path.join(__dirname, '../../uploads/firmas')));
 
 appSigoSet.use(regionalesRoutes);
 appSigoSet.use(centroFormacionRoutes)

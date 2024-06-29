@@ -14,20 +14,18 @@ const { crearUsuario,
 const validarCamposRequeridos = require('../middleware/camposrequeridosUser');
 const {findOneByEmail} = require('../models/usuarioModel')
 const pool = require('../config/database');
-const { ResponseStructure } = require('../helpers/ResponseStructure'); // Asegúrate de ajustar la ruta correcta
-const controller = {}
+const { ResponseStructure } = require('../helpers/ResponseStructure'); 
+const controller = {};
 
 controller.crearUsuarioC = async (req, res, next) => {
   try {
     validarCamposRequeridos(['idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'estado'])(req, res, async () => {
       const usuarioData = req.body;
 
-      // Verificar si el correo electrónico ya existe en la base de datos
       const existingUser = await findOneByEmail(usuarioData.email_usuario);
       if (existingUser) {
         return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El correo electrónico ya está registrado' });
-      }  
-
+      }
 
       const usuario = await crearUsuario(usuarioData);
       res.status(201).json({ ...ResponseStructure, message: 'Usuario creado exitosamente', data: usuario });
@@ -64,15 +62,16 @@ controller.editarUsuarioC = async (req, res, next) => {
     const idUsuario = req.params.idUsuario;
     const nuevoUsuarioData = req.body;
 
-    // Verificar si el cuerpo de la solicitud está vacío
+    if (req.file) {
+      nuevoUsuarioData.firma_usuario = req.file.filename;
+    }
+
     if (Object.keys(nuevoUsuarioData).length === 0) {
       return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El cuerpo de la solicitud está vacío' });
     }
 
-    // Definir los campos válidos esperados
-    const camposValidos = ['idUsuario', 'idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado'];
+    const camposValidos = ['idUsuario', 'idperfil', 'idcentro_formacion', 'identificacion', 'nombre_usuario', 'apellido_usuario', 'telefono_usuario', 'email_usuario', 'password', 'estado', 'firma_usuario'];
 
-    // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoUsuarioData);
     const camposInvalidos = camposRecibidos.filter(field => !camposValidos.includes(field));
 
@@ -80,13 +79,13 @@ controller.editarUsuarioC = async (req, res, next) => {
       return res.status(400).json({ ...ResponseStructure, status: 400, message: 'El cuerpo de la solicitud contiene campos no válidos', invalidFields: camposInvalidos });
     }
 
-    // Si todos los campos son válidos, proceder con la actualización
     const usuarioActualizado = await editarUsuario(idUsuario, nuevoUsuarioData);
     res.status(200).json({ ...ResponseStructure, message: 'Usuario actualizado exitosamente', data: usuarioActualizado });
   } catch (error) {
     res.status(404).json({ ...ResponseStructure, status: 404, message: 'No se actualizó ningún usuario con el ID proporcionado', error });
   }
 };
+
 
 
 controller.eliminarUsuarioC = async (req, res, next) => {

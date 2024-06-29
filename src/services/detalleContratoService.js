@@ -40,6 +40,7 @@ async function editarDetalleContrato(iddetalle_contrato, nuevoDetalleContratoDat
 
     const sql = `
       UPDATE detalle_contrato SET
+      iddetalle_contrato = ?,
         idcertificacion_centrof = ?,
         idobligaciones_contrato = ?,
         cumple = ?,
@@ -58,6 +59,7 @@ async function editarDetalleContrato(iddetalle_contrato, nuevoDetalleContratoDat
       WHERE iddetalle_contrato = ?`;
 
     const [result] = await pool.execute(sql, [
+      detalleContratoActualizado.iddetalle_contrato,
       detalleContratoActualizado.idcertificacion_centrof,
       detalleContratoActualizado.idobligaciones_contrato,
       detalleContratoActualizado.cumple,
