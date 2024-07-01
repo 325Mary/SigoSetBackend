@@ -69,14 +69,11 @@ if (user.firstLogin) {
   return res.status(200).json({ message: 'Por favor, cambie su contraseña.', firstLogin: 1, token: crearToken(user), userId: user.idUsuario });
 }
 
-    // Comparar contraseñas encriptadas
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (passwordMatch) {
-      // Si coinciden, enviar token de autenticación
       res.json({ success: 'Inicio de sesión correcto', token: crearToken(user), userId: user.idUsuario });
     } else {
-      // Si no coinciden, enviar error de credenciales inválidas
       return res.status(401).json({ error: 'Credenciales inválidas ' });
     }
 
@@ -86,11 +83,10 @@ if (user.firstLogin) {
   }
 }
 
-// Crear token
 function crearToken(user) {
   const { idUsuario, email_usuario,  nombre_usuario, identificacion, idperfil, idcentro_formacion } = user;
   const payload = { userId: idUsuario, email_usuario , nombre_usuario, identificacion, idperfil, idcentro_formacion};
-  console.log("Atributos del payload:", payload); // Imprimir el payload
+  console.log("Atributos del payload:", payload); 
   const secret = process.env.JWT_SECRET;
   const options = { expiresIn: '30m' };
   const token = jwt.sign(payload, secret, options);
@@ -99,16 +95,13 @@ function crearToken(user) {
 
 async function editarUsuario(idUsuario, nuevoUsuarioData) {
   try {
-    // Verificar si el usuario existe
     const usuarioExistente = await findByPk(idUsuario);
     if (!usuarioExistente) {
       throw new Error('El usuario no existe');
     }
 
-    // Actualizar los campos del usuario existente con los nuevos datos
     const usuarioActualizado = { ...usuarioExistente, ...nuevoUsuarioData };
 
-    // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
       'UPDATE usuario SET idperfil = ?, idcentro_formacion = ?, identificacion = ?, nombre_usuario = ?, apellido_usuario = ?, telefono_usuario = ?, email_usuario = ?, password = ?, estado = ?, firma_usuario = ? WHERE idUsuario = ?',
       [

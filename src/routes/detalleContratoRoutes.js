@@ -9,8 +9,9 @@ const {
     obtenerDetalleContratoPorIdC,
     obtenerDetalleContratoPorNombreC
      } = require('../controller/detalleContratoController');
+     const upload = require('../middleware/Multer')
 
-router.post('/crearDetalleContrato', crearDetalleContratoC); 
+router.post('/crearDetalleContrato',  crearDetalleContratoC); 
 router.get('/listDetalleContratos', obtenerdetalleContratosC);
 router.put('/editDetalleContrato/:iddetalle_contrato', editarDetalleContratosC);
 router.get('/listDporId/:iddetalle_contrato', obtenerDetalleContratoPorIdC);
