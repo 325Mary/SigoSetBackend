@@ -27,12 +27,20 @@ controller.crearEmpresaC = async (req, res, next) => {
 
 controller.obtenerEmpresaC = async (req, res, next) => {
   try {
-    const listEmpresas = await obtenerEmpresas();
+    const { idperfil, email_usuario } = req.user;
+    const listEmpresas = await obtenerEmpresas(idperfil, email_usuario);
+
+    if (listEmpresas.length === 0) {
+      return res.status(404).json({ ...ResponseStructure, status: 404, message: 'No se encontraron empresas para el usuario proporcionado' });
+    }
+
     res.status(200).json({ ...ResponseStructure, data: listEmpresas });
   } catch (error) {
     res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron las empresas' });
   }
 };
+
+
 
 controller.editarEmpresaC = async (req, res, next) => {
   try {
