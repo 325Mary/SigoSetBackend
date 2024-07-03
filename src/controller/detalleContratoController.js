@@ -42,12 +42,16 @@ controller.crearDetalleContratoC = async (req, res, next) => {
 
 controller.obtenerdetalleContratosC = async (req, res, next) => {
   try {
-    const listDetalleContratos = await obtenerDetallesdeContrato();
+    const idperfil = req.user.idperfil;
+    const idcentro_formacion = req.user.idcentro_formacion;
+
+    const listDetalleContratos = await obtenerDetallesdeContrato(idperfil, idcentro_formacion);
     res.status(200).json({ ...ResponseStructure, data: listDetalleContratos });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los detalle de contratos' });
+    next(error);
   }
 };
+
 
 controller.editarDetalleContratosC = async (req, res, next) => {
   try {
