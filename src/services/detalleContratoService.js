@@ -1,7 +1,9 @@
 const {detalleContrato     ,
   findByDetalle_contrato,
   deleteByiDetalle_contrato,
-  findByDetalle_contratoxNombre} = require('../models/detalleContratoModel');
+  findByDetalle_contratoxNombre,
+  findAllByCentroFormacion
+} = require('../models/detalleContratoModel');
 const pool = require('../config/database');
 
 
@@ -16,16 +18,21 @@ const crearDetalleContrato = async (detalle_contratoData) => {
 
 
 
-const obtenerDetallesdeContrato = async () => {
- try {
-   const detalleContratos = await detalleContrato.findAll();
-   return detalleContratos;
- } catch (error) {
-   throw error;
- }
+const obtenerDetallesdeContrato = async (idperfil, idcentro_formacion) => {
+  try {
+    let detalles;
+    if (idperfil === 1) {
+      detalles = await detalleContrato.findAll();
+    } else {
+      detalles = await findAllByCentroFormacion(idcentro_formacion); 
+      console.log('deta');
+    }
+    
+    return detalles || [];
+  } catch (error) {
+    throw error;
+  }
 };
-
-
 
 
 
@@ -40,6 +47,7 @@ async function editarDetalleContrato(iddetalle_contrato, nuevoDetalleContratoDat
 
     const sql = `
       UPDATE detalle_contrato SET
+      iddetalle_contrato = ?,
         idcertificacion_centrof = ?,
         idobligaciones_contrato = ?,
         cumple = ?,
@@ -58,6 +66,7 @@ async function editarDetalleContrato(iddetalle_contrato, nuevoDetalleContratoDat
       WHERE iddetalle_contrato = ?`;
 
     const [result] = await pool.execute(sql, [
+      detalleContratoActualizado.iddetalle_contrato,
       detalleContratoActualizado.idcertificacion_centrof,
       detalleContratoActualizado.idobligaciones_contrato,
       detalleContratoActualizado.cumple,

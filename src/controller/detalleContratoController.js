@@ -26,7 +26,8 @@ controller.crearDetalleContratoC = async (req, res, next) => {
         totalE: req.body.totalE || null,
         observaciones1: req.body.observaciones1 || null,
         observaciones2: req.body.observaciones2 || null,
-        fechaCreacion: req.body.fechaCreacion || null
+        fechaCreacion: req.body.fechaCreacion || null,
+        firma_usuario: req.body.firma_usuario || null
       };
 
       const nuevoDetalleContrato = await crearDetalleContrato(detalle_contratoData);
@@ -41,12 +42,16 @@ controller.crearDetalleContratoC = async (req, res, next) => {
 
 controller.obtenerdetalleContratosC = async (req, res, next) => {
   try {
-    const listDetalleContratos = await obtenerDetallesdeContrato();
+    const idperfil = req.user.idperfil;
+    const idcentro_formacion = req.user.idcentro_formacion;
+
+    const listDetalleContratos = await obtenerDetallesdeContrato(idperfil, idcentro_formacion);
     res.status(200).json({ ...ResponseStructure, data: listDetalleContratos });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los detalle de contratos' });
+    next(error);
   }
 };
+
 
 controller.editarDetalleContratosC = async (req, res, next) => {
   try {
@@ -60,6 +65,7 @@ controller.editarDetalleContratosC = async (req, res, next) => {
 
     // Definir los campos válidos esperados
     const camposValidos = [
+      'iddetalle_contrato',
       'idcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato', 
       'descripcionVHumana', 'cantidad_puestov', 'direccionSedeVHumana', 'total', 'descripcion', 
       'cantidad', 'direccionSedeVElectronica', 'totalE', 'observaciones1', 'observaciones2', 'fechaCreacion'

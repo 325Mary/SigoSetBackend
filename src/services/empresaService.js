@@ -28,14 +28,22 @@ const {Empresa     ,
    }
  }
  
- const obtenerEmpresas = async () => {
-   try {
-     const empresas = await Empresa.findAll();
-     return empresas;
-   } catch (error) {
-     throw error;
-   }
- };
+ const obtenerEmpresas = async (idperfil, email_usuario) => {
+  try {
+    let empresas;
+    if (idperfil === 1) {
+      empresas = await Empresa.findAll();
+    } else {
+      empresas = await Empresa.findAllByEmail(email_usuario); 
+    }
+    
+    return empresas || [];
+  } catch (error) {
+    throw error;
+  }
+};
+
+
  
 
  async function editarEmpresa(idempresa, nuevaEmpresaData) {

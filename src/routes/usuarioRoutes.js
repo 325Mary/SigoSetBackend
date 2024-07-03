@@ -17,10 +17,12 @@ const {crearUsuarioC,
 const checkPerfil = require('../middleware/verificadorDePerfil')
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.post('/crearUsuario', crearUsuarioC); 
+const upload = require('../middleware/Multer')
+
+router.post('/crearUsuario', upload.single('firma_usuario'),  crearUsuarioC); 
 router.get('/listUsuarios', obtenerUsuariosC);
 router.post('/iniciarSesion', postLogin)
-router.put('/editUser/:idUsuario', editarUsuarioC);
+router.put('/editUser/:idUsuario',  upload.single('firma_usuario'), editarUsuarioC);
 router.delete('/EliminarUser/:idUsuario', eliminarUsuarioC);
 router.put('/cambiarPassword/:idUsuario', cambiarContraseñaC);
 router.post('/solicitarRestablecimiento', solicitarRestablecimiento);

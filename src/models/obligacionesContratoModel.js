@@ -6,6 +6,7 @@ const ObligacionesContrato = {
             SELECT oc.*, 
        octr.obligacion_contratista, 
        e.nombre_empresa, 
+       ce.descripcion_contrato,
        ce.fecha_inicio, 
        ce.fecha_fin,
        ocont.obligaciones_contractuales

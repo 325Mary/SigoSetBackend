@@ -27,9 +27,10 @@ const validarTokenMiddleware = async (req, res, next) => {
       }
       req.user = decoded;
       
-  // Adjuntar los datos del usuario decodificado al objeto de solicitud
   req.user = decoded;
   req.idperfil = decoded.idperfil;
+  req.email_usuario = decoded.email_usuario
+  req.idcentro_formacion = decoded.idcentro_formacion
      
       next();
     });

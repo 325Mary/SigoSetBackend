@@ -6,6 +6,9 @@ const Empresa = {
   findAll: function() {
     return pool.execute('SELECT * FROM empresa'); // Utiliza pool.execute() para obtener una promesa
   },
+  findAllByEmail: function(email_usuario) {
+    return pool.execute('SELECT * FROM empresa WHERE email_representantel = ?', [email_usuario]);
+  },
   create: function(empresaData) {
     const sql = `INSERT INTO empresa (  
         nombre_empresa ,
