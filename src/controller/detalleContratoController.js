@@ -10,7 +10,7 @@ const controller = {}
 
 controller.crearDetalleContratoC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idcertificacion_centrof', 'idobligaciones_contrato', 'cumple', 'nombreDetalleContrato'])(req, res, async () => {
+    validarCamposRequeridos(['idcertificacion_centrof', 'nombreDetalleContrato'])(req, res, async () => {
       const detalle_contratoData = {
         idcertificacion_centrof: req.body.idcertificacion_centrof,
         idobligaciones_contrato: req.body.idobligaciones_contrato,
