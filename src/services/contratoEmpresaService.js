@@ -12,7 +12,8 @@ async function crearContratoEmpresa(contratoEmpresavData) {
       !contratoEmpresavData.idempresa ||
       !contratoEmpresavData.descripcion_contrato ||
       !contratoEmpresavData.fecha_inicio ||
-      !contratoEmpresavData.fecha_fin
+      !contratoEmpresavData.fecha_fin ||
+      !contratoEmpresavData.contrato_pdf
     ) {
       throw new Error("Faltan datos del contrato de empresa");
     }
@@ -54,12 +55,13 @@ async function editarContratoEmpresa(
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      "UPDATE contrato_empresa SET  idempresa = ?, descripcion_contrato = ? , fecha_inicio = ? , fecha_fin= ? WHERE idContrato_empresa = ?",
+      "UPDATE contrato_empresa SET  idempresa = ?, descripcion_contrato = ? , fecha_inicio = ? , fecha_fin= ?, contrato_pdf = ? WHERE idContrato_empresa = ?",
       [
         ContratoEmpresaActualizado.idempresa,
         ContratoEmpresaActualizado.descripcion_contrato,
         ContratoEmpresaActualizado.fecha_inicio,
         ContratoEmpresaActualizado.fecha_fin,
+        ContratoEmpresaActualizado.contrato_pdf,
         idContrato_empresa,
       ]
     );

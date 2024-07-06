@@ -8,9 +8,12 @@ const {
     eliminarContratoEmpresaC
      } = require('../controller/contratoEmpresaController');
 
-router.post('/crearContratoEmpresa', crearContratoEmpresaC); 
+     const upload = require('../middleware/pdf_Multer');
+
+
+router.post('/crearContratoEmpresa',upload.single('contrato_pdf'), crearContratoEmpresaC); 
 router.get('/listContratosEmpresas', obtenerContratoEmpresasC);
-router.put('/editContratoEmpresa/:idContrato_empresa', editarContratoEmpresaC);
+router.put('/editContratoEmpresa/:idContrato_empresa', upload.single('contrato_pdf'), editarContratoEmpresaC);
 router.delete('/EliminarContratoEmpresa/:idContrato_empresa', eliminarContratoEmpresaC);
 
 

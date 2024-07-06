@@ -12,9 +12,9 @@ const contratoEmpresa = {
     return pool.execute(sql);
   },
   create: function(contratoEmpresavData) {
-    const sql = `INSERT INTO contrato_empresa (idempresa,descripcion_contrato, fecha_inicio, fecha_fin) 
-                 VALUES (?, ?, ?,?)`;
-    return pool.execute(sql, [contratoEmpresavData.idempresa,contratoEmpresavData.descripcion_contrato, contratoEmpresavData.fecha_inicio, contratoEmpresavData.fecha_fin]);
+    const sql = `INSERT INTO contrato_empresa (idempresa,descripcion_contrato, fecha_inicio, fecha_fin, contrato_pdf) 
+                 VALUES (?, ?, ?, ?, ?)`;
+    return pool.execute(sql, [contratoEmpresavData.idempresa,contratoEmpresavData.descripcion_contrato, contratoEmpresavData.fecha_inicio, contratoEmpresavData.fecha_fin, contratoEmpresavData.contrato_pdf]);
   }
 };
 

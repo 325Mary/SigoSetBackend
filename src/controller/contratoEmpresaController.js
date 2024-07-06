@@ -11,9 +11,13 @@ const controller = {}
 
 controller.crearContratoEmpresaC = async (req, res, next) => {
   try {
+    
     validarCamposRequeridos(['idempresa','descripcion_contrato', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const contratoEmpresaData = req.body;
-
+      if (req.file) {
+        contratoEmpresaData.contrato_pdf = req.file.filename;
+      }
+     
       const contrato_empresaExistente = await findOneContratoEmpres(contratoEmpresaData.descripcion_contrato);
       if(contrato_empresaExistente){
       return res.status(400).json({ ...ResponseStructure, status: 400, message: ' ya está registrado' });
@@ -40,13 +44,17 @@ controller.editarContratoEmpresaC = async (req, res, next) => {
     const idContrato_empresa = req.params.idContrato_empresa;
     const nuevoContratoEmpresaData = req.body;
 
-    // Verificar si el cuerpo de la solicitud está vacío
-    if (Object.keys(nuevoContratoEmpresaData).length === 0) {
+    if (req.file) {
+      nuevoContratoEmpresaData.contrato_pdf = req.file.filename;
+    }
+
+    if (Object.keys(nuevoContratoEmpresaData).length === 0 && !contrato_pdf) {
       return res.status(400).json({ ...ResponseStructure, status: 400, error: 'El cuerpo de la solicitud está vacío' });
     }
 
+
     // Definir los campos válidos esperados
-    const camposValidos = ['idempresa','descripcion_contrato', 'fecha_inicio', 'fecha_fin'];
+    const camposValidos = ['idempresa','descripcion_contrato', 'fecha_inicio', 'fecha_fin', 'contrato_pdf'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoContratoEmpresaData);

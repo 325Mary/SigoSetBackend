@@ -32,6 +32,8 @@ const port = 3000;
 appSigoSet.use(cors());
 appSigoSet.use(express.json());
 appSigoSet.use('/uploads', express.static(path.join(__dirname, '../../uploads/firmas')));
+appSigoSet.use('/uploadsPdf', express.static(path.join(__dirname, '../../uploads/Contratos')));
+
 
 appSigoSet.use(regionalesRoutes);
 appSigoSet.use(centroFormacionRoutes)
