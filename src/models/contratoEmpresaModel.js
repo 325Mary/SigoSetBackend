@@ -4,8 +4,16 @@ const mysql = require('mysql2');
 const pool = require('../config/database');
 
 const contratoEmpresa = {
+  findAllEmail: function(email_usuario) {
+    const sql = `SELECT ce.*, e.nombre_empresa AS nombre_empresa, e.email_representantel AS email_representantel
+                 FROM contrato_empresa ce 
+                 INNER JOIN empresa e 
+                 ON ce.idempresa = e.idempresa 
+                 WHERE e.email_representantel = ?`;
+    return pool.execute(sql, [email_usuario]);
+  },
   findAll: function() {
-    const sql = `SELECT ce.*, e.nombre_empresa AS nombre_empresa 
+    const sql = `SELECT ce.*, e.nombre_empresa AS nombre_empresa, e.email_representantel AS email_representantel
                  FROM contrato_empresa ce 
                  INNER JOIN empresa e 
                  ON ce.idempresa = e.idempresa`;

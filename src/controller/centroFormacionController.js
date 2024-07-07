@@ -1,15 +1,11 @@
 const pool = require('../config/database');
 const { ResponseStructure } = require('../helpers/ResponseStructure');
 
-// Listar todos los centros de formación
 exports.getCentrosFormacion = async (req, res) => {
     try {
-        // Obtener el perfil del usuario desde el token (suponiendo que se almacena en req.user)
         const perfilUsuario = req.user.idperfil;
 
-        // Verificar el perfil del usuario
         if (perfilUsuario === 1) {
-            // Usuario con perfil 1 (administrador), puede listar todos los centros
             const [CentrosDeformacion] = await pool.query("SELECT * FROM centro_formacion");
             res.status(200).json({ 
                 ...ResponseStructure, 
@@ -17,7 +13,6 @@ exports.getCentrosFormacion = async (req, res) => {
                 data: CentrosDeformacion 
             });
         } else {
-            // Otros perfiles: listar solo el centro al que pertenece el usuario
             const [CentroDeformacion] = await pool.query(
                 `SELECT centro_formacion.*, regional.regional AS regional 
                  FROM centro_formacion 
@@ -43,7 +38,6 @@ exports.getCentrosFormacion = async (req, res) => {
     }
 };
 
-// Obtener un centro de formación específico
 exports.getCentroFormacion = async (req, res) => {
     try {
         const [CentroDeformacion] = await pool.query(

@@ -26,10 +26,12 @@ const vigilanciaElectronicaRoutes = require ('../routes/vigilanciaElectronicaRou
 const informesRoutes = require('../routes/informesRoutes');
 const moduleRoutes= require('../routes/moduloRoutes')
 const moduloXperfilRoutes= require('../routes/moduloxperfilRoutes')
+const cronJobs = require('../cronJobs/contratoEmpresaCron'); 
 
 const appSigoSet = express();
 const port = 3000;
 appSigoSet.use(cors());
+cronJobs;
 appSigoSet.use(express.json());
 appSigoSet.use('/uploads', express.static(path.join(__dirname, '../../uploads/firmas')));
 appSigoSet.use('/uploadsPdf', express.static(path.join(__dirname, '../../uploads/Contratos')));

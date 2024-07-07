@@ -32,12 +32,25 @@ controller.crearContratoEmpresaC = async (req, res, next) => {
 
 controller.obtenerContratoEmpresasC = async (req, res, next) => {
   try {
-    const listContratoEmpresas = await obtenerContratoEmpresas();
-    res.status(200).json({ ...ResponseStructure, data: listContratoEmpresas });
+    const idperfil = req.user.idperfil;
+    const emailUsuario = req.user.email_usuario;
+
+    console.log("idperfil:", idperfil);
+    console.log("emailUsuario:", emailUsuario);
+
+    const listContratoEmpresas = await obtenerContratoEmpresas(idperfil, emailUsuario);
+
+    if (listContratoEmpresas.length === 0) {
+      return res.status(404).json({ message: 'No se encontraron contratos para el usuario actual' });
+    }
+
+    res.status(200).json({ message: 'Lista de contratos obtenida correctamente', data: listContratoEmpresas });
   } catch (error) {
-    res.status(404).json({ ...ResponseStructure, status: 404, error: 'No se obtuvieron los contratos de empresas' });
+    console.error("Error al obtener contratos:", error);
+    res.status(500).json({ error: 'Error al obtener contratos' });
   }
 };
+
 
 controller.editarContratoEmpresaC = async (req, res, next) => {
   try {
