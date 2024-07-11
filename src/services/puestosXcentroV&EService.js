@@ -74,12 +74,13 @@ async function editarPuestoVXcentro(idpuestosvxcentrof, nuevoPuestoXcentroData) 
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE puestosvxcentrof SET idcentro_formacion = ?, idempresa = ?, idpuesto_vigilancia = ?, cantidad_puestov = ? WHERE idpuestosvxcentrof = ?',
+      'UPDATE puestosvxcentrof SET idcentro_formacion = ?, idempresa = ?, idpuesto_vigilancia = ?, cantidad_puestov = ?, status= ? WHERE idpuestosvxcentrof = ?',
       [
         PuestoVXcentroActualizado.idcentro_formacion,
         PuestoVXcentroActualizado.idempresa,
         PuestoVXcentroActualizado.idpuesto_vigilancia,
         PuestoVXcentroActualizado.cantidad_puestov,
+        PuestoVXcentroActualizado.status,
         idpuestosvxcentrof
       ]
     );
@@ -107,12 +108,13 @@ async function editarPuestoVEXcentro(idpuntosvelectronica, nuevoPuestoVEXcentroD
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE puntosvelectronica SET  idcentro_formacion = ?, idempresa = ?, idvigilancia_electronica = ?, cantidad= ? WHERE idpuntosvelectronica = ?',
+      'UPDATE puntosvelectronica SET  idcentro_formacion = ?, idempresa = ?, idvigilancia_electronica = ?, cantidad= ?, statusE = ? WHERE idpuntosvelectronica = ?',
       [
         PuestoVEXcentroActualizado.idcentro_formacion,
         PuestoVEXcentroActualizado.idempresa,
         PuestoVEXcentroActualizado.idvigilancia_electronica,
         PuestoVEXcentroActualizado.cantidad,
+        PuestoVEXcentroActualizado.statusE,
         idpuntosvelectronica
       ]
     );

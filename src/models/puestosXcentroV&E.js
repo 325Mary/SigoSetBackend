@@ -19,7 +19,8 @@ const Puestos = {
            pv.descripcion_puesto AS descripcionVHumana, 
            pv.total AS total, 
            s.sede_formacion AS sede_formacion, 
-           s.dir_sede_formacion AS direccionSedeVHumana
+           s.dir_sede_formacion AS direccionSedeVHumana,
+           pvc.idpuestosvxcentrof AS idpuesto
     FROM puestosvxcentrof pvc
     INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
     INNER JOIN empresa e ON pvc.idempresa = e.idempresa
@@ -43,7 +44,8 @@ findAllPuestosElectronicosXcentro: function(idcentro_formacion) {
            pv.descripcion AS descripcion, 
            pv.totalE AS totalE, 
            s.sede_formacion AS sede_formacion, 
-           s.dir_sede_formacion AS direccionSedeVElectronica
+           s.dir_sede_formacion AS direccionSedeVElectronica,
+           pvc.idpuntosvelectronica AS idpuesto
     FROM puntosvelectronica pvc
     INNER JOIN centro_formacion cf ON pvc.idcentro_formacion = cf.idcentro_formacion
     INNER JOIN empresa e ON pvc.idempresa = e.idempresa

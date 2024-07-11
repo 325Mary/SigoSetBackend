@@ -82,7 +82,7 @@ controller.editarPuestoVxCentroC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['idcentro_formacion', 'idempresa', 'idpuesto_vigilancia', 'cantidad_puestov'];
+    const camposValidos = ['idcentro_formacion', 'idempresa', 'idpuesto_vigilancia', 'cantidad_puestov', 'status'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoPuestoXcentroData);
@@ -111,7 +111,7 @@ controller.editarPuestoVExCentroC = async (req, res, next) => {
     }
 
     // Definir los campos válidos esperados
-    const camposValidos = ['idcentro_formacion', 'idempresa', 'idvigilancia_electronica', 'cantidad'];
+    const camposValidos = ['idcentro_formacion', 'idempresa', 'idvigilancia_electronica', 'cantidad', 'statusE'];
 
     // Verificar si todos los campos recibidos están en la lista de campos válidos
     const camposRecibidos = Object.keys(nuevoPuestoVEXcentroData);
