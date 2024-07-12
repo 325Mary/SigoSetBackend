@@ -40,54 +40,61 @@ const {solicitudes_puestos,
 
 
  
- async function editarSolicitudes_puestos(idsolicitud_puesto, nuevoSolicitudes_puestosData) {
+  async function editarSolicitudes_puestos(idsolicitud_puesto, nuevoSolicitudes_puestosData) {
     try {
-      // Verificar si el registro existe
-      const Solicitudes_puestosExistente = await findBysolicitudes_puestos(idsolicitud_puesto);
-      if (!Solicitudes_puestosExistente) {
-        throw new Error('El Solicitudes_puestos no existe');
-      }
-  
-      // Crear un objeto con los datos actualizados
-      const Solicitudes_puestosActualizado = { ...Solicitudes_puestosExistente, ...nuevoSolicitudes_puestosData };
-  
-      // Realizar la actualización en la base de datos
-      const sql = `
-        UPDATE solicitudes_puestos 
-        SET idcentro_formacion = ?, 
-            idempresa = ?, 
-            idpuesto = ?, 
-            idsede_formacion = ?, 
-            tipo_puesto = ?, 
-            cantidad_solicitada = ?, 
-            descripcion_Solicitud = ?, 
-            fecha_solicitud = ? 
-        WHERE idsolicitud_puesto = ?
-      `;
-      const values = [
-        Solicitudes_puestosActualizado.idcentro_formacion,
-        Solicitudes_puestosActualizado.idempresa,
-        Solicitudes_puestosActualizado.idpuesto,
-        Solicitudes_puestosActualizado.idsede_formacion,
-        Solicitudes_puestosActualizado.tipo_puesto,
-        Solicitudes_puestosActualizado.cantidad_solicitada,
-        Solicitudes_puestosActualizado.descripcion_Solicitud,
-        Solicitudes_puestosActualizado.fecha_solicitud,
-        idsolicitud_puesto
-      ];
-  
-      const [result] = await pool.execute(sql, values);
-  
-      // Verificar si la actualización fue exitosa
-      if (result.affectedRows === 0) {
-        throw new Error('No se pudo actualizar el Solicitudes_puestos');
-      }
-  
-      return Solicitudes_puestosActualizado;
+        // Verificar si el registro existe
+        const Solicitudes_puestosExistente = await findBysolicitudes_puestos(idsolicitud_puesto);
+        if (!Solicitudes_puestosExistente) {
+            throw new Error('El Solicitudes_puestos no existe');
+        }
+
+        // Crear un objeto con los datos actualizados
+        const Solicitudes_puestosActualizado = { ...Solicitudes_puestosExistente, ...nuevoSolicitudes_puestosData };
+
+        // Realizar la actualización en la base de datos
+        const sql = `
+            UPDATE solicitudes_puestos 
+            SET idcentro_formacion = ?, 
+                idempresa = ?, 
+                idpuesto = ?, 
+                idsede_formacion = ?, 
+                tipo_puesto = ?, 
+                cantidad_solicitada = ?, 
+                descripcion_Solicitud = ?, 
+                fecha_solicitud = ? ,
+                respuesta = ?,
+                fecha_Respuesta = ?,
+                estado_solicitud = ?
+            WHERE idsolicitud_puesto = ?
+        `;
+        const values = [
+            Solicitudes_puestosActualizado.idcentro_formacion,
+            Solicitudes_puestosActualizado.idempresa,
+            Solicitudes_puestosActualizado.idpuesto,
+            Solicitudes_puestosActualizado.idsede_formacion,
+            Solicitudes_puestosActualizado.tipo_puesto,
+            Solicitudes_puestosActualizado.cantidad_solicitada,
+            Solicitudes_puestosActualizado.descripcion_Solicitud,
+            Solicitudes_puestosActualizado.fecha_solicitud,
+            Solicitudes_puestosActualizado.respuesta,
+            Solicitudes_puestosActualizado.fecha_Respuesta,
+            Solicitudes_puestosActualizado.estado_solicitud,
+            idsolicitud_puesto
+        ];
+
+        const [result] = await pool.execute(sql, values);
+
+        // Verificar si la actualización fue exitosa
+        if (result.affectedRows === 0) {
+            throw new Error('No se pudo actualizar el Solicitudes_puestos');
+        }
+
+        return Solicitudes_puestosActualizado;
     } catch (error) {
-      throw error;
+        throw error;
     }
-  }
+}
+
   
  async function eliminarSolicitudes_puestos(idsolicitud_puesto) {
    try {
