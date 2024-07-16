@@ -27,7 +27,8 @@ controller.crearDetalleContratoC = async (req, res, next) => {
         observaciones1: req.body.observaciones1 || null,
         observaciones2: req.body.observaciones2 || null,
         fechaCreacion: req.body.fechaCreacion || null,
-        firma_usuario: req.body.firma_usuario || null
+        firma_usuario: req.body.firma_usuario || null,
+        Sede_formacion: req.body.Sede_formacion || null
       };
 
       const nuevoDetalleContrato = await crearDetalleContrato(detalle_contratoData);

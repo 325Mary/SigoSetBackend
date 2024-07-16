@@ -39,7 +39,8 @@ const detalleContrato = {
       observaciones1,
       observaciones2,
       fechaCreacion,
-      firma_usuario
+      firma_usuario,
+      Sede_formacion
     } = detalle_contratoData;
 
     const sql = `
@@ -59,8 +60,9 @@ const detalleContrato = {
         observaciones1,
         observaciones2,
         fechaCreacion,
-        firma_usuario
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        firma_usuario,
+        Sede_formacion
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     return pool.execute(sql, [
       idcertificacion_centrof,
@@ -78,7 +80,8 @@ const detalleContrato = {
       observaciones1,
       observaciones2,
       fechaCreacion,
-      firma_usuario
+      firma_usuario,
+      Sede_formacion
     ]);
   }
 };
