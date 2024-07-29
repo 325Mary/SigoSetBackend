@@ -11,8 +11,8 @@ const solicitudes_puestos = {
     return pool.execute('SELECT * FROM solicitudes_puestos where idcentro_formacion = ?', [idcentro_formacion]); 
   },
   create: function(solicitudes_puestosData) {
-    const sql = `INSERT INTO solicitudes_puestos (idcentro_formacion, idempresa, idpuesto, idsede_formacion, tipo_puesto, cantidad_solicitada, descripcion_Solicitud, 
-    fecha_solicitud ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO solicitudes_puestos (idcentro_formacion, idempresa, idpuesto, idsede_formacion, tipo_puesto, cantidad_solicitada, descripcion_Solicitud,
+    fecha_solicitud, fecha_inicio, fecha_fin ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     return pool.execute(sql, [
       solicitudes_puestosData.idcentro_formacion, 
       solicitudes_puestosData.idempresa, 
@@ -21,7 +21,9 @@ const solicitudes_puestos = {
       solicitudes_puestosData.tipo_puesto,
       solicitudes_puestosData.cantidad_solicitada,  
       solicitudes_puestosData.descripcion_Solicitud, 
-      solicitudes_puestosData.fecha_solicitud
+      solicitudes_puestosData.fecha_solicitud,
+      solicitudes_puestosData.fecha_inicio,
+      solicitudes_puestosData.fecha_fin
     ]);
     
   }

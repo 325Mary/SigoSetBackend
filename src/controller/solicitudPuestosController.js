@@ -11,7 +11,7 @@ const controller = {}
 
 controller.crearsolicitud_puestoC = async (req, res, next) => {
   try {
-    validarCamposRequeridos(['idcentro_formacion','idempresa','idpuesto','idsede_formacion','tipo_puesto','cantidad_solicitada','descripcion_Solicitud','fecha_solicitud'])(req, res, async () => {
+    validarCamposRequeridos(['idcentro_formacion','idempresa','idpuesto','idsede_formacion','tipo_puesto','cantidad_solicitada','descripcion_Solicitud','fecha_solicitud', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const solicitud_puestoData = req.body;
 
       const solicitud_puesto = await crearSolicitudes_puestos(solicitud_puestoData);

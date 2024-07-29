@@ -74,13 +74,15 @@ async function editarPuestoVXcentro(idpuestosvxcentrof, nuevoPuestoXcentroData) 
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE puestosvxcentrof SET idcentro_formacion = ?, idempresa = ?, idpuesto_vigilancia = ?, cantidad_puestov = ?, status= ? WHERE idpuestosvxcentrof = ?',
+      'UPDATE puestosvxcentrof SET idcentro_formacion = ?, idempresa = ?, idpuesto_vigilancia = ?, cantidad_puestov = ?, status= ?, fecha_inicio = ?, fecha_fin = ? WHERE idpuestosvxcentrof = ?',
       [
         PuestoVXcentroActualizado.idcentro_formacion,
         PuestoVXcentroActualizado.idempresa,
         PuestoVXcentroActualizado.idpuesto_vigilancia,
         PuestoVXcentroActualizado.cantidad_puestov,
         PuestoVXcentroActualizado.status,
+        PuestoVXcentroActualizado.fecha_inicio,
+        PuestoVXcentroActualizado.fecha_fin,
         idpuestosvxcentrof
       ]
     );
@@ -108,13 +110,15 @@ async function editarPuestoVEXcentro(idpuntosvelectronica, nuevoPuestoVEXcentroD
 
     // Realizar la actualización en la base de datos
     const [result] = await pool.execute(
-      'UPDATE puntosvelectronica SET  idcentro_formacion = ?, idempresa = ?, idvigilancia_electronica = ?, cantidad= ?, statusE = ? WHERE idpuntosvelectronica = ?',
+      'UPDATE puntosvelectronica SET  idcentro_formacion = ?, idempresa = ?, idvigilancia_electronica = ?, cantidad= ?, statusE = ?, fecha_inicio = ?, fecha_fin= ? WHERE idpuntosvelectronica = ?',
       [
         PuestoVEXcentroActualizado.idcentro_formacion,
         PuestoVEXcentroActualizado.idempresa,
         PuestoVEXcentroActualizado.idvigilancia_electronica,
         PuestoVEXcentroActualizado.cantidad,
         PuestoVEXcentroActualizado.statusE,
+        PuestoVEXcentroActualizado.fecha_inicio,
+        PuestoVEXcentroActualizado.fecha_fin,
         idpuntosvelectronica
       ]
     );
@@ -147,6 +151,9 @@ async function eliminarPuestoVEXcentro(idpuntosvelectronica) {
     throw error;
   }
 }
+
+
+
 
 module.exports = {obtenerPuestosVigilancia, 
   obtenerPuestosXcentro, 

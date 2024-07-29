@@ -27,6 +27,8 @@ const informesRoutes = require('../routes/informesRoutes');
 const moduleRoutes= require('../routes/moduloRoutes')
 const moduloXperfilRoutes= require('../routes/moduloxperfilRoutes')
 const SolicitudesPuestosRoutes = require("../routes/solicitudesPuestosRoutes")
+const PuestosTemporales =  require('../routes/puestosTemporalesRoutes')
+
 
 const cronJobs = require('../cronJobs/contratoEmpresaCron'); 
 
@@ -64,6 +66,7 @@ appSigoSet.use(informesRoutes)
 appSigoSet.use(moduleRoutes)
 appSigoSet.use(moduloXperfilRoutes)
 appSigoSet.use(SolicitudesPuestosRoutes)
+appSigoSet.use(PuestosTemporales)
 
 appSigoSet.set("port", process.env.PORT || port);
 
