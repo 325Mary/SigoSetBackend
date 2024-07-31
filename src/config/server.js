@@ -30,12 +30,12 @@ const SolicitudesPuestosRoutes = require("../routes/solicitudesPuestosRoutes")
 const PuestosTemporales =  require('../routes/puestosTemporalesRoutes')
 
 
-const cronJobs = require('../cronJobs/contratoEmpresaCron'); 
-
+const cronJobsC = require('../cronJobs/contratoEmpresaCron'); 
+const cronJobsP = require('../cronJobs/PuestoTemporalCron')
 const appSigoSet = express();
 const port = 3000;
 appSigoSet.use(cors());
-cronJobs;
+cronJobsC;
 appSigoSet.use(express.json());
 appSigoSet.use('/uploads', express.static(path.join(__dirname, '../../uploads/firmas')));
 appSigoSet.use('/uploadsPdf', express.static(path.join(__dirname, '../../uploads/Contratos')));

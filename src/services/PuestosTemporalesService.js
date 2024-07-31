@@ -76,11 +76,25 @@ async function eliminarPuestoTemporal(idPuestosTemporales){
     }
 }
 
-
+async function verificarVigenciPuestos() {
+    const sql = `UPDATE puestos_temporales 
+SET estado = CASE 
+              WHEN fecha_fin < CURDATE() THEN 'inactivo' 
+              ELSE 'activo'
+             END;
+`;
+    try {
+      const [result] = await pool.execute(sql);
+    //   console.log(`Se actualizaron ${result.affectedRows} Puestos.`);
+    } catch (error) {
+      console.error('Error al verificar la vigencia de los contratos:', error);
+    }
+  }
 
 module.exports = {
     crearPuestosTemporales,
     ObtenerPuestosTemprales,
     editarPuestoTemporal,
-    eliminarPuestoTemporal
+    eliminarPuestoTemporal,
+    verificarVigenciPuestos
 }

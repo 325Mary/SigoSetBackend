@@ -14,7 +14,7 @@ const controller = {}
 controller.crearPuestosTemporalesController = async (req, res, next) => {
   try {
     // Asegúrate de que los campos opcionales se manejen correctamente
-    validarCamposRequeridos(['tipo_Puesto', 'fecha_inicio', 'fecha_fin', 'cantidad'])(req, res, async () => {
+    validarCamposRequeridos(['tipo_Puesto', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const PuestoTemporalData = req.body;
       
       // Manejar campos opcionales
