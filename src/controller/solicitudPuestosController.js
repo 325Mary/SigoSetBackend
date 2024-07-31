@@ -13,13 +13,15 @@ controller.crearsolicitud_puestoC = async (req, res, next) => {
   try {
     validarCamposRequeridos(['idcentro_formacion','idempresa','idpuesto','idsede_formacion','tipo_puesto','cantidad_solicitada','descripcion_Solicitud','fecha_solicitud', 'fecha_inicio', 'fecha_fin'])(req, res, async () => {
       const solicitud_puestoData = req.body;
+      solicitud_puestoData.idpuntosvelectronica = solicitud_puestoData.idpuntosvelectronica || null;
+      solicitud_puestoData.idpuestosvxcentrof = solicitud_puestoData.idpuestosvxcentrof || null
 
       const solicitud_puesto = await crearSolicitudes_puestos(solicitud_puestoData);
       res.status(201).json({ ...ResponseStructure, message: 'solicitud_puesto creado exitosamente', data: solicitud_puesto });
     });
   } catch (error) {
     next(error);
-  }
+  } 
 };
 
 controller.obtenersolicitud_puestoesC = async (req, res, next) => {

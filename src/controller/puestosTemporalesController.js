@@ -11,28 +11,35 @@ const {
 
 const controller = {}
 
-controller.crearPuestosTemporalesController = async (req, res, next)=> {
-    try {
-        validarCamposRequeridos(['tipo_Puesto', 'fecha_inicio','fecha_fin', 'cantidad'])
-    (req, res, async ()=> {
-
-        const PuestoTemporalData = req.body;
-        const result= await crearPuestosTemporales(PuestoTemporalData)
-
-        const PuestoTemporal = result[0];
-        res.status(201).json({
-            ...ResponseStructure,
-            mensage: 'Creado exitosamente',
-            data: {
-                idPuestosTemporales: PuestoTemporal.insertId,
-                ...PuestoTemporalData
-            }
-        })
-    })
-    } catch(error){
-        next(error)
-    }
-}
+controller.crearPuestosTemporalesController = async (req, res, next) => {
+  try {
+    // Asegúrate de que los campos opcionales se manejen correctamente
+    validarCamposRequeridos(['tipo_Puesto', 'fecha_inicio', 'fecha_fin', 'cantidad'])(req, res, async () => {
+      const PuestoTemporalData = req.body;
+      
+      // Manejar campos opcionales
+      PuestoTemporalData.idpuntosvelectronica = PuestoTemporalData.idpuntosvelectronica || null;
+      PuestoTemporalData.idpuestosvxcentrof = PuestoTemporalData.idpuestosvxcentrof || null;
+      PuestoTemporalData.direccionSedeVHumana = PuestoTemporalData.direccionSedeVHumana || null;
+      PuestoTemporalData.direccionSedeVElectronica = PuestoTemporalData.direccionSedeVElectronica || null;
+      PuestoTemporalData.cantidad = PuestoTemporalData.cantidad || null;
+      PuestoTemporalData.cantidad_puestov =  PuestoTemporalData.cantidad_puestov || null
+      
+      const result = await crearPuestosTemporales(PuestoTemporalData);
+      const PuestoTemporal = result[0];
+      res.status(201).json({
+        ...ResponseStructure,
+        message: 'Creado exitosamente',
+        data: {
+          idPuestosTemporales: PuestoTemporal.insertId,
+          ...PuestoTemporalData
+        }
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 

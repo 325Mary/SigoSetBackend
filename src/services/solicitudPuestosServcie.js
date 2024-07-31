@@ -5,10 +5,10 @@ const {solicitudes_puestos,
 
  async function crearSolicitudes_puestos(solicitudes_puestosData) {
    try {
-       if (!solicitudes_puestosData  || !solicitudes_puestosData.idcentro_formacion || !solicitudes_puestosData.idempresa || !solicitudes_puestosData.idsede_formacion || !solicitudes_puestosData.idpuesto || !solicitudes_puestosData.tipo_puesto ||
-!        solicitudes_puestosData.cantidad_solicitada || ! solicitudes_puestosData.descripcion_Solicitud || !solicitudes_puestosData.fecha_solicitud || !solicitudes_puestosData.fecha_inicio || !solicitudes_puestosData.fecha_fin ) {
-           throw new Error('Faltan datos del Solicitudes_puestos');
-       }
+//        if (!solicitudes_puestosData  || !solicitudes_puestosData.idcentro_formacion || !solicitudes_puestosData.idempresa || !solicitudes_puestosData.idsede_formacion || !solicitudes_puestosData.idpuesto || !solicitudes_puestosData.tipo_puesto ||
+// !        solicitudes_puestosData.cantidad_solicitada || ! solicitudes_puestosData.descripcion_Solicitud || !solicitudes_puestosData.fecha_solicitud || !solicitudes_puestosData.fecha_inicio || !solicitudes_puestosData.fecha_fin ) {
+//            throw new Error('Faltan datos del Solicitudes_puestos');
+//        }
  
 
        const nuevoSolicitudes_puestos = await solicitudes_puestos.create(solicitudes_puestosData);
