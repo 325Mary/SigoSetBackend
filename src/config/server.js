@@ -33,7 +33,7 @@ const PuestosTemporales =  require('../routes/puestosTemporalesRoutes')
 const cronJobsC = require('../cronJobs/contratoEmpresaCron'); 
 const cronJobsP = require('../cronJobs/PuestoTemporalCron')
 const appSigoSet = express();
-const port = 3000;
+const port = 4000;
 appSigoSet.use(cors());
 cronJobsC;
 appSigoSet.use(express.json());

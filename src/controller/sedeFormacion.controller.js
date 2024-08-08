@@ -1,84 +1,85 @@
 
 const pool = require('../config/database');
+const sedeModel = require('../models/sedeFormacion');
 
 exports.getSedesFormacion = async (req, res) => {
     try {
-        const [sedesFormacion] =  await pool.query(
+        const [sedesFormacion] = await pool.query(
             "SELECT * FROM sede_formacion"
         );
         res.status(200).json(sedesFormacion)
 
-    } catch  (error){
-        return res.status(500).json({message: "Error. Inténtalo de nuevo más tarde."})
+    } catch (error) {
+        return res.status(500).json({ message: "Error. Inténtalo de nuevo más tarde." })
     }
 
 }
 
-exports.getSedeFormacion= async (req, res) => {
+exports.getSedeFormacion = async (req, res) => {
     try {
-        const [sedeFormacion] =  await pool.query(
+        const [sedeFormacion] = await pool.query(
             "SELECT * FROM sede_formacion WHERE idsede_formacion = ?", [
-                req.params.idsede_formacion
+            req.params.idsede_formacion
         ]);
-        if (sedeFormacion.length === 0){
-            return res.status(404).json({message: "La sede de formación no encontrada."})
+        if (sedeFormacion.length === 0) {
+            return res.status(404).json({ message: "La sede de formación no encontrada." })
         }
-        return res.status(200).json({result:sedeFormacion[0]})
+        return res.status(200).json({ result: sedeFormacion[0] })
 
-    } catch  (error){
-        return  res.status(500).json({message: "Error. Inténtalo de nuevo más tarde."})
+    } catch (error) {
+        return res.status(500).json({ message: "Error. Inténtalo de nuevo más tarde." })
     }
 
 }
 
 exports.crearSedeFormacion = async (req, res) => {
     try {
-        const {  idmunicipio, sede_formacion,
+        const { idmunicipio, sede_formacion,
             dir_sede_formacion, telefono_sedef, email_sedef
         } = req.body
         const sedeFormacion = await pool.query(
             "INSERT INTO sede_formacion ( idmunicipio, sede_formacion, dir_sede_formacion, telefono_sedef, email_sedef ) VALUES ( ?, ?, ?, ?, ?)",
-            [ idmunicipio, sede_formacion,
+            [idmunicipio, sede_formacion,
                 dir_sede_formacion, telefono_sedef, email_sedef]
         );
-       
-        res.status(201).json({ message: "Sede de formación creada exitoxamente", result: sedeFormacion})
-    } catch  ( error ){
+
+        res.status(201).json({ message: "Sede de formación creada exitoxamente", result: sedeFormacion })
+    } catch (error) {
         console.log('error', error)
-        return  res.status(500).json({message: "Error interno del servidor. Inténtalo de nuevo más tarde."})
+        return res.status(500).json({ message: "Error interno del servidor. Inténtalo de nuevo más tarde." })
     }
 }
 
-exports.editarSedeFormacion= async ( req, res) => {
+exports.editarSedeFormacion = async (req, res) => {
     try {
         const sedeFormacion = await pool.query(
             "UPDATE sede_formacion SET ? WHERE idsede_formacion = ? ",
             [
                 req.body,
                 req.params.idsede_formacion
-        ]);
+            ]);
 
-        return res.status(200).json({message: "La sede de formación se actualizo exitoxamente"})
-    } catch ( error ){
+        return res.status(200).json({ message: "La sede de formación se actualizo exitoxamente" })
+    } catch (error) {
         console.log(error)
-        return  res.status(500).json({message: "Error. Inténtalo de nuevo más tarde."})
+        return res.status(500).json({ message: "Error. Inténtalo de nuevo más tarde." })
     }
 }
 
-exports.eliminarSedeFormacion= async (req, res) =>  {
+exports.eliminarSedeFormacion = async (req, res) => {
     try {
-     
-        const  [ sedeFormacion ] = await pool.query(
-            "DELETE FROM sede_formacion WHERE idsede_formacion = ?",[
-               req.params.idsede_formacion
-            ]
+
+        const [sedeFormacion] = await pool.query(
+            "DELETE FROM sede_formacion WHERE idsede_formacion = ?", [
+            req.params.idsede_formacion
+        ]
         )
-        if ( sedeFormacion.affectedRows === 0){
-            return res.status(404).json({message: "Sede de formación no encontrada."})
+        if (sedeFormacion.affectedRows === 0) {
+            return res.status(404).json({ message: "Sede de formación no encontrada." })
         }
-        return res.status(204).json({message: "La sede de formación se elimino exitoxamente"})
-    } catch ( error ){
-        return  res.status(500).json({message: "Error. Inténtalo de nuevo más tarde."})
+        return res.status(204).json({ message: "La sede de formación se elimino exitoxamente" })
+    } catch (error) {
+        return res.status(500).json({ message: "Error. Inténtalo de nuevo más tarde." })
     }
 }
 
@@ -93,5 +94,28 @@ exports.getSedesPorCentroFormacion = async (req, res) => {
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: "Error. Inténtalo de nuevo más tarde." });
+    }
+}
+
+exports.desasignarSedeController = async (req, res) => {
+    const { idSedeFormacion } = req.params;
+
+    try {
+        const query = `
+          UPDATE sede_formacion
+          SET idcentro_formacion = NULL
+          WHERE idsede_formacion = ?
+        `;
+
+        const [result] = await pool.query(query, [idSedeFormacion]);
+
+        if (result.affectedRows > 0) {
+            res.status(200).json({ message: 'Sede desasignada exitosamente.' });
+        } else {
+            res.status(404).json({ message: 'No se encontró la sede para desasignar.' });
+        }
+    } catch (error) {
+        console.error('Error al desasignar la sede:', error);
+        res.status(500).json({ message: `Error al desasignar la sede: ${error.message}` });
     }
 }
