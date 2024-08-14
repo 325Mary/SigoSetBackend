@@ -10,10 +10,10 @@ const {
 const validarTokenMiddleware = require('../middleware/userAuthentication')
 
 
-router.post('/crearEmpresa', crearEmpresaC); 
+router.post('/crearEmpresa', validarTokenMiddleware, crearEmpresaC); 
 router.get('/listEmpresa', validarTokenMiddleware, obtenerEmpresaC);
-router.put('/editEmpresa/:idempresa', editarEmpresaC);
-router.delete('/EliminarEmpresa/:idempresa', eliminarEmpresaC);
+router.put('/editEmpresa/:idempresa', validarTokenMiddleware, editarEmpresaC);
+router.delete('/EliminarEmpresa/:idempresa', validarTokenMiddleware, eliminarEmpresaC);
 
 
 module.exports = router;

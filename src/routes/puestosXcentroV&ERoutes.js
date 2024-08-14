@@ -9,16 +9,17 @@ const {obtenerPuestVC, obtenerPuestosXcentroC, obtenerPuestosEXcentroC,
     eliminarPuestoVXcentroC,
     eliminarPuestoVEXcentroC
 } = require('../controller/puestosXcentroV&EController')
+const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.get('/optenertodospuestosvig', obtenerPuestVC);
-router.get('/listPuestosXcentro/:idcentro_formacion', obtenerPuestosXcentroC)
-router.get('/listPuestosEXcentro/:idcentro_formacion', obtenerPuestosEXcentroC)
-router.post('/crearPVxCentro', crearPuestoVXcentroC)
-router.post('/crearPVExCentro', crearPuestoVEXcentroC)
-router.put('/editPVXcentro/:idpuestosvxcentrof', editarPuestoVxCentroC)
-router.put('/editPVEXcentro/:idpuntosvelectronica', editarPuestoVExCentroC)
-router.delete('/eliminarPVXcentro/:idpuestosvxcentrof', eliminarPuestoVXcentroC)
-router.delete('/eliminarPVEXcentro/:idpuntosvelectronica', eliminarPuestoVEXcentroC)
+router.get('/optenertodospuestosvig', validarTokenMiddleware, obtenerPuestVC);
+router.get('/listPuestosXcentro/:idcentro_formacion', validarTokenMiddleware, obtenerPuestosXcentroC)
+router.get('/listPuestosEXcentro/:idcentro_formacion', validarTokenMiddleware, obtenerPuestosEXcentroC)
+router.post('/crearPVxCentro', validarTokenMiddleware, crearPuestoVXcentroC)
+router.post('/crearPVExCentro', validarTokenMiddleware, crearPuestoVEXcentroC)
+router.put('/editPVXcentro/:idpuestosvxcentrof', validarTokenMiddleware, editarPuestoVxCentroC)
+router.put('/editPVEXcentro/:idpuntosvelectronica', validarTokenMiddleware, editarPuestoVExCentroC)
+router.delete('/eliminarPVXcentro/:idpuestosvxcentrof', validarTokenMiddleware, eliminarPuestoVXcentroC)
+router.delete('/eliminarPVEXcentro/:idpuntosvelectronica', validarTokenMiddleware, eliminarPuestoVEXcentroC)
 
 
 module.exports = router

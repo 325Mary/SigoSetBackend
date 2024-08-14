@@ -12,10 +12,10 @@ const upload = require('../middleware/pdf_Multer');
 const validarTokenMiddleware = require('../middleware/userAuthentication')
 
 
-router.post('/crearContratoEmpresa',upload.single('contrato_pdf'), crearContratoEmpresaC); 
+router.post('/crearContratoEmpresa', validarTokenMiddleware, upload.single('contrato_pdf'), crearContratoEmpresaC); 
 router.get('/listContratosEmpresas', validarTokenMiddleware, obtenerContratoEmpresasC);
-router.put('/editContratoEmpresa/:idContrato_empresa', upload.single('contrato_pdf'), editarContratoEmpresaC);
-router.delete('/EliminarContratoEmpresa/:idContrato_empresa', eliminarContratoEmpresaC);
+router.put('/editContratoEmpresa/:idContrato_empresa', validarTokenMiddleware,  upload.single('contrato_pdf'), editarContratoEmpresaC);
+router.delete('/EliminarContratoEmpresa/:idContrato_empresa', validarTokenMiddleware, eliminarContratoEmpresaC);
 
 
 module.exports = router;

@@ -4,8 +4,8 @@ const centrosFormacionController = require('../controller/centroFormacionControl
 const validarTokenMiddleware = require('../middleware/userAuthentication')
 
 router.get('/centrosFormacion',validarTokenMiddleware, centrosFormacionController.getCentrosFormacion )
-router.get('/centroFormacion/:idcentroFormacion', centrosFormacionController.getCentroFormacion )
-router.post('/centroFormacion', centrosFormacionController.crearCentroFormacion )
-router.put('/centroFormacion/:idcentroFormacion', centrosFormacionController.editarCentroFormacion )
-router.delete('/centroFormacion/:idcentroFormacion', centrosFormacionController.eliminarCentroFormacion )
+router.get('/centroFormacion/:idcentroFormacion', validarTokenMiddleware, centrosFormacionController.getCentroFormacion )
+router.post('/centroFormacion', validarTokenMiddleware, centrosFormacionController.crearCentroFormacion )
+router.put('/centroFormacion/:idcentroFormacion', validarTokenMiddleware, centrosFormacionController.editarCentroFormacion )
+router.delete('/centroFormacion/:idcentroFormacion', validarTokenMiddleware, centrosFormacionController.eliminarCentroFormacion )
 module.exports = router;

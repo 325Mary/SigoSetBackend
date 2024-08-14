@@ -7,11 +7,12 @@ const {
     editarMunicipioC,
     eliminarMunicipioC
 } = require('../controller/municipioController');
+const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.post('/crearMunicipio', crearMunicipioC);
-router.get('/obtenerMunicipio', obtenerMunicipiosC);
-router.get('/obtenerMunicipio/:idmunicipio', obtenerMunicipioPorIdC);
-router.put('/editarMunicipio/:idmunicipio', editarMunicipioC);
-router.delete('/eliminarMunicipio/:idmunicipio', eliminarMunicipioC);
+router.post('/crearMunicipio', validarTokenMiddleware, crearMunicipioC);
+router.get('/obtenerMunicipio', validarTokenMiddleware, obtenerMunicipiosC);
+router.get('/obtenerMunicipio/:idmunicipio', validarTokenMiddleware,  obtenerMunicipioPorIdC);
+router.put('/editarMunicipio/:idmunicipio', validarTokenMiddleware, editarMunicipioC);
+router.delete('/eliminarMunicipio/:idmunicipio', validarTokenMiddleware, eliminarMunicipioC);
 
 module.exports = router;

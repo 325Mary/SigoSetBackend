@@ -9,15 +9,16 @@ const {
     deleteRegionalById
 
 } = require('../controller/regional.controller');
+const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.get('/listAllRegional', getAllRegionals);
+router.get('/listAllRegional',validarTokenMiddleware, getAllRegionals);
 
-router.get('/listRegionalByid/:id', getRegionalById);
+router.get('/listRegionalByid/:id', validarTokenMiddleware,  getRegionalById);
 
-router.post('/createRegional', createRegional);
+router.post('/createRegional', validarTokenMiddleware,  createRegional);
 
-router.put('/editRegionalByid/:id', updateRegional);
+router.put('/editRegionalByid/:id', validarTokenMiddleware, updateRegional);
 
-router.delete('/deleteRegionalByid/:id', deleteRegionalById);
+router.delete('/deleteRegionalByid/:id', validarTokenMiddleware, deleteRegionalById);
 
 module.exports = router;

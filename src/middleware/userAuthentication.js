@@ -7,12 +7,12 @@ const  {listaNegraService}  = require('../services/listaNegraService')
 const validarTokenMiddleware = async (req, res, next) => {
   try {
     if (!req || !req.headers || !req.headers.authorization) {
-      return res.status(401).json({ error: 'Token no proporcionado'  });
+      return res.status(401).json({ error: 'Acceso no autorizado'  });
     }
 
     const token = req.headers.authorization;
     if (!token) {
-      return res.status(401).json({ error: 'Token no proporcionado' });
+      return res.status(401).json({ error: 'Acceso no autorizado' });
     }
 
     // const tokenBearer = token.split(' ')[1];

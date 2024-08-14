@@ -88,7 +88,7 @@ function crearToken(user) {
   const payload = { userId: idUsuario, email_usuario , nombre_usuario, identificacion, idperfil, idcentro_formacion};
   console.log("Atributos del payload:", payload); 
   const secret = process.env.JWT_SECRET;
-  const options = { expiresIn: '30m' };
+  const options = { expiresIn: '3m' };
   const token = jwt.sign(payload, secret, options);
   return token;
 }

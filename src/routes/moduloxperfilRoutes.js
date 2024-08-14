@@ -6,9 +6,10 @@ const {
     editarModuloXperfilC,
     obtenerModuloxperfilListC
 } = require('../controller/moduloxperfilController');
+const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.get('/obtenerModulosXperfil', obtenerModuloxperfilC);
-router.post('/crearModuloXperfil', crearModuloXperfilC);
-router.put('/editarModuloXperfil/:idmodulo/:idperfil', editarModuloXperfilC);
-router.get('/obtenerModulosPorPerfil/:idperfil', obtenerModuloxperfilListC);
+router.get('/obtenerModulosXperfil', validarTokenMiddleware, obtenerModuloxperfilC);
+router.post('/crearModuloXperfil', validarTokenMiddleware, crearModuloXperfilC);
+router.put('/editarModuloXperfil/:idmodulo/:idperfil', validarTokenMiddleware, editarModuloXperfilC);
+router.get('/obtenerModulosPorPerfil/:idperfil', validarTokenMiddleware, obtenerModuloxperfilListC);
 module.exports = router;

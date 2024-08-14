@@ -10,10 +10,10 @@ const {
 const checkPerfil = require('../middleware/verificadorDePerfil')
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.post('/crearVigilanciaElc', crearVigilanciaElectronicaC); 
-router.get('/listVigilanciaElc', obtenerVigilanciaElectronicaC);
-router.put('/editVigilanciaElc/:idvigilancia_electronica', editarVigilanciaElectronicaC);
-router.delete('/EliminarVigilanciaElc/:idvigilancia_electronica', eliminarVigilanciaElectronicaC);
+router.post('/crearVigilanciaElc', validarTokenMiddleware, crearVigilanciaElectronicaC); 
+router.get('/listVigilanciaElc', validarTokenMiddleware,  obtenerVigilanciaElectronicaC);
+router.put('/editVigilanciaElc/:idvigilancia_electronica',validarTokenMiddleware,  editarVigilanciaElectronicaC);
+router.delete('/EliminarVigilanciaElc/:idvigilancia_electronica', validarTokenMiddleware, eliminarVigilanciaElectronicaC);
 
 
 module.exports = router;

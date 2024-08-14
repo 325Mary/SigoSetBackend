@@ -8,12 +8,13 @@ const {
     eliminarDepartamentoC,
     
      } = require('../controller/departamentoController');
+const validarTokenMiddleware = require('../middleware/userAuthentication')
 
-router.post('/crearDepartamento', crearDepartamentoC); 
-router.get('/listMDepartamento', obtenerDepartamentoC);
+router.post('/crearDepartamento', validarTokenMiddleware, crearDepartamentoC); 
+router.get('/listMDepartamento', validarTokenMiddleware, obtenerDepartamentoC);
 //router.get('/listarOneDep/:iddepartamento',obtenerDepartamentoPorId)
-router.put('/editDepartamento/:iddepartamento', editarDepartamentoC);
-router.delete('/EliminarDepartamento/:iddepartamento', eliminarDepartamentoC);
+router.put('/editDepartamento/:iddepartamento', validarTokenMiddleware,  editarDepartamentoC);
+router.delete('/EliminarDepartamento/:iddepartamento', validarTokenMiddleware, eliminarDepartamentoC);
 
 
 module.exports = router;

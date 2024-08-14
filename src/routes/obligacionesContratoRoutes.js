@@ -7,11 +7,12 @@ const {
     eliminarObligacionesContratoC,
     obtenerObligacionesContratoIdC
 } = require("../controller/obligacionesContratoController");
+const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.get('/obtenerObligacionContratoId/:idobligaciones_contrato', obtenerObligacionesContratoIdC);
-router.get('/obtenerObligacionesContrato', obtenerObligacionesContratoC);
-router.post('/crearObligacion', crearObligacionesContratoC);
-router.put('/actualizarObligacion/:idobligaciones_contrato', editarObligacionesContratoC);
-router.delete('/eliminarObligacion/:idobligaciones_contrato', eliminarObligacionesContratoC);
+router.get('/obtenerObligacionContratoId/:idobligaciones_contrato', validarTokenMiddleware, obtenerObligacionesContratoIdC);
+router.get('/obtenerObligacionesContrato', validarTokenMiddleware, obtenerObligacionesContratoC);
+router.post('/crearObligacion', validarTokenMiddleware, crearObligacionesContratoC);
+router.put('/actualizarObligacion/:idobligaciones_contrato', validarTokenMiddleware, editarObligacionesContratoC);
+router.delete('/eliminarObligacion/:idobligaciones_contrato', validarTokenMiddleware, eliminarObligacionesContratoC);
 
 module.exports = router;

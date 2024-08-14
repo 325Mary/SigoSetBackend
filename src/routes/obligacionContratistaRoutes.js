@@ -8,12 +8,13 @@ const {
     eliminarObligacionesContratistaC,
     obtenerObligacionContratistaCID
      } = require('../controller/obligacionesContratistaController');
+const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.post('/crearObligacionContratista', crearObligacionesContratistaC); 
-router.get('/listObligacionesContratista', obtenerObligacionesContratistaC);
-router.get('/obtenerObligacionContratistaC/:idobligaciones_contratista',obtenerObligacionContratistaCID)
-router.put('/editObligacionContratista/:idobligaciones_contratista', editarObligacionesContratistaC);
-router.delete('/EliminarObligacionContratista/:idobligaciones_contratista', eliminarObligacionesContratistaC);
+router.post('/crearObligacionContratista', validarTokenMiddleware, crearObligacionesContratistaC); 
+router.get('/listObligacionesContratista', validarTokenMiddleware, obtenerObligacionesContratistaC);
+router.get('/obtenerObligacionContratistaC/:idobligaciones_contratista', validarTokenMiddleware, obtenerObligacionContratistaCID)
+router.put('/editObligacionContratista/:idobligaciones_contratista', validarTokenMiddleware,  editarObligacionesContratistaC);
+router.delete('/EliminarObligacionContratista/:idobligaciones_contratista', validarTokenMiddleware, eliminarObligacionesContratistaC);
 
 
 module.exports = router;

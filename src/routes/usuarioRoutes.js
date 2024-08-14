@@ -19,17 +19,17 @@ const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
 const upload = require('../middleware/Multer')
 
-router.post('/crearUsuario', upload.single('firma_usuario'),  crearUsuarioC); 
-router.get('/listUsuarios', obtenerUsuariosC);
+router.post('/crearUsuario', validarTokenMiddleware, upload.single('firma_usuario'),  crearUsuarioC); 
+router.get('/listUsuarios', validarTokenMiddleware,  obtenerUsuariosC);
 router.post('/iniciarSesion', postLogin)
-router.put('/editUser/:idUsuario',  upload.single('firma_usuario'), editarUsuarioC);
-router.delete('/EliminarUser/:idUsuario', eliminarUsuarioC);
-router.put('/cambiarPassword/:idUsuario', cambiarContraseñaC);
-router.post('/solicitarRestablecimiento', solicitarRestablecimiento);
-router.post('/restablecerPassword', restablecerContraseña);
-router.put('/estadoUser/:idUsuario' , estadoUsuarioC);
+router.put('/editUser/:idUsuario', validarTokenMiddleware, upload.single('firma_usuario'), editarUsuarioC);
+router.delete('/EliminarUser/:idUsuario', validarTokenMiddleware, eliminarUsuarioC);
+router.put('/cambiarPassword/:idUsuario',validarTokenMiddleware , cambiarContraseñaC);
+router.post('/solicitarRestablecimiento',validarTokenMiddleware, solicitarRestablecimiento);
+router.post('/restablecerPassword', validarTokenMiddleware, restablecerContraseña);
+router.put('/estadoUser/:idUsuario' , validarTokenMiddleware, estadoUsuarioC);
 router.post('/cerrarSesion', cerrarSesionC);
-router.get('/getId/:idUsuario', getUserId);
-router.post('/enviarCorreo/:idUsuario', enviarDatosUsuarioPorCorreoController);
+router.get('/getId/:idUsuario', validarTokenMiddleware, getUserId);
+router.post('/enviarCorreo/:idUsuario', validarTokenMiddleware,  enviarDatosUsuarioPorCorreoController);
 
 module.exports = router;
