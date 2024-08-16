@@ -20,8 +20,8 @@ const  validarTokenMiddleware= require('../middleware/userAuthentication')
 const upload = require('../middleware/Multer')
 
 router.post('api/crearUsuario', validarTokenMiddleware, upload.single('firma_usuario'),  crearUsuarioC); 
-router.get('api/listUsuarios', validarTokenMiddleware,  obtenerUsuariosC);
-router.post('api/iniciarSesion', postLogin)
+router.get('/api/listUsuarios', validarTokenMiddleware,  obtenerUsuariosC);
+router.post('/api/iniciarSesion', postLogin)
 router.put('api/editUser/:idUsuario', validarTokenMiddleware, upload.single('firma_usuario'), editarUsuarioC);
 router.delete('api/EliminarUser/:idUsuario', validarTokenMiddleware, eliminarUsuarioC);
 router.put('api/cambiarPassword/:idUsuario',validarTokenMiddleware , cambiarContraseñaC);
