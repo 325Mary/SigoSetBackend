@@ -12,12 +12,12 @@ const {
      } = require('../controller/detalleContratoController');
      const upload = require('../middleware/Multer')
 
-router.post('/crearDetalleContrato', validarTokenMiddleware, crearDetalleContratoC); 
-router.get('/listDetalleContratos', validarTokenMiddleware, obtenerdetalleContratosC);
-router.put('/editDetalleContrato/:iddetalle_contrato', validarTokenMiddleware, editarDetalleContratosC);
-router.get('/listDporId/:iddetalle_contrato', validarTokenMiddleware, obtenerDetalleContratoPorIdC);
-router.get('/listDporNombre/:nombreDetalleContrato',validarTokenMiddleware, obtenerDetalleContratoPorNombreC);
-router.delete('/EliminarDetalleContrato/:iddetalle_contrato',validarTokenMiddleware, eliminardetalleContratoC);
+router.post('api/crearDetalleContrato', validarTokenMiddleware, crearDetalleContratoC); 
+router.get('api/listDetalleContratos', validarTokenMiddleware, obtenerdetalleContratosC);
+router.put('api/editDetalleContrato/:iddetalle_contrato', validarTokenMiddleware, editarDetalleContratosC);
+router.get('api/listDporId/:iddetalle_contrato', validarTokenMiddleware, obtenerDetalleContratoPorIdC);
+router.get('api/listDporNombre/:nombreDetalleContrato',validarTokenMiddleware, obtenerDetalleContratoPorNombreC);
+router.delete('api/EliminarDetalleContrato/:iddetalle_contrato',validarTokenMiddleware, eliminardetalleContratoC);
 
 
 module.exports = router;

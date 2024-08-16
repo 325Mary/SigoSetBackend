@@ -9,10 +9,10 @@
       } = require('../controller/puestosTemporalesController');
   const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
- router.post('/crearPuestosTemporales', validarTokenMiddleware, crearPuestosTemporalesController); 
- router.get('/listPuestosTemporales/:idcentro_formacion', validarTokenMiddleware,  obtenerPuestosTemporalesController);
- router.put('/editPuestosTemporales/:idPuestosTemporales', validarTokenMiddleware, editarPuestosTemporalesfC);
- router.delete('/EliminarPuestosTemporales/:idPuestosTemporales', validarTokenMiddleware,  eliminarPuestosTemporalesfC);
+ router.post('api/crearPuestosTemporales', validarTokenMiddleware, crearPuestosTemporalesController); 
+ router.get('api/listPuestosTemporales/:idcentro_formacion', validarTokenMiddleware,  obtenerPuestosTemporalesController);
+ router.put('api/editPuestosTemporales/:idPuestosTemporales', validarTokenMiddleware, editarPuestosTemporalesfC);
+ router.delete('api/EliminarPuestosTemporales/:idPuestosTemporales', validarTokenMiddleware,  eliminarPuestosTemporalesfC);
  
  
  module.exports = router;
