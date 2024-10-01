@@ -26,7 +26,7 @@ router.put('/api/editUser/:idUsuario', validarTokenMiddleware, upload.single('fi
 router.delete('/api/EliminarUser/:idUsuario', validarTokenMiddleware, eliminarUsuarioC);
 router.put('/api/cambiarPassword/:idUsuario',validarTokenMiddleware , cambiarContraseñaC);
 router.post('/api/solicitarRestablecimiento', solicitarRestablecimiento);
-router.post('/api/restablecerPassword', validarTokenMiddleware, restablecerContraseña);
+router.post('/api/restablecerPassword', restablecerContraseña);
 router.put('/api/estadoUser/:idUsuario' , validarTokenMiddleware, estadoUsuarioC);
 router.post('/api/cerrarSesion', cerrarSesionC);
 router.get('/api/getId/:idUsuario', validarTokenMiddleware, getUserId);

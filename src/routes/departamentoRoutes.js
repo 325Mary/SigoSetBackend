@@ -11,7 +11,7 @@ const {
 const validarTokenMiddleware = require('../middleware/userAuthentication')
 
 router.post('/api/crearDepartamento', validarTokenMiddleware, crearDepartamentoC); 
-router.get('/api/listMDepartamento', validarTokenMiddleware, obtenerDepartamentoC);
+router.get('/api/listMDepartamento', obtenerDepartamentoC);
 //router.get('/listarOneDep/:iddepartamento',obtenerDepartamentoPorId)
 router.put('/api/editDepartamento/:iddepartamento', validarTokenMiddleware,  editarDepartamentoC);
 router.delete('/api/EliminarDepartamento/:iddepartamento', validarTokenMiddleware, eliminarDepartamentoC);
