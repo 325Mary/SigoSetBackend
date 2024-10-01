@@ -33,14 +33,20 @@ const PuestosTemporales =  require('../routes/puestosTemporalesRoutes')
 const cronJobsC = require('../cronJobs/contratoEmpresaCron'); 
 const cronJobsP = require('../cronJobs/PuestoTemporalCron')
 const appSigoSet = express();
-const port = 3000;
+// const port = 3000;
+const port = 80;
 appSigoSet.use(cors());
 cronJobsC;
 appSigoSet.use(express.json());
 appSigoSet.use('/uploads', express.static(path.join(__dirname, '../../uploads/firmas')));
 appSigoSet.use('/uploadsPdf', express.static(path.join(__dirname, '../../uploads/Contratos')));
 
+const corsOptions = {
+    origin: [
+      'http://localhost:4200',
 
+    ]
+  };
 appSigoSet.use(regionalesRoutes);
 appSigoSet.use(centroFormacionRoutes)
 appSigoSet.use(usuarioRoutes);

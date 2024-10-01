@@ -10,10 +10,10 @@ const {
 const checkPerfil = require('../middleware/verificadorDePerfil')
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.post('api/crearCertificacionCentro', validarTokenMiddleware, crearCertificacionCentrofC); 
-router.get('api/listCertificacionCentro', validarTokenMiddleware, obtenerCertificacionCentrofC);
-router.put('api/editCertificacionCentro/:idcertificacion_centrof', validarTokenMiddleware, editarCertificacionCentrofC);
-router.delete('api/EliminarCertificacionCentro/:idcertificacion_centrof', validarTokenMiddleware, eliminarCertificacionCentrofC);
+router.post('/api/crearCertificacionCentro', validarTokenMiddleware, crearCertificacionCentrofC); 
+router.get('/api/listCertificacionCentro', validarTokenMiddleware, obtenerCertificacionCentrofC);
+router.put('/api/editCertificacionCentro/:idcertificacion_centrof', validarTokenMiddleware, editarCertificacionCentrofC);
+router.delete('/api/EliminarCertificacionCentro/:idcertificacion_centrof', validarTokenMiddleware, eliminarCertificacionCentrofC);
 
 
 module.exports = router;

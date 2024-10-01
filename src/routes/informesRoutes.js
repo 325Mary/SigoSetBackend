@@ -6,6 +6,6 @@ const {
      } = require('../controller/informeController');
      const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.get('api/listObligacionesxCentro/:idEmpresa', validarTokenMiddleware, obtenerObligaciones); 
+router.get('/api/listObligacionesxCentro/:idEmpresa', validarTokenMiddleware, obtenerObligaciones); 
 
 module.exports = router;

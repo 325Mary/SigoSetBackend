@@ -19,17 +19,17 @@ const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
 const upload = require('../middleware/Multer')
 
-router.post('api/crearUsuario', validarTokenMiddleware, upload.single('firma_usuario'),  crearUsuarioC); 
+router.post('/api/crearUsuario', validarTokenMiddleware, upload.single('firma_usuario'),  crearUsuarioC); 
 router.get('/api/listUsuarios', validarTokenMiddleware,  obtenerUsuariosC);
 router.post('/api/iniciarSesion', postLogin)
-router.put('api/editUser/:idUsuario', validarTokenMiddleware, upload.single('firma_usuario'), editarUsuarioC);
-router.delete('api/EliminarUser/:idUsuario', validarTokenMiddleware, eliminarUsuarioC);
-router.put('api/cambiarPassword/:idUsuario',validarTokenMiddleware , cambiarContraseñaC);
-router.post('api/solicitarRestablecimiento', solicitarRestablecimiento);
-router.post('api/restablecerPassword', validarTokenMiddleware, restablecerContraseña);
-router.put('api/estadoUser/:idUsuario' , validarTokenMiddleware, estadoUsuarioC);
-router.post('api/cerrarSesion', cerrarSesionC);
-router.get('api/getId/:idUsuario', validarTokenMiddleware, getUserId);
-router.post('api/enviarCorreo/:idUsuario', validarTokenMiddleware,  enviarDatosUsuarioPorCorreoController);
+router.put('/api/editUser/:idUsuario', validarTokenMiddleware, upload.single('firma_usuario'), editarUsuarioC);
+router.delete('/api/EliminarUser/:idUsuario', validarTokenMiddleware, eliminarUsuarioC);
+router.put('/api/cambiarPassword/:idUsuario',validarTokenMiddleware , cambiarContraseñaC);
+router.post('/api/solicitarRestablecimiento', solicitarRestablecimiento);
+router.post('/api/restablecerPassword', validarTokenMiddleware, restablecerContraseña);
+router.put('/api/estadoUser/:idUsuario' , validarTokenMiddleware, estadoUsuarioC);
+router.post('/api/cerrarSesion', cerrarSesionC);
+router.get('/api/getId/:idUsuario', validarTokenMiddleware, getUserId);
+router.post('/api/enviarCorreo/:idUsuario', validarTokenMiddleware,  enviarDatosUsuarioPorCorreoController);
 
 module.exports = router;

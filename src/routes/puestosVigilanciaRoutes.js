@@ -6,9 +6,9 @@ const {
 } = require('../controller/puestosVigilanciaController');
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.get('api/puestos', validarTokenMiddleware, listarPuestosC );
-router.post('apapii/crearPuesto', validarTokenMiddleware,  crearPuestoC);
-router.put('api/apieditarPuesto/:idpuesto_vigilancia', validarTokenMiddleware,  editarPuestoC);
-router.delete('api/eliminarPuesto/:idpuesto_vigilancia', validarTokenMiddleware, eliminarPuestoC );
+router.get('/api/puestos', validarTokenMiddleware, listarPuestosC );
+router.post('/api/crearPuesto', validarTokenMiddleware,  crearPuestoC);
+router.put('/api/apieditarPuesto/:idpuesto_vigilancia', validarTokenMiddleware,  editarPuestoC);
+router.delete('/api/eliminarPuesto/:idpuesto_vigilancia', validarTokenMiddleware, eliminarPuestoC );
 
 module.exports = router;

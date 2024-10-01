@@ -9,10 +9,10 @@ const {
      } = require('../controller/perfilController');
 const  validarTokenMiddleware= require('../middleware/userAuthentication')
 
-router.post('api/crearPerfil', validarTokenMiddleware,  crearPerfilC); 
-router.get('api/apilistPerfil', validarTokenMiddleware,  obtenerPerfilesC);
-router.put('apiapi/editPerfil/:idperfil', validarTokenMiddleware, editarPerfilC);
-router.delete('api/EliminarPerfil/:idperfil', validarTokenMiddleware, eliminarPerfilC);
+router.post('/api/crearPerfil', validarTokenMiddleware,  crearPerfilC); 
+router.get('/api/apilistPerfil', validarTokenMiddleware,  obtenerPerfilesC);
+router.put('/api/editPerfil/:idperfil', validarTokenMiddleware, editarPerfilC);
+router.delete('/api/EliminarPerfil/:idperfil', validarTokenMiddleware, eliminarPerfilC);
 
 
 module.exports = router;
